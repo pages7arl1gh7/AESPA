@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平衡感调节小游戏</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full viewport height */
+            margin: 0;
+            padding: 1rem; /* Add some padding around the content */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+        .container {
+            max-width: 90%; /* Responsive width */
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            overflow: hidden; /* Hide overflow for rounded corners */
+        }
+        /* Full screen modal overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            text-align: center;
+        }
+        /* Age-friendly text sizing */
+        .text-xl-responsive {
+            font-size: 1.25rem; /* Default for smaller screens */
+        }
+        @media (min-width: 640px) { /* sm breakpoint */
+            .text-xl-responsive {
+                font-size: 1.5rem;
+            }
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .text-xl-responsive {
+                font-size: 1.875rem;
+            }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .text-xl-responsive {
+                font-size: 2.25rem;
+            }
+        }
+        /* Specific styling for video and canvas */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%; /* 4:3 Aspect Ratio (change as needed) */
+            height: 0;
+            overflow: hidden;
+            background-color: #333; /* Dark background for video area */
+            border-radius: 0.5rem; /* Slightly rounded corners for video */
+        }
+        .video-container video, .video-container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures video covers the area */
+        }
+        /* Specific styling for the small standard video */
+        .standard-video-small {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            width: 25%; /* Approximately 1/4 width */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            z-index: 10; /* Ensure it's above the main video/canvas */
+            background-color: #555; /* Placeholder background */
+        }
+    </style>
+</head>
+<body>
+    <!-- Main application container -->
+    <div id="app" class="container p-6 sm:p-8 md:p-10 lg:p-12 text-gray-800">
+
+        <!-- Language Selector (Top Right) -->
+        <div class="absolute top-4 right-4 z-50">
+            <select id="language-selector" class="p-2 rounded-md bg-blue-100 border border-blue-300 text-blue-800 font-bold text-base md:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="zh">中文</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+
+        <!-- Disclaimer Modal -->
+        <div id="disclaimer-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-blue-700" data-lang-key="disclaimerTitle">免责声明</h2>
+                <p class="text-xl-responsive leading-relaxed mb-4" data-lang-key="disclaimerText1">
+                    本网页提供的小游戏旨在帮助中老年人调节平衡感，但并非医疗建议。请您务必根据自身身体状况和医生的指导选择合适的活动。
+                </p>
+                <p class="text-xl-responsive leading-relaxed mb-4" data-lang-key="disclaimerText2">
+                    所有内容仅供参考，不构成任何医疗诊断或治疗建议。如果您感到身体不适，请立即停止活动并及时就医。
+                </p>
+                <p class="text-xl-responsive leading-relaxed mb-6" data-lang-key="disclaimerText3">
+                    本应用不收集任何个人数据，不保存您的视频录像。您输入的信息仅用于游戏推荐，不会上传至服务器。
+                </p>
+                <button id="agree-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 text-xl-responsive" data-lang-key="agreeButton">
+                    我已阅读并同意
+                </button>
+            </div>
+        </div>
+
+        <!-- User Information Page -->
+        <div id="user-info-page" class="hidden text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-blue-700" data-lang-key="userInfoTitle">请提供您的信息</h2>
+            <form id="user-info-form" class="space-y-6 max-w-md mx-auto">
+                <div>
+                    <label for="age" class="block text-xl-responsive font-medium text-gray-700 mb-2" data-lang-key="ageLabel">年龄 (岁):</label>
+                    <input type="number" id="age" name="age" min="1" max="120" required
+                           class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-xl-responsive">
+                </div>
+                <div>
+                    <label for="gender" class="block text-xl-responsive font-medium text-gray-700 mb-2" data-lang-key="genderLabel">性别:</label>
+                    <select id="gender" name="gender" required
+                            class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-xl-responsive">
+                        <option value="" disabled selected data-lang-key="selectGender">请选择</option>
+                        <option value="male" data-lang-key="male">男</option>
+                        <option value="female" data-lang-key="female">女</option>
+                        <option value="other" data-lang-key="other">其他</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="weight" class="block text-xl-responsive font-medium text-gray-700 mb-2" data-lang-key="weightLabel">体重 (公斤):</label>
+                    <input type="number" id="weight" name="weight" min="1" max="300" step="0.1" required
+                           class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-xl-responsive">
+                </div>
+                <!-- Assuming a default height for BMI calculation. In a real app, you might ask for height -->
+                <p class="text-sm text-gray-500" data-lang-key="heightAssumption">
+                    *身高将默认按1.7米计算BMI。
+                </p>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 text-xl-responsive" data-lang-key="submitInfo">
+                    提交并开始游戏
+                </button>
+            </form>
+        </div>
+
+        <!-- Main Game Page (initially hidden) -->
+        <div id="game-page" class="hidden">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-blue-700 text-center" data-lang-key="gameTitle">平衡感挑战</h2>
+
+            <!-- Difficulty Selector -->
+            <div class="flex flex-col sm:flex-row justify-center items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-8">
+                <div>
+                    <label for="difficulty-selector" class="block text-xl-responsive font-medium text-gray-700 mb-2" data-lang-key="difficultyLabel">选择难度:</label>
+                    <select id="difficulty-selector" class="p-3 rounded-md bg-blue-100 border border-blue-300 text-blue-800 font-bold text-xl-responsive focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="high" data-lang-key="difficultyHigh">高</option>
+                        <option value="mid" data-lang-key="difficultyMid">中</option>
+                        <option value="low" data-lang-key="difficultyLow">低</option>
+                    </select>
+                </div>
+                <!-- Average Score Display -->
+                <div class="text-center">
+                    <p class="text-xl-responsive font-medium text-gray-700" data-lang-key="averageScoreLabel">平均得分:</p>
+                    <p id="average-score" class="text-4xl font-extrabold text-green-600">0</p>
+                </div>
+            </div>
+
+
+            <!-- Video and Canvas Area -->
+            <div class="video-container mb-6">
+                <!-- Standard Game Action Video (Placeholder for hard.mp4, mid.mp4, easy.mp4) -->
+                <video id="standard-video" class="standard-video-small border-4 border-white" loop muted>
+                    <!-- Actual video sources will be set by JavaScript based on difficulty -->
+                    <source src="https://placehold.co/320x240/007bff/ffffff?text=Standard+Video" type="video/mp4">
+                    您的浏览器不支持视频标签。
+                </video>
+                <!-- User Webcam Video -->
+                <video id="user-video" autoplay playsinline muted></video>
+                <!-- Canvas for MediaPipe drawing -->
+                <canvas id="pose-canvas"></canvas>
+
+                <!-- Countdown Overlay -->
+                <div id="countdown-overlay" class="absolute inset-0 bg-black bg-opacity-70 flex justify-center items-center text-white text-9xl font-bold hidden">3</div>
+            </div>
+
+            <!-- Start/End Button -->
+            <div class="text-center">
+                <button id="start-end-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 text-2xl-responsive" data-lang-key="startButton">
+                    开始
+                </button>
+            </div>
+        </div>
+
+        <!-- Game End Feedback Modal -->
+        <div id="game-end-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-blue-700" data-lang-key="gameEndTitle">游戏结束！</h2>
+                <p class="text-xl-responsive leading-relaxed mb-4" data-lang-key="finalScoreLabel">您的最终分数是:</p>
+                <p id="final-score" class="text-6xl font-extrabold text-purple-700 mb-6">0</p>
+                <h3 class="text-2xl md:text-3xl font-bold mb-4 text-gray-700" data-lang-key="nutritionAdviceTitle">营养补充建议:</h3>
+                <p id="nutrition-advice" class="text-xl-responsive leading-relaxed mb-6"></p>
+                <button id="restart-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 text-xl-responsive" data-lang-key="restartButton">
+                    再玩一次
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MediaPipe Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675037146/pose.js" crossorigin="anonymous"></script>
+
+    <script type="module">
+        // ================================================================
+        // Global Variables and DOM Elements
+        // ================================================================
+        const disclaimerModal = document.getElementById('disclaimer-modal');
+        const agreeButton = document.getElementById('agree-button');
+        const userInfoPage = document.getElementById('user-info-page');
+        const userInfoForm = document.getElementById('user-info-form');
+        const gamePage = document.getElementById('game-page');
+        const languageSelector = document.getElementById('language-selector');
+        const standardVideo = document.getElementById('standard-video');
+        const userVideo = document.getElementById('user-video');
+        const poseCanvas = document.getElementById('pose-canvas');
+        const poseCanvasCtx = poseCanvas.getContext('2d');
+        const startEndButton = document.getElementById('start-end-button');
+        const countdownOverlay = document.getElementById('countdown-overlay');
+        const averageScoreDisplay = document.getElementById('average-score');
+        const difficultySelector = document.getElementById('difficulty-selector');
+        const gameEndModal = document.getElementById('game-end-modal');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const nutritionAdvice = document.getElementById('nutrition-advice');
+        const restartButton = document.getElementById('restart-button');
+
+        let pose; // MediaPipe Pose object
+        let camera; // MediaPipe Camera object
+        let gameRunning = false;
+        let countdownValue = 3;
+        let countdownInterval;
+        let totalScore = 0;
+        let frameCount = 0;
+        let currentDifficulty = 'mid'; // Default difficulty
+
+        // Placeholder for user info
+        let userInfo = {
+            age: 0,
+            gender: '',
+            weight: 0,
+            bmi: 0,
+        };
+
+        // Standard video paths (placeholders - replace with actual video URLs)
+        const standardVideoSources = {
+            high: "https://placehold.co/320x240/007bff/ffffff?text=Hard+Video", // Replace with actual hard.mp4
+            mid: "https://placehold.co/320x240/28a745/ffffff?text=Medium+Video", // Replace with actual mid.mp4
+            low: "https://placehold.co/320x240/dc3545/ffffff?text=Easy+Video" // Replace with actual easy.mp4
+        };
+
+        // ================================================================
+        // Localization (Multi-language)
+        // ================================================================
+        const translations = {
+            zh: {
+                disclaimerTitle: "免责声明",
+                disclaimerText1: "本网页提供的小游戏旨在帮助中老年人调节平衡感，但并非医疗建议。请您务必根据自身身体状况和医生的指导选择合适的活动。",
+                disclaimerText2: "所有内容仅供参考，不构成任何医疗诊断或治疗建议。如果您感到身体不适，请立即停止活动并及时就医。",
+                disclaimerText3: "本应用不收集任何个人数据，不保存您的视频录像。您输入的信息仅用于游戏推荐，不会上传至服务器。",
+                agreeButton: "我已阅读并同意",
+                userInfoTitle: "请提供您的信息",
+                ageLabel: "年龄 (岁):",
+                genderLabel: "性别:",
+                selectGender: "请选择",
+                male: "男",
+                female: "女",
+                other: "其他",
+                weightLabel: "体重 (公斤):",
+                heightAssumption: "*身高将默认按1.7米计算BMI。",
+                submitInfo: "提交并开始游戏",
+                gameTitle: "平衡感挑战",
+                difficultyLabel: "选择难度:",
+                difficultyHigh: "高",
+                difficultyMid: "中",
+                difficultyLow: "低",
+                averageScoreLabel: "平均得分:",
+                startButton: "开始",
+                endButton: "结束",
+                gameEndTitle: "游戏结束！",
+                finalScoreLabel: "您的最终分数是:",
+                nutritionAdviceTitle: "营养补充建议:",
+                restartButton: "再玩一次",
+                scoreHighAdvice: "恭喜！您的平衡感非常出色。请继续保持积极的生活方式，均衡饮食，多摄入富含钙、维生素D的食物（如牛奶、豆制品、鱼类）以维持骨骼健康。",
+                scoreMidAdvice: "您的表现不错！为了进一步提升平衡感，建议增加蛋白质摄入（如瘦肉、鸡蛋），并适量补充B族维生素。继续坚持锻炼，循序渐进。",
+                scoreLowAdvice: "表现有待提高，但没关系，坚持练习会有进步！建议您关注均衡营养，特别是蛋白质和维生素的摄入，并考虑在医生或营养师指导下补充。请从低难度开始，逐步增强。",
+                camAccessDenied: "无法访问摄像头。请确保您已授予本应用摄像头权限。",
+                poseLoading: "正在加载姿态检测模型...",
+                poseLoaded: "姿态检测模型加载完成！",
+                startCountdown: "游戏即将开始！"
+            },
+            en: {
+                disclaimerTitle: "Disclaimer",
+                disclaimerText1: "The mini-games provided on this webpage are intended to help middle-aged and elderly people adjust their sense of balance, but are not medical advice. Please be sure to choose appropriate activities based on your physical condition and doctor's guidance.",
+                disclaimerText2: "All content is for reference only and does not constitute any medical diagnosis or treatment advice. If you feel unwell, please stop the activity immediately and seek medical attention in time.",
+                disclaimerText3: "This application does not collect any personal data and does not save your video recordings. The information you enter is only used for game recommendations and will not be uploaded to the server.",
+                agreeButton: "I have read and agree",
+                userInfoTitle: "Please Provide Your Information",
+                ageLabel: "Age (Years):",
+                genderLabel: "Gender:",
+                selectGender: "Please select",
+                male: "Male",
+                female: "Female",
+                other: "Other",
+                weightLabel: "Weight (kg):",
+                heightAssumption: "*Height will be assumed as 1.7 meters for BMI calculation.",
+                submitInfo: "Submit and Start Game",
+                gameTitle: "Balance Challenge",
+                difficultyLabel: "Select Difficulty:",
+                difficultyHigh: "High",
+                difficultyMid: "Medium",
+                difficultyLow: "Low",
+                averageScoreLabel: "Average Score:",
+                startButton: "Start",
+                endButton: "End",
+                gameEndTitle: "Game Over!",
+                finalScoreLabel: "Your final score is:",
+                nutritionAdviceTitle: "Nutritional Advice:",
+                scoreHighAdvice: "Congratulations! Your balance is excellent. Please continue to maintain an active lifestyle, a balanced diet, and consume foods rich in calcium and vitamin D (such as milk, soy products, fish) to maintain bone health.",
+                scoreMidAdvice: "You performed well! To further improve your balance, it is recommended to increase protein intake (such as lean meat, eggs) and appropriately supplement B vitamins. Keep exercising step by step.",
+                scoreLowAdvice: "Performance needs improvement, but it's okay, persistence will bring progress! It is recommended that you focus on balanced nutrition, especially protein and vitamin intake, and consider supplementation under the guidance of a doctor or nutritionist. Please start with a low difficulty and gradually increase.",
+                camAccessDenied: "Camera access denied. Please ensure you have granted camera permission to this application.",
+                poseLoading: "Loading pose detection model...",
+                poseLoaded: "Pose detection model loaded!",
+                startCountdown: "Game starting soon!"
+            }
+        };
+
+        let currentLang = 'zh'; // Default language
+
+        /**
+         * Updates all text elements on the page based on the current language.
+         */
+        function updateContentLanguage() {
+            document.querySelectorAll('[data-lang-key]').forEach(element => {
+                const key = element.getAttribute('data-lang-key');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    element.textContent = translations[currentLang][key];
+                }
+            });
+        }
+
+        // Initialize language on load
+        languageSelector.value = currentLang;
+        updateContentLanguage();
+
+        // Event listener for language selector
+        languageSelector.addEventListener('change', (event) => {
+            currentLang = event.target.value;
+            updateContentLanguage();
+        });
+
+        // ================================================================
+        // Disclaimer Modal Logic
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if disclaimer has been agreed to before
+            const disclaimerAgreed = localStorage.getItem('disclaimerAgreed');
+            if (!disclaimerAgreed) {
+                disclaimerModal.classList.remove('hidden');
+            } else {
+                // If agreed, directly show user info page
+                showUserInfoPage();
+            }
+        });
+
+        agreeButton.addEventListener('click', () => {
+            localStorage.setItem('disclaimerAgreed', 'true');
+            disclaimerModal.classList.add('hidden');
+            showUserInfoPage();
+        });
+
+        /**
+         * Shows the user information collection page.
+         */
+        function showUserInfoPage() {
+            userInfoPage.classList.remove('hidden');
+            gamePage.classList.add('hidden'); // Hide game page if it was visible
+        }
+
+        // ================================================================
+        // User Information Form Logic
+        // ================================================================
+        userInfoForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            userInfo.age = parseInt(document.getElementById('age').value);
+            userInfo.gender = document.getElementById('gender').value;
+            userInfo.weight = parseFloat(document.getElementById('weight').value);
+
+            // Assuming a default height for BMI calculation
+            const assumedHeightMeters = 1.70; // 170 cm
+
+            // Calculate BMI
+            userInfo.bmi = userInfo.weight / (assumedHeightMeters * assumedHeightMeters);
+
+            // Determine default difficulty based on BMI and age
+            setDefaultDifficulty();
+
+            // Store info in session storage or global for use in game
+            sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+            sessionStorage.setItem('initialDifficulty', currentDifficulty);
+
+            // Transition to game page
+            userInfoPage.classList.add('hidden');
+            gamePage.classList.remove('hidden');
+            difficultySelector.value = currentDifficulty; // Set difficulty dropdown to default
+
+            // Initialize MediaPipe and camera once on game page load
+            initializeMediaPipe();
+        });
+
+        /**
+         * Sets the default game difficulty based on user's BMI and age.
+         */
+        function setDefaultDifficulty() {
+            const { age, bmi } = userInfo;
+
+            if (age >= 70 || bmi >= 28) { // Age over 70 or obese BMI
+                currentDifficulty = 'low';
+            } else if (bmi >= 24 && bmi < 28) { // Overweight BMI
+                currentDifficulty = 'mid';
+            } else if (bmi >= 18.5 && bmi < 24) { // Normal BMI
+                currentDifficulty = 'high';
+            } else { // BMI < 18.5 (underweight) or other cases, default to high for challenge
+                currentDifficulty = 'high';
+            }
+        }
+
+        // ================================================================
+        // MediaPipe Initialization
+        // ================================================================
+        async function initializeMediaPipe() {
+            // Display loading message
+            averageScoreDisplay.textContent = translations[currentLang].poseLoading;
+
+            pose = new Pose({
+                locateFile: (file) => {
+                    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675037146/${file}`;
+                }
+            });
+
+            pose.setOptions({
+                modelComplexity: 1, // 0 (light), 1 (medium), 2 (heavy) - adjust for performance
+                smoothLandmarks: true,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+
+            pose.onResults(onResults);
+
+            // Access user camera
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                userVideo.srcObject = stream;
+                // Wait for video to load metadata to get its dimensions
+                await new Promise((resolve) => {
+                    userVideo.onloadedmetadata = () => {
+                        resolve();
+                    };
+                });
+
+                // Set canvas dimensions to match video
+                poseCanvas.width = userVideo.videoWidth;
+                poseCanvas.height = userVideo.videoHeight;
+
+                // MediaPipe Camera object helps send video frames to the pose model
+                camera = new Camera(userVideo, {
+                    onFrame: async () => {
+                        if (gameRunning) { // Only send frames when game is active
+                           await pose.send({ image: userVideo });
+                        }
+                    },
+                    width: userVideo.videoWidth,
+                    height: userVideo.videoHeight
+                });
+                camera.start();
+                averageScoreDisplay.textContent = translations[currentLang].poseLoaded;
+
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                averageScoreDisplay.textContent = translations[currentLang].camAccessDenied;
+                startEndButton.disabled = true; // Disable button if camera access fails
+            }
+        }
+
+        /**
+         * Callback function for MediaPipe Pose results.
+         * @param {Object} results - The results from MediaPipe Pose.
+         */
+        function onResults(results) {
+            // Clear the canvas
+            poseCanvasCtx.clearRect(0, 0, poseCanvas.width, poseCanvas.height);
+            poseCanvasCtx.drawImage(results.image, 0, 0, poseCanvas.width, poseCanvas.height); // Draw video frame
+
+            if (results.poseLandmarks) {
+                // Draw detected landmarks and connections
+                drawConnectors(poseCanvasCtx, results.poseLandmarks, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
+                drawLandmarks(poseCanvasCtx, results.poseLandmarks, { color: '#FF0000', lineWidth: 2 });
+
+                if (gameRunning && standardVideo.currentTime > 0) { // Ensure standard video is playing
+                    // Get user pose landmarks
+                    const userLandmarks = results.poseLandmarks;
+
+                    // Simulate standard pose landmarks for the current frame
+                    // In a real application, you'd analyze standardVideo.currentTime frame with MediaPipe
+                    // Or load pre-calculated landmarks for standard video
+                    const standardLandmarks = getSimulatedStandardPose(standardVideo.currentTime);
+
+                    if (userLandmarks && standardLandmarks) {
+                        // Calculate similarity and update score
+                        const similarity = calculatePoseSimilarity(userLandmarks, standardLandmarks);
+                        const frameScore = Math.round(similarity * 100); // Convert to 0-100
+
+                        totalScore += frameScore;
+                        frameCount++;
+                        averageScoreDisplay.textContent = Math.round(totalScore / frameCount);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Function to simulate standard pose landmarks based on time or a simple predefined animation.
+         * In a real application, this would involve MediaPipe analysis of the standard video or pre-loaded data.
+         * For this demo, we'll return a simple fixed pose.
+         * @param {number} currentTime - Current time of the standard video.
+         * @returns {Array} An array of landmark objects.
+         */
+        function getSimulatedStandardPose(currentTime) {
+            // This is a placeholder. In a real application, you'd have pre-calculated
+            // pose data for your standard videos (hard.mp4, mid.mp4, easy.mp4)
+            // or perform real-time MediaPipe analysis on the standard video.
+            // For simplicity in this demo, let's just return a basic "standing" pose.
+            // A more advanced simulation could vary landmarks based on currentTime
+            // to mimic an actual exercise.
+
+            // Example: A simple "T-pose" like structure relative to center
+            const center_x = 0.5;
+            const center_y = 0.5;
+            const scale = 0.2; // Relative scale for the pose
+
+            const simulatedPose = [
+                // Nose
+                { x: center_x, y: center_y - 0.2 * scale, z: 0, visibility: 0.99 },
+                // Left shoulder
+                { x: center_x - 0.1 * scale, y: center_y, z: 0, visibility: 0.99 },
+                // Right shoulder
+                { x: center_x + 0.1 * scale, y: center_y, z: 0, visibility: 0.99 },
+                // Left elbow
+                { x: center_x - 0.2 * scale, y: center_y, z: 0, visibility: 0.99 },
+                // Right elbow
+                { x: center_x + 0.2 * scale, y: center_y, z: 0, visibility: 0.99 },
+                // Left wrist
+                { x: center_x - 0.3 * scale, y: center_y, z: 0, visibility: 0.99 },
+                // Right wrist
+                { x: center_x + 0.3 * scale, y: center_y, z: 0, visibility: 0.99 },
+                // Left hip
+                { x: center_x - 0.05 * scale, y: center_y + 0.1 * scale, z: 0, visibility: 0.99 },
+                // Right hip
+                { x: center_x + 0.05 * scale, y: center_y + 0.1 * scale, z: 0, visibility: 0.99 },
+                // Left knee
+                { x: center_x - 0.05 * scale, y: center_y + 0.2 * scale, z: 0, visibility: 0.99 },
+                // Right knee
+                { x: center_x + 0.05 * scale, y: center_y + 0.2 * scale, z: 0, visibility: 0.99 },
+                // Left ankle
+                { x: center_x - 0.05 * scale, y: center_y + 0.3 * scale, z: 0, visibility: 0.99 },
+                // Right ankle
+                { x: center_x + 0.05 * scale, y: center_y + 0.3 * scale, z: 0, visibility: 0.99 },
+                // Add more landmarks as needed to match MediaPipe's 33 landmarks structure
+            ];
+
+            // MediaPipe returns 33 landmarks. Ensure the simulated data matches this length for robust comparison.
+            // For a basic demo, we'll pad with dummy data if necessary, or simplify comparison.
+            // For robust comparison, you would map relevant landmarks for your specific exercise.
+            // Example: Only compare key joints for balance, e.g., hips, knees, ankles.
+            while (simulatedPose.length < 33) {
+                simulatedPose.push({ x: 0, y: 0, z: 0, visibility: 0 });
+            }
+
+            return simulatedPose.slice(0, 33); // Ensure it's exactly 33 landmarks
+        }
+
+
+        /**
+         * Calculates cosine similarity between two sets of pose landmarks.
+         * Only compares a subset of key landmarks relevant for balance (hips, knees, ankles).
+         * @param {Array} userLandmarks - Array of landmark objects from user.
+         * @param {Array} standardLandmarks - Array of landmark objects from standard pose.
+         * @returns {number} Cosine similarity (0-1).
+         */
+        function calculatePoseSimilarity(userLandmarks, standardLandmarks) {
+            // Define key landmarks for balance comparison (e.g., hips, knees, ankles)
+            // MediaPipe Pose landmarks indices:
+            // 23: Left hip, 24: Right hip
+            // 25: Left knee, 26: Right knee
+            // 27: Left ankle, 28: Right ankle
+            const keyLandmarkIndices = [
+                // POSE_LANDMARKS.LEFT_HIP.value, POSE_LANDMARKS.RIGHT_HIP.value,
+                // POSE_LANDMARKS.LEFT_KNEE.value, POSE_LANDMARKS.RIGHT_KNEE.value,
+                // POSE_LANDMARKS.LEFT_ANKLE.value, POSE_LANDMARKS.RIGHT_ANKLE.value,
+                23, 24, 25, 26, 27, 28
+            ];
+
+            let userVector = [];
+            let standardVector = [];
+
+            // Extract relevant landmark coordinates and normalize them relative to hips for scale invariance
+            // Find hip center to normalize
+            const userHipX = (userLandmarks[23].x + userLandmarks[24].x) / 2;
+            const userHipY = (userLandmarks[23].y + userLandmarks[24].y) / 2;
+            const standardHipX = (standardLandmarks[23].x + standardLandmarks[24].x) / 2;
+            const standardHipY = (standardLandmarks[23].y + standardLandmarks[24].y) / 2;
+
+
+            keyLandmarkIndices.forEach(idx => {
+                const userLm = userLandmarks[idx];
+                const standardLm = standardLandmarks[idx];
+
+                // Ensure landmarks are visible enough for comparison
+                if (userLm.visibility > 0.6 && standardLm.visibility > 0.6) {
+                    // Use relative coordinates to hip center
+                    userVector.push(userLm.x - userHipX, userLm.y - userHipY);
+                    standardVector.push(standardLm.x - standardHipX, standardLm.y - standardHipY);
+                    // Could also include Z or define bone vectors
+                }
+            });
+
+            if (userVector.length === 0 || standardVector.length === 0) {
+                return 0; // Cannot compare if no valid landmarks
+            }
+
+            // Calculate Dot Product
+            let dotProduct = 0;
+            for (let i = 0; i < userVector.length; i++) {
+                dotProduct += userVector[i] * standardVector[i];
+            }
+
+            // Calculate Magnitude of each vector
+            let magnitudeUser = 0;
+            for (let i = 0; i < userVector.length; i++) {
+                magnitudeUser += userVector[i] * userVector[i];
+            }
+            magnitudeUser = Math.sqrt(magnitudeUser);
+
+            let magnitudeStandard = 0;
+            for (let i = 0; i < standardVector.length; i++) {
+                magnitudeStandard += standardVector[i] * standardVector[i];
+            }
+            magnitudeStandard = Math.sqrt(magnitudeStandard);
+
+            // Calculate Cosine Similarity
+            if (magnitudeUser === 0 || magnitudeStandard === 0) {
+                return 0; // Avoid division by zero
+            }
+
+            let similarity = dotProduct / (magnitudeUser * magnitudeStandard);
+
+            // Clamp similarity to [0, 1] as it can sometimes be slightly outside due to floating point
+            // and we want it to represent a positive match. -1 to 1 range is natural for cosine,
+            // but for "similarity" often normalized to 0-1 for scores.
+            similarity = Math.max(0, similarity); // Ensure non-negative
+            similarity = Math.min(1, similarity); // Ensure not greater than 1
+
+            return similarity;
+        }
+
+        // ================================================================
+        // Game Flow Logic
+        // ================================================================
+
+        /**
+         * Handles the start/end button click.
+         */
+        startEndButton.addEventListener('click', () => {
+            if (!gameRunning) {
+                startGame();
+            } else {
+                endGame();
+            }
+        });
+
+        /**
+         * Starts the game countdown and then the game.
+         */
+        function startGame() {
+            startEndButton.disabled = true; // Disable button during countdown
+            countdownOverlay.classList.remove('hidden');
+            countdownValue = 3;
+            countdownOverlay.textContent = countdownValue;
+            averageScoreDisplay.textContent = '0'; // Reset score display
+            totalScore = 0;
+            frameCount = 0;
+
+            // Load and play standard video based on current difficulty
+            standardVideo.src = standardVideoSources[difficultySelector.value];
+            standardVideo.load(); // Load the new source
+
+            // Countdown timer
+            countdownInterval = setInterval(() => {
+                countdownValue--;
+                if (countdownValue > 0) {
+                    countdownOverlay.textContent = countdownValue;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownOverlay.classList.add('hidden');
+                    startEndButton.disabled = false; // Re-enable button
+                    startEndButton.textContent = translations[currentLang].endButton;
+                    gameRunning = true;
+                    standardVideo.play(); // Start standard video playback
+                    // Start MediaPipe analysis (camera.start() is already called in initMediaPipe)
+                    // The onFrame callback will now send frames because gameRunning is true
+                }
+            }, 1000);
+            averageScoreDisplay.textContent = translations[currentLang].startCountdown;
+        }
+
+        /**
+         * Ends the game and displays results.
+         */
+        function endGame() {
+            gameRunning = false;
+            startEndButton.textContent = translations[currentLang].startButton;
+            standardVideo.pause(); // Pause standard video
+            standardVideo.currentTime = 0; // Reset standard video
+            clearInterval(countdownInterval); // Clear any lingering countdown
+            countdownOverlay.classList.add('hidden'); // Ensure countdown is hidden
+
+            // Calculate final average score
+            const finalScore = frameCount > 0 ? Math.round(totalScore / frameCount) : 0;
+            finalScoreDisplay.textContent = finalScore;
+
+            // Provide nutritional advice based on score
+            if (finalScore >= 80) {
+                nutritionAdvice.textContent = translations[currentLang].scoreHighAdvice;
+            } else if (finalScore >= 60) {
+                nutritionAdvice.textContent = translations[currentLang].scoreMidAdvice;
+            } else {
+                nutritionAdvice.textContent = translations[currentLang].scoreLowAdvice;
+            }
+
+            // Show game end modal
+            gameEndModal.classList.remove('hidden');
+        }
+
+        /**
+         * Restart button in game end modal.
+         */
+        restartButton.addEventListener('click', () => {
+            gameEndModal.classList.add('hidden');
+            // Reset game state for a new round
+            averageScoreDisplay.textContent = '0';
+            totalScore = 0;
+            frameCount = 0;
+        });
+
+        // Event listener for when standard video ends
+        standardVideo.addEventListener('ended', () => {
+            if (gameRunning) { // Ensure game is actually active
+                endGame();
+            }
+        });
+
+        // Initialize user info and difficulty if coming back from game page (e.g., refresh)
+        // This is a basic way to persist state in a single HTML file.
+        const storedUserInfo = sessionStorage.getItem('userInfo');
+        const storedInitialDifficulty = sessionStorage.getItem('initialDifficulty');
+        if (storedUserInfo && storedInitialDifficulty) {
+            userInfo = JSON.parse(storedUserInfo);
+            currentDifficulty = storedInitialDifficulty;
+            difficultySelector.value = currentDifficulty;
+            // Directly show game page if user info is already present
+            userInfoPage.classList.add('hidden');
+            gamePage.classList.remove('hidden');
+            initializeMediaPipe(); // Initialize MediaPipe once game page is shown
+        }
+    </script>
+</body>
+</html>
