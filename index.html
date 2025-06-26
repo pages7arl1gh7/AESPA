@@ -12,7 +12,7 @@
         /* 基础样式，针对中老年用户增加字体大小和粗细 */
         body {
             font-family: 'Inter', sans-serif;
-            font-size: 2.5rem; /* 字体放大一倍 */
+            font-size: 2rem; /* 字体略微缩小 */
             font-weight: 500;
             line-height: 1.6;
             background-color: #ffe4ef; /* 更粉嫩的暖色背景 */
@@ -23,7 +23,7 @@
         /* 标题字体加粗 */
         h1, h2, h3 {
             font-weight: 700;
-            font-size: 4rem; /* 标题字体放大 */
+            font-size: 3.2rem; /* 标题字体略微缩小 */
             color: #2563eb; /* 蓝色标题 */
         }
         /* 页面内容容器 */
@@ -85,7 +85,7 @@
             cursor: pointer; /* 鼠标指针样式 */
             border: none; /* 移除默认边框 */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 按钮阴影 */
-            font-size: 2.5rem; /* 按钮字体放大 */
+            font-size: 2rem; /* 按钮字体略微缩小 */
         }
         .btn:hover {
             background-color: #ea580c; /* 深橙色 */
@@ -101,7 +101,7 @@
             border-radius: 0.5rem;
             width: 100%;
             max-width: 300px; /* 限制最大宽度 */
-            font-size: 2.5rem; /* 输入框、下拉框字体放大 */
+            font-size: 2rem; /* 输入框、下拉框字体略微缩小 */
             margin-bottom: 1rem;
             box-sizing: border-box; /* 边框和内边距包含在宽度内 */
             color: #2563eb;
@@ -111,7 +111,7 @@
             margin-bottom: 0.5rem;
             font-weight: bold;
             text-align: left; /* 标签左对齐 */
-            font-size: 2.5rem; /* 标签字体放大 */
+            font-size: 2rem; /* 标签字体略微缩小 */
             color: #2563eb;
         }
         /* 视频容器布局 */
@@ -150,7 +150,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 16rem; /* 放大倒计时 */
+            font-size: 12rem; /* 倒计时字体略微缩小 */
             color: #2563eb;
             z-index: 10;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
@@ -159,16 +159,16 @@
         /* 移动端响应式调整 */
         @media (max-width: 768px) {
             body {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
             h1, h2, h3 {
-                font-size: 2.5rem;
-            }
-            .btn, input, select, label {
                 font-size: 2rem;
             }
+            .btn, input, select, label {
+                font-size: 1.5rem;
+            }
             .countdown {
-                font-size: 8rem;
+                font-size: 6rem;
             }
         }
     </style>
@@ -746,7 +746,7 @@
 
         // 计算向量的模（长度）
         function magnitude(v) {
-            return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+            return Math.sqrt(v.x * v.x + v.y * v.y + v.z - v.z);
         }
 
         // 计算两个向量的余弦相似度
