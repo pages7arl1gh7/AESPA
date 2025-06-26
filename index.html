@@ -315,7 +315,7 @@
                 gameOverTitle: '游戏结束！',
                 finalScoreText: '您的最终得分:',
                 adviceTitle: '营养补充建议:',
-                nutritionAdviceLow: '您的表現還有提升空間。建議多補充蛋白質和鈣質，例如牛奶、豆腐、魚肉，以增強肌肉和骨骼健康。同時，可以嘗試低強度的平衡練習。\n推薦保健品：',
+                nutritionAdviceLow: '您的表現還有提升空間。建議多補充蛋白質和鈣質，例如牛奶、豆腐、魚肉，以增強肌肉和骨骼健康。同時，可以嘗試低強度的平衡練習。',
                 nutritionAdviceLowSupplements: [
                     '維特健靈-活關素特強特效膠囊（90粒）',
                     'Move Free 益節 氨糖軟骨素',
@@ -328,8 +328,32 @@
                     'Puritan’s Pride Glucosamine Chondroitin MSM',
                     '健安喜(GNC) 關節健康配方'
                 ],
-                nutritionAdviceMid: '您的表现不错！继续保持健康的饮食习惯，确保摄入足够的维生素和矿物质。可以适当增加一些对平衡有益的运动，如太极拳或瑜伽。',
-                nutritionAdviceHigh: '您的表现非常出色！请继续保持良好的运动习惯和均衡的饮食。可以考虑挑战更高难度的平衡练习，同时注意补充抗氧化剂丰富的食物，如新鲜水果和蔬菜。',
+                nutritionAdviceMid: '您的關節需要更多呵護，建議補充關節靈活相關保健品，並適度運動。',
+                nutritionAdviceMidSupplements: [
+                    '川御一 關節の御守',
+                    'Sato 佐藤製藥 關節守護',
+                    'ORIHIRO 葡萄糖胺',
+                    '日本小林製藥 關節靈',
+                    '善存 關節健康配方',
+                    '森下仁丹 關節靈',
+                    'DHC 關節靈活片',
+                    '永信 關節寶',
+                    '台塑生醫 關健素',
+                    '白蘭氏 關鍵活力膠囊'
+                ],
+                nutritionAdviceHigh: '您的表現非常出色！請繼續保持良好的運動習慣和均衡的飲食。',
+                nutritionAdviceHighSupplements: [
+                    '醫之選-液關健',
+                    '安美露 關節舒緩液',
+                    '葡萄王 關健寶',
+                    '康健生技 關健飲',
+                    '台塑生醫 關健飲',
+                    '善存 關鍵活力飲',
+                    '白蘭氏 關鍵飲',
+                    'Swisse 關節健康飲',
+                    'Move Free 關節飲',
+                    'GNC 關節健康飲'
+                ],
                 restartGameBtn: '重新开始',
                 cameraAccessError: '无法访问摄像头，请检查权限设置。',
                 invalidInputError: '请填写有效的年龄、体重和身高！'
@@ -364,7 +388,7 @@
                 gameOverTitle: 'Game Over!',
                 finalScoreText: 'Your Final Score:',
                 adviceTitle: 'Nutritional Advice:',
-                nutritionAdviceLow: 'Your performance has room for improvement. It is recommended to supplement protein and calcium, such as milk, tofu, and fish, to strengthen muscle and bone health. You can also try low-intensity balance exercises.\nRecommended supplements:',
+                nutritionAdviceLow: 'Your performance has room for improvement. It is recommended to supplement protein and calcium, such as milk, tofu, and fish, to strengthen muscle and bone health. You can also try low-intensity balance exercises.',
                 nutritionAdviceLowSupplements: [
                     'Vita Green VitaJoint Extra Strength Capsules (90 capsules)',
                     'Move Free Joint Health',
@@ -377,8 +401,32 @@
                     'Puritan’s Pride Glucosamine Chondroitin MSM',
                     'GNC Joint Health Formula'
                 ],
-                nutritionAdviceMid: 'Great performance! Continue to maintain healthy eating habits and ensure sufficient intake of vitamins and minerals. You can appropriately increase balance-benefiting exercises, such as Tai Chi or yoga.',
-                nutritionAdviceHigh: 'Excellent performance! Please continue to maintain good exercise habits and a balanced diet. Consider challenging higher difficulty balance exercises, and also pay attention to supplementing antioxidant-rich foods, such as fresh fruits and vegetables.',
+                nutritionAdviceMid: 'Your joints need more care. Consider joint flexibility supplements and moderate exercise.',
+                nutritionAdviceMidSupplements: [
+                    'Kawaguchi Joint Guardian',
+                    'Sato Joint Support',
+                    'ORIHIRO Glucosamine',
+                    'Kobayashi Joint Formula',
+                    'Centrum Joint Health',
+                    'Morishita Jintan Joint',
+                    'DHC Joint Tablets',
+                    'Yung Shin Joint Care',
+                    'Formosa Biomedical Joint Formula',
+                    'Brand’s Joint Vitality Capsules'
+                ],
+                nutritionAdviceHigh: 'Excellent performance! Please continue to maintain good exercise habits and a balanced diet.',
+                nutritionAdviceHighSupplements: [
+                    'EZZ Liquid Joint',
+                    'Amrutanjan Joint Relief Liquid',
+                    'Grape King Joint Care',
+                    'Health Bio Joint Drink',
+                    'Formosa Biomedical Joint Drink',
+                    'Centrum Joint Vitality Drink',
+                    'Brand’s Joint Drink',
+                    'Swisse Joint Health Drink',
+                    'Move Free Joint Drink',
+                    'GNC Joint Health Drink'
+                ],
                 restartGameBtn: 'Restart Game',
                 cameraAccessError: 'Unable to access camera, please check permissions.',
                 invalidInputError: 'Please enter valid age, weight, and height!'
@@ -822,25 +870,25 @@
             document.getElementById('finalScoreDisplay').textContent = finalScore;
 
             let adviceText = '';
-            // 根据得分高低提供不同的营养补充建议
-            if (finalScore >= 80) {
-                adviceText = translations[currentLanguage].nutritionAdviceHigh;
-                document.getElementById('nutritionAdvice').textContent = adviceText;
-            } else if (finalScore >= 50) {
-                adviceText = translations[currentLanguage].nutritionAdviceMid;
-                document.getElementById('nutritionAdvice').textContent = adviceText;
-            } else if (finalScore < 30) {
-                // 低於30分時，隨機推薦一款保健品，並用HTML顯示
+            let supplement = '';
+            // 根據分數區間推薦不同保健品
+            if (finalScore < 50) {
                 const supplements = translations[currentLanguage].nutritionAdviceLowSupplements;
-                const randomIndex = Math.floor(Math.random() * supplements.length);
-                const supplement = supplements[randomIndex];
+                supplement = supplements[Math.floor(Math.random() * supplements.length)];
                 adviceText = `${translations[currentLanguage].nutritionAdviceLow}<br><strong style='color:#d97706;'>推薦：${supplement}</strong>`;
                 document.getElementById('nutritionAdvice').innerHTML = adviceText;
-            } else {
-                adviceText = translations[currentLanguage].nutritionAdviceLow;
-                document.getElementById('nutritionAdvice').textContent = adviceText;
+            } else if (finalScore >= 50 && finalScore < 150) {
+                const supplements = translations[currentLanguage].nutritionAdviceMidSupplements;
+                supplement = supplements[Math.floor(Math.random() * supplements.length)];
+                adviceText = `${translations[currentLanguage].nutritionAdviceMid}<br><strong style='color:#2563eb;'>推薦：${supplement}</strong>`;
+                document.getElementById('nutritionAdvice').innerHTML = adviceText;
+            } else if (finalScore >= 150) {
+                const supplements = translations[currentLanguage].nutritionAdviceHighSupplements;
+                supplement = supplements[Math.floor(Math.random() * supplements.length)];
+                adviceText = `${translations[currentLanguage].nutritionAdviceHigh}<br><strong style='color:#059669;'>推薦：${supplement}</strong>`;
+                document.getElementById('nutritionAdvice').innerHTML = adviceText;
             }
-
+            document.getElementById('nutritionAdvice').innerHTML = adviceText;
             showPage(gameOverModal); // 显示游戏结束模态框
         }
 
