@@ -525,7 +525,7 @@
             );
             console.log("FilesetResolver for vision tasks loaded.");
             // 创建PoseLandmarker实例，加载轻量级模型，并设置GPU加速
-            poseLandmarker = await PoseLandmarker.create(vision, {
+            poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
                 baseOptions: {
                     modelAssetPath: `https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task`,
                     delegate: "GPU"
