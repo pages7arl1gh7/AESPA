@@ -218,6 +218,54 @@
     <!-- 音乐播放器，自动播放且隐藏 -->
     <audio id="bgm" src="assets/like-jennie.mp3" autoplay loop style="display:none"></audio>
 
+    <!-- 新增：导航菜单和推荐内容页（移到最顶部） -->
+    <nav class="nav-menu" id="navMenu">
+        <button class="active" data-page="rec1">清淡餐厅推荐</button>
+        <button data-page="rec2">适合老人的健身房</button>
+        <button data-page="rec3">权威教练推荐</button>
+        <button data-page="rec4">保健品推荐</button>
+    </nav>
+    <div id="rec1" class="recommend-page active">
+        <h2>清淡餐厅推荐</h2>
+        <p id="rec1-location">正在获取您的位置...</p>
+        <ul id="rec1-list">
+            <li>大家樂（Café de Coral）</li>
+            <li>一粥面（Congee & Noodle Shop）</li>
+            <li>稻香</li>
+            <li>翠华餐厅</li>
+            <li>美心MX</li>
+        </ul>
+    </div>
+    <div id="rec2" class="recommend-page">
+        <h2>适合老人的健身房</h2>
+        <p id="rec2-location">正在获取您的位置...</p>
+        <ul id="rec2-list">
+            <li>Pure Fitness（提供长者课程）</li>
+            <li>Goji Studios（有银发族专属教练）</li>
+            <li>健身工房</li>
+            <li>Anytime Fitness</li>
+        </ul>
+    </div>
+    <div id="rec3" class="recommend-page">
+        <h2>权威教练推荐</h2>
+        <ul>
+            <li>王大明（国家高级体适能教练，专注老年人康复）</li>
+            <li>李小红（注册物理治疗师，银发族运动指导）</li>
+            <li>张健（国际认证私人教练，擅长慢病管理）</li>
+            <li>陈美丽（长者健康管理师）</li>
+        </ul>
+    </div>
+    <div id="rec4" class="recommend-page">
+        <h2>保健品推荐</h2>
+        <ul>
+            <li>鱼油软胶囊（心血管健康）</li>
+            <li>蛋白粉（补充蛋白质）</li>
+            <li>钙片（骨骼健康）</li>
+            <li>辅酶Q10（心脏健康）</li>
+            <li>维生素D3</li>
+        </ul>
+    </div>
+
     <!-- 网页头部区域 -->
     <div class="header">
         <h1 class="text-2xl font-bold text-indigo-700" id="appTitle">平衡感调节小游戏</h1>
@@ -323,54 +371,6 @@
             <p id="nutritionAdvice" class="mb-6 leading-relaxed">根据您的表现，建议...</p>
             <button id="restartGameBtn" class="btn text-xl">重新开始</button>
         </div>
-    </div>
-
-    <!-- 新增：导航菜单和推荐内容页 -->
-    <nav class="nav-menu" id="navMenu">
-        <button class="active" data-page="rec1">清淡餐厅推荐</button>
-        <button data-page="rec2">适合老人的健身房</button>
-        <button data-page="rec3">权威教练推荐</button>
-        <button data-page="rec4">保健品推荐</button>
-    </nav>
-    <div id="rec1" class="recommend-page active">
-        <h2>清淡餐厅推荐</h2>
-        <p id="rec1-location">正在获取您的位置...</p>
-        <ul id="rec1-list">
-            <li>大家樂（Café de Coral）</li>
-            <li>一粥面（Congee & Noodle Shop）</li>
-            <li>稻香</li>
-            <li>翠华餐厅</li>
-            <li>美心MX</li>
-        </ul>
-    </div>
-    <div id="rec2" class="recommend-page">
-        <h2>适合老人的健身房</h2>
-        <p id="rec2-location">正在获取您的位置...</p>
-        <ul id="rec2-list">
-            <li>Pure Fitness（提供长者课程）</li>
-            <li>Goji Studios（有银发族专属教练）</li>
-            <li>健身工房</li>
-            <li>Anytime Fitness</li>
-        </ul>
-    </div>
-    <div id="rec3" class="recommend-page">
-        <h2>权威教练推荐</h2>
-        <ul>
-            <li>王大明（国家高级体适能教练，专注老年人康复）</li>
-            <li>李小红（注册物理治疗师，银发族运动指导）</li>
-            <li>张健（国际认证私人教练，擅长慢病管理）</li>
-            <li>陈美丽（长者健康管理师）</li>
-        </ul>
-    </div>
-    <div id="rec4" class="recommend-page">
-        <h2>保健品推荐</h2>
-        <ul>
-            <li>鱼油软胶囊（心血管健康）</li>
-            <li>蛋白粉（补充蛋白质）</li>
-            <li>钙片（骨骼健康）</li>
-            <li>辅酶Q10（心脏健康）</li>
-            <li>维生素D3</li>
-        </ul>
     </div>
 
     <script type="module">
