@@ -315,7 +315,19 @@
                 gameOverTitle: '游戏结束！',
                 finalScoreText: '您的最终得分:',
                 adviceTitle: '营养补充建议:',
-                nutritionAdviceLow: '您的表现还有提升空间。建议多补充蛋白质和钙质，例如牛奶、豆腐、鱼肉，以增强肌肉和骨骼健康。同时，可以尝试低强度的平衡练习。',
+                nutritionAdviceLow: '您的表現還有提升空間。建議多補充蛋白質和鈣質，例如牛奶、豆腐、魚肉，以增強肌肉和骨骼健康。同時，可以嘗試低強度的平衡練習。\n推薦保健品：',
+                nutritionAdviceLowSupplements: [
+                    '維特健靈-活關素特強特效膠囊（90粒）',
+                    'Move Free 益節 氨糖軟骨素',
+                    'Swisse 關節健康片',
+                    'Blackmores 關節靈',
+                    '健力多 氨糖軟骨素鈣片',
+                    'Kirkland Glucosamine HCl with MSM',
+                    'Nature Made TripleFlex',
+                    'Schiff Glucosamine Plus MSM',
+                    'Puritan’s Pride Glucosamine Chondroitin MSM',
+                    '健安喜(GNC) 關節健康配方'
+                ],
                 nutritionAdviceMid: '您的表现不错！继续保持健康的饮食习惯，确保摄入足够的维生素和矿物质。可以适当增加一些对平衡有益的运动，如太极拳或瑜伽。',
                 nutritionAdviceHigh: '您的表现非常出色！请继续保持良好的运动习惯和均衡的饮食。可以考虑挑战更高难度的平衡练习，同时注意补充抗氧化剂丰富的食物，如新鲜水果和蔬菜。',
                 restartGameBtn: '重新开始',
@@ -352,7 +364,19 @@
                 gameOverTitle: 'Game Over!',
                 finalScoreText: 'Your Final Score:',
                 adviceTitle: 'Nutritional Advice:',
-                nutritionAdviceLow: 'Your performance has room for improvement. It is recommended to supplement protein and calcium, such as milk, tofu, and fish, to strengthen muscle and bone health. You can also try low-intensity balance exercises.',
+                nutritionAdviceLow: 'Your performance has room for improvement. It is recommended to supplement protein and calcium, such as milk, tofu, and fish, to strengthen muscle and bone health. You can also try low-intensity balance exercises.\nRecommended supplements:',
+                nutritionAdviceLowSupplements: [
+                    'Vita Green VitaJoint Extra Strength Capsules (90 capsules)',
+                    'Move Free Joint Health',
+                    'Swisse Joint Health Tablets',
+                    'Blackmores Joint Formula',
+                    'Caltrate Joint Health',
+                    'Kirkland Glucosamine HCl with MSM',
+                    'Nature Made TripleFlex',
+                    'Schiff Glucosamine Plus MSM',
+                    'Puritan’s Pride Glucosamine Chondroitin MSM',
+                    'GNC Joint Health Formula'
+                ],
                 nutritionAdviceMid: 'Great performance! Continue to maintain healthy eating habits and ensure sufficient intake of vitamins and minerals. You can appropriately increase balance-benefiting exercises, such as Tai Chi or yoga.',
                 nutritionAdviceHigh: 'Excellent performance! Please continue to maintain good exercise habits and a balanced diet. Consider challenging higher difficulty balance exercises, and also pay attention to supplementing antioxidant-rich foods, such as fresh fruits and vegetables.',
                 restartGameBtn: 'Restart Game',
@@ -803,6 +827,11 @@
                 adviceText = translations[currentLanguage].nutritionAdviceHigh;
             } else if (finalScore >= 50) {
                 adviceText = translations[currentLanguage].nutritionAdviceMid;
+            } else if (finalScore < 30) {
+                // 低於30分時，隨機推薦一款保健品
+                const supplements = translations[currentLanguage].nutritionAdviceLowSupplements;
+                const randomIndex = Math.floor(Math.random() * supplements.length);
+                adviceText = translations[currentLanguage].nutritionAdviceLow + '\n' + supplements[randomIndex];
             } else {
                 adviceText = translations[currentLanguage].nutritionAdviceLow;
             }
