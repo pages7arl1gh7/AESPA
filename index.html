@@ -12,17 +12,19 @@
         /* 基础样式，针对中老年用户增加字体大小和粗细 */
         body {
             font-family: 'Inter', sans-serif;
-            font-size: 1.25rem; /* 增大基础字体大小 */
-            font-weight: 500; /* 略微加粗字体 */
+            font-size: 2.5rem; /* 字体放大一倍 */
+            font-weight: 500;
             line-height: 1.6;
-            background-color: #f0f4f8; /* 柔和的背景色 */
-            color: #333; /* 深色字体 */
-            -webkit-font-smoothing: antialiased; /* 字体抗锯齿 */
+            background-color: #fff7ed; /* 暖色背景 */
+            color: #2563eb; /* 蓝色字体 */
+            -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
         /* 标题字体加粗 */
         h1, h2, h3 {
-            font-weight: 700; /* 标题更粗 */
+            font-weight: 700;
+            font-size: 4rem; /* 标题字体放大 */
+            color: #2563eb; /* 蓝色标题 */
         }
         /* 页面内容容器 */
         .container {
@@ -46,7 +48,7 @@
         }
         /* 模态框内容样式 */
         .modal-content {
-            background-color: #fff;
+            background-color: #fff8f1;
             margin: auto;
             padding: 2.5rem;
             border-radius: 1.5rem; /* 圆角边框 */
@@ -55,6 +57,7 @@
             width: 600px;
             text-align: center;
             position: relative;
+            color: #2563eb;
         }
         /* 页面切换容器样式 */
         .page {
@@ -66,15 +69,15 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem;
-            background-color: #fff;
+            background-color: #fff8f1;
             border-bottom-left-radius: 1rem;
             border-bottom-right-radius: 1rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         /* 按钮样式 */
         .btn {
-            background-color: #4f46e5; /* 深紫色 */
-            color: white;
+            background-color: #f59e42; /* 橙色主色 */
+            color: #2563eb; /* 蓝色字体 */
             padding: 0.75rem 1.5rem;
             border-radius: 0.75rem; /* 圆角 */
             font-weight: bold;
@@ -82,12 +85,14 @@
             cursor: pointer; /* 鼠标指针样式 */
             border: none; /* 移除默认边框 */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 按钮阴影 */
+            font-size: 2.5rem; /* 按钮字体放大 */
         }
         .btn:hover {
-            background-color: #4338ca; /* 悬停颜色 */
+            background-color: #ea580c; /* 深橙色 */
         }
         .btn:active {
             transform: translateY(1px); /* 点击下沉效果 */
+            background-color: #c2410c; /* 更深橙色 */
         }
         /* 输入框和下拉框样式 */
         input, select {
@@ -96,15 +101,18 @@
             border-radius: 0.5rem;
             width: 100%;
             max-width: 300px; /* 限制最大宽度 */
-            font-size: 1rem;
+            font-size: 2.5rem; /* 输入框、下拉框字体放大 */
             margin-bottom: 1rem;
             box-sizing: border-box; /* 边框和内边距包含在宽度内 */
+            color: #2563eb;
         }
         label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: bold;
             text-align: left; /* 标签左对齐 */
+            font-size: 2.5rem; /* 标签字体放大 */
+            color: #2563eb;
         }
         /* 视频容器布局 */
         .video-container {
@@ -112,17 +120,18 @@
             grid-template-columns: 1fr 3fr; /* 左边1/4，右边3/4 */
             gap: 1rem; /* 网格间距 */
             margin-top: 1.5rem;
-            background-color: #fff;
+            background-color: #fff8f1;
             padding: 1rem;
             border-radius: 1rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            color: #2563eb;
         }
         /* 视频包裹器，用于保持视频宽高比 */
         .video-wrapper {
             position: relative;
             width: 100%;
             padding-top: 75%; /* 4:3 宽高比 (高度 / 宽度 * 100) */
-            background-color: #000; /* 视频背景色 */
+            background-color: #ffe4c7; /* 橙米色 */
             border-radius: 0.75rem;
             overflow: hidden; /* 隐藏超出部分 */
         }
@@ -141,36 +150,32 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 8rem; /* 大字体 */
-            color: white;
+            font-size: 16rem; /* 放大倒计时 */
+            color: #2563eb;
             z-index: 10;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* 文本阴影 */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             font-weight: bold;
         }
         /* 移动端响应式调整 */
         @media (max-width: 768px) {
             body {
-                font-size: 1rem; /* 移动端字体略小 */
+                font-size: 2rem;
             }
-            .modal-content {
-                padding: 1.5rem;
+            h1, h2, h3 {
+                font-size: 2.5rem;
             }
-            .video-container {
-                grid-template-columns: 1fr; /* 移动端堆叠显示 */
-            }
-            .video-wrapper {
-                padding-top: 56.25%; /* 移动端视频常用16:9宽高比 */
+            .btn, input, select, label {
+                font-size: 2rem;
             }
             .countdown {
-                font-size: 5rem;
-            }
-            input, select {
-                max-width: none; /* 移动端输入框全宽 */
+                font-size: 8rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- 音乐播放器，自动播放且隐藏 -->
+    <audio id="bgm" src="assets/like-jennie.mp3" autoplay loop style="display:none"></audio>
 
     <!-- 网页头部区域 -->
     <div class="header">
@@ -905,6 +910,18 @@
         });
         userVideo.addEventListener('ended', () => {
             if (isGameRunning) userVideo.play(); // 如果用户视频结束（不应该发生，但以防万一），重新播放
+        });
+
+        // 自动播放音乐
+        window.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('bgm');
+            if (audio) {
+                audio.volume = 0.5;
+                audio.play().catch(() => {
+                    // 部分浏览器需用户交互后播放
+                    document.body.addEventListener('click', () => audio.play(), { once: true });
+                });
+            }
         });
     </script>
 </body>
