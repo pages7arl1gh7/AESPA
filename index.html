@@ -825,17 +825,21 @@
             // 根据得分高低提供不同的营养补充建议
             if (finalScore >= 80) {
                 adviceText = translations[currentLanguage].nutritionAdviceHigh;
+                document.getElementById('nutritionAdvice').textContent = adviceText;
             } else if (finalScore >= 50) {
                 adviceText = translations[currentLanguage].nutritionAdviceMid;
+                document.getElementById('nutritionAdvice').textContent = adviceText;
             } else if (finalScore < 30) {
-                // 低於30分時，隨機推薦一款保健品
+                // 低於30分時，隨機推薦一款保健品，並用HTML顯示
                 const supplements = translations[currentLanguage].nutritionAdviceLowSupplements;
                 const randomIndex = Math.floor(Math.random() * supplements.length);
-                adviceText = translations[currentLanguage].nutritionAdviceLow + '\n' + supplements[randomIndex];
+                const supplement = supplements[randomIndex];
+                adviceText = `${translations[currentLanguage].nutritionAdviceLow}<br><strong style='color:#d97706;'>推薦：${supplement}</strong>`;
+                document.getElementById('nutritionAdvice').innerHTML = adviceText;
             } else {
                 adviceText = translations[currentLanguage].nutritionAdviceLow;
+                document.getElementById('nutritionAdvice').textContent = adviceText;
             }
-            document.getElementById('nutritionAdvice').textContent = adviceText;
 
             showPage(gameOverModal); // 显示游戏结束模态框
         }
