@@ -194,6 +194,11 @@
         .recommend-page.active {
             display: block;
         }
+        /* 新增：游戏功能区浏览菜单 */
+        .game-tab-page { display: none; }
+        .game-tab-page.active { display: block; }
+        #gameTabMenu { margin-bottom: 1.5rem; }
+        #gameTabMenu button { font-size:2.2rem; }
         /* 移动端响应式调整 */
         @media (max-width: 768px) {
             body {
@@ -223,6 +228,13 @@
         <button data-page="rec4">保健品推薦</button>
     </nav>
 
+    <!-- 新增：游戏功能区浏览菜单 -->
+    <nav class="nav-menu" id="gameMenu" style="margin-top:0; margin-bottom:1rem;">
+        <button class="active" data-page="game-main" id="gameTabMain">主游戏</button>
+        <button data-page="game-user" id="gameTabUser">用户信息</button>
+        <button data-page="game-result" id="gameTabResult">成绩/建议</button>
+    </nav>
+
     <!-- 网页头部区域 -->
     <div class="header">
         <h1 class="text-2xl font-bold text-indigo-700" id="appTitle">平衡感调节小游戏</h1>
@@ -236,6 +248,7 @@
         </div>
     </div>
 
+    <!-- 推荐内容区域 -->
     <div id="rec1" class="recommend-page active">
         <h2>清淡餐廳推薦</h2>
         <p id="rec1-location">正在獲取您的位置...</p>
@@ -284,6 +297,91 @@
         </ul>
     </div>
 
+    <!-- 游戏功能区内容块 -->
+    <div id="game-main" class="game-tab-page active">
+        <!-- 原游戏主页面内容，移动到这里 -->
+        <div id="gamePage" class="page container py-8">
+            <h2 class="text-3xl font-bold mb-6 text-center text-indigo-700" id="gamePageTitle">平衡感调节游戏</h2>
+
+            <div class="flex flex-col md:flex-row justify-center items-center md:items-start gap-6 mb-6 bg-white p-6 rounded-xl shadow-lg">
+                <div class="w-full md:w-1/3">
+                    <label for="difficultySelect" class="block mb-2 font-bold" id="labelDifficulty">选择游戏难度:</label>
+                    <select id="difficultySelect" class="p-3 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="high" id="difficultyHigh">高</option>
+                        <option value="mid" id="difficultyMid">中</option>
+                        <option value="easy" id="difficultyEasy">低</option>
+                    </select>
+                </div>
+                <div class="w-full md:w-2/3 text-center md:text-right">
+                    <p class="text-2xl font-bold mb-2" id="currentScoreLabel">当前平均得分:</p>
+                    <p id="averageScoreDisplay" class="text-4xl font-extrabold text-green-600">0</p>
+                </div>
+            </div>
+
+            <div class="video-container">
+                <!-- 标准动作视频区域 -->
+                <div class="video-wrapper relative">
+                    <h3 class="absolute top-2 left-2 z-10 text-white text-lg font-bold bg-black bg-opacity-50 px-2 py-1 rounded" id="standardVideoLabel">标准动作</h3>
+                    <video id="standardVideo" autoplay loop muted playsinline></video>
+                    <canvas id="standardCanvas" class="absolute top-0 left-0"></canvas>
+                </div>
+                <!-- 用户实时视频及姿态分析区域 -->
+                <div class="video-wrapper relative">
+                    <h3 class="absolute top-2 left-2 z-10 text-white text-lg font-bold bg-black bg-opacity-50 px-2 py-1 rounded" id="userVideoLabel">您的实时动作</h3>
+                    <video id="userVideo" autoplay playsinline></video>
+                    <canvas id="userCanvas" class="absolute top-0 left-0"></canvas>
+                    <div id="countdownDisplay" class="countdown hidden">3</div>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button id="startGameBtn" class="btn text-2xl px-8 py-4">开始游戏</button>
+            </div>
+        </div>
+    </div>
+    <div id="game-user" class="game-tab-page" style="display:none">
+        <!-- 用户信息输入页面内容，移动到这里 -->
+        <div id="userInfoPage" class="page container py-8">
+            <h2 class="text-3xl font-bold mb-8 text-center text-indigo-700" id="userInfoTitle">请输入您的信息</h2>
+            <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg">
+                <div class="mb-4">
+                    <label for="ageInput" id="labelAge">年龄:</label>
+                    <input type="number" id="ageInput" placeholder="请输入您的年龄" class="w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="genderSelect" id="labelGender">性别:</label>
+                    <select id="genderSelect" class="w-full">
+                        <option value="" disabled selected id="genderPlaceholder">请选择性别</option>
+                        <option value="male" id="genderMale">男</option>
+                        <option value="female" id="genderFemale">女</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="weightInput" id="labelWeight">体重 (kg):</label>
+                    <input type="number" id="weightInput" placeholder="请输入您的体重 (kg)" step="0.1" class="w-full">
+                </div>
+                <div class="mb-6">
+                    <label for="heightInput" id="labelHeight">身高 (m):</label>
+                    <input type="number" id="heightInput" placeholder="请输入您的身高 (m)" step="0.01" class="w-full">
+                </div>
+                <button id="submitUserInfoBtn" class="btn w-full text-xl">提交</button>
+            </div>
+        </div>
+    </div>
+    <div id="game-result" class="game-tab-page" style="display:none">
+        <!-- 成绩/建议内容，移动到这里 -->
+        <div id="gameOverModal" class="modal flex">
+            <div class="modal-content">
+                <h2 class="text-3xl font-extrabold mb-6 text-indigo-700" id="gameOverTitle">游戏结束！</h2>
+                <p class="text-2xl mb-4" id="finalScoreText">您的最终得分:</p>
+                <p id="finalScoreDisplay" class="text-5xl font-extrabold text-purple-600 mb-6">0</p>
+                <h3 class="text-xl font-bold mb-3" id="adviceTitle">营养补充建议:</h3>
+                <p id="nutritionAdvice" class="mb-6 leading-relaxed">根据您的表现，建议...</p>
+                <button id="restartGameBtn" class="btn text-xl">重新开始</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 免责声明模态框 (默认显示) -->
     <div id="disclaimerModal" class="modal flex">
         <div class="modal-content">
@@ -296,86 +394,6 @@
                 您在本网站中输入的任何信息都只是为了推荐更加适合您的小游戏而使用，它们不会被上传到我们的服务器。
             </p>
             <button id="confirmDisclaimerBtn" class="btn text-xl">我已阅读并同意</button>
-        </div>
-    </div>
-
-    <!-- 用户信息输入页面 (点击免责声明确认后显示) -->
-    <div id="userInfoPage" class="page container py-8">
-        <h2 class="text-3xl font-bold mb-8 text-center text-indigo-700" id="userInfoTitle">请输入您的信息</h2>
-        <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg">
-            <div class="mb-4">
-                <label for="ageInput" id="labelAge">年龄:</label>
-                <input type="number" id="ageInput" placeholder="请输入您的年龄" class="w-full">
-            </div>
-            <div class="mb-4">
-                <label for="genderSelect" id="labelGender">性别:</label>
-                <select id="genderSelect" class="w-full">
-                    <option value="" disabled selected id="genderPlaceholder">请选择性别</option>
-                    <option value="male" id="genderMale">男</option>
-                    <option value="female" id="genderFemale">女</option>
-                </select>
-            </div>
-            <div class="mb-4">
-                <label for="weightInput" id="labelWeight">体重 (kg):</label>
-                <input type="number" id="weightInput" placeholder="请输入您的体重 (kg)" step="0.1" class="w-full">
-            </div>
-            <div class="mb-6">
-                <label for="heightInput" id="labelHeight">身高 (m):</label>
-                <input type="number" id="heightInput" placeholder="请输入您的身高 (m)" step="0.01" class="w-full">
-            </div>
-            <button id="submitUserInfoBtn" class="btn w-full text-xl">提交</button>
-        </div>
-    </div>
-
-    <!-- 游戏主页面 (输入用户信息后显示) -->
-    <div id="gamePage" class="page container py-8">
-        <h2 class="text-3xl font-bold mb-6 text-center text-indigo-700" id="gamePageTitle">平衡感调节游戏</h2>
-
-        <div class="flex flex-col md:flex-row justify-center items-center md:items-start gap-6 mb-6 bg-white p-6 rounded-xl shadow-lg">
-            <div class="w-full md:w-1/3">
-                <label for="difficultySelect" class="block mb-2 font-bold" id="labelDifficulty">选择游戏难度:</label>
-                <select id="difficultySelect" class="p-3 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <option value="high" id="difficultyHigh">高</option>
-                    <option value="mid" id="difficultyMid">中</option>
-                    <option value="easy" id="difficultyEasy">低</option>
-                </select>
-            </div>
-            <div class="w-full md:w-2/3 text-center md:text-right">
-                <p class="text-2xl font-bold mb-2" id="currentScoreLabel">当前平均得分:</p>
-                <p id="averageScoreDisplay" class="text-4xl font-extrabold text-green-600">0</p>
-            </div>
-        </div>
-
-        <div class="video-container">
-            <!-- 标准动作视频区域 -->
-            <div class="video-wrapper relative">
-                <h3 class="absolute top-2 left-2 z-10 text-white text-lg font-bold bg-black bg-opacity-50 px-2 py-1 rounded" id="standardVideoLabel">标准动作</h3>
-                <video id="standardVideo" autoplay loop muted playsinline></video>
-                <canvas id="standardCanvas" class="absolute top-0 left-0"></canvas>
-            </div>
-            <!-- 用户实时视频及姿态分析区域 -->
-            <div class="video-wrapper relative">
-                <h3 class="absolute top-2 left-2 z-10 text-white text-lg font-bold bg-black bg-opacity-50 px-2 py-1 rounded" id="userVideoLabel">您的实时动作</h3>
-                <video id="userVideo" autoplay playsinline></video>
-                <canvas id="userCanvas" class="absolute top-0 left-0"></canvas>
-                <div id="countdownDisplay" class="countdown hidden">3</div>
-            </div>
-        </div>
-
-        <div class="text-center mt-8">
-            <button id="startGameBtn" class="btn text-2xl px-8 py-4">开始游戏</button>
-        </div>
-    </div>
-
-    <!-- 游戏结束模态框 -->
-    <div id="gameOverModal" class="modal flex">
-        <div class="modal-content">
-            <h2 class="text-3xl font-extrabold mb-6 text-indigo-700" id="gameOverTitle">游戏结束！</h2>
-            <p class="text-2xl mb-4" id="finalScoreText">您的最终得分:</p>
-            <p id="finalScoreDisplay" class="text-5xl font-extrabold text-purple-600 mb-6">0</p>
-            <h3 class="text-xl font-bold mb-3" id="adviceTitle">营养补充建议:</h3>
-            <p id="nutritionAdvice" class="mb-6 leading-relaxed">根据您的表现，建议...</p>
-            <button id="restartGameBtn" class="btn text-xl">重新开始</button>
         </div>
     </div>
 
@@ -655,6 +673,11 @@
             } else {
                 document.getElementById('startGameBtn').textContent = translations[currentLanguage].startGameBtn;
             }
+
+            // 更新游戏菜单按钮文本
+            document.getElementById('gameTabMain').textContent = translations[currentLanguage].gameTabMain || '主游戏';
+            document.getElementById('gameTabUser').textContent = translations[currentLanguage].gameTabUser || '用户信息';
+            document.getElementById('gameTabResult').textContent = translations[currentLanguage].gameTabResult || '成绩/建议';
         }
 
         // 语言切换下拉框事件监听
@@ -1128,6 +1151,27 @@
         }
         setLocationText('rec1-location');
         setLocationText('rec2-location');
+
+        // 新增：遊戲功能區切換邏輯
+        const gameMenu = document.getElementById('gameMenu');
+        const gameTabBtns = gameMenu.querySelectorAll('button');
+        const gameTabPages = [
+            document.getElementById('game-main'),
+            document.getElementById('game-user'),
+            document.getElementById('game-result')
+        ];
+        gameTabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                gameTabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                gameTabPages.forEach(page => page.style.display = 'none');
+                document.getElementById(btn.dataset.page).style.display = 'block';
+                // 成绩/建议页切换时动态刷新内容
+                if (btn.dataset.page === 'game-result') {
+                    showGameOverModal();
+                }
+            });
+        });
     </script>
 </body>
 </html>
