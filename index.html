@@ -215,6 +215,14 @@
     <!-- 音乐播放器，自动播放且隐藏 -->
     <audio id="bgm" src="assets/like-jennie.mp3" autoplay loop style="display:none"></audio>
 
+    <!-- 新增：推薦內容瀏覽功能表（移到最頂部） -->
+    <nav class="nav-menu" id="navMenu">
+        <button class="active" data-page="rec1">清淡餐廳推薦</button>
+        <button data-page="rec2">適合老人的健身房</button>
+        <button data-page="rec3">權威教練推薦</button>
+        <button data-page="rec4">保健品推薦</button>
+    </nav>
+
     <!-- 网页头部区域 -->
     <div class="header">
         <h1 class="text-2xl font-bold text-indigo-700" id="appTitle">平衡感调节小游戏</h1>
@@ -228,13 +236,6 @@
         </div>
     </div>
 
-    <!-- 新增：推薦內容瀏覽功能表 -->
-    <nav class="nav-menu" id="navMenu">
-        <button class="active" data-page="rec1">清淡餐廳推薦</button>
-        <button data-page="rec2">適合老人的健身房</button>
-        <button data-page="rec3">權威教練推薦</button>
-        <button data-page="rec4">保健品推薦</button>
-    </nav>
     <div id="rec1" class="recommend-page active">
         <h2>清淡餐廳推薦</h2>
         <p id="rec1-location">正在獲取您的位置...</p>
@@ -528,7 +529,7 @@
                 ],
                 restartGameBtn: '重新開始',
                 cameraAccessError: '無法訪問攝像頭，請檢查權限設置。',
-                invalidInputError: '請填寫有效的年齡、體重和身高！'
+                invalidInputError: '請填写有效的年齡、體重和身高！'
             },
             'en-US': {
                 appTitle: 'Balance Training Mini-Games',
