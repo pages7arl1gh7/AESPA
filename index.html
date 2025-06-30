@@ -658,6 +658,11 @@
             standardDrawingUtils = new DrawingUtils(standardVideoCtx);
             console.log("Standard video loaded and canvas sized.");
         });
+        // 保证canvas在视频尺寸变化时也同步
+        standardVideo.addEventListener('resize', () => {
+            standardCanvas.width = standardVideo.videoWidth;
+            standardCanvas.height = standardVideo.videoHeight;
+        });
 
         // --- 姿态检测循环 ---
         async function predictWebcam() {
