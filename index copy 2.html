@@ -12,7 +12,7 @@
         /* 基础样式，针对中老年用户增加字体大小和粗细 */
         body {
             font-family: 'Inter', sans-serif;
-            font-size: 2.8rem; /* 字体略微缩小 */
+            font-size: 4rem; /* 字体放大一倍 */
             font-weight: 500;
             line-height: 1.6;
             background-color: #ffd1e3; /* 更粉嫩的浅粉色背景 */
@@ -23,14 +23,14 @@
         /* 标题字体加粗 */
         h1, h2, h3 {
             font-weight: 700;
-            font-size: 4.2rem; /* 标题字体略微缩小 */
+            font-size: 6.4rem; /* 标题字体放大一倍 */
             color: #60a5fa; /* LIGHT BLUE 标题 */
         }
         /* 页面内容容器 */
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 1.2rem; /* 放大内边距 */
+            padding: 2rem; /* 放大内边距 */
         }
         /* 模态框基础样式 */
         .modal {
@@ -50,15 +50,15 @@
         .modal-content {
             background-color: #ffd1e3; /* 更粉嫩的浅粉色背景 */
             margin: auto;
-            padding: 3rem;
-            border-radius: 2rem;
+            padding: 5rem;
+            border-radius: 3rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             max-width: 90%;
-            width: 900px;
+            width: 1200px;
             text-align: center;
             position: relative;
             color: #60a5fa;
-            font-size: 2.8rem;
+            font-size: 4rem;
         }
         /* 页面切换容器样式 */
         .page {
@@ -79,14 +79,14 @@
         .btn {
             background-color: #f59e42;
             color: #60a5fa;
-            padding: 1rem 2rem;
-            border-radius: 1rem;
+            padding: 1.5rem 3rem;
+            border-radius: 1.5rem;
             font-weight: bold;
             transition: background-color 0.3s ease;
             cursor: pointer;
             border: none;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            font-size: 2.8rem;
+            font-size: 4rem;
         }
         .btn:hover {
             background-color: #ea580c;
@@ -97,36 +97,36 @@
         }
         /* 输入框和下拉框样式 */
         input, select {
-            padding: 1rem;
+            padding: 1.5rem;
             border: 1px solid #ccc;
-            border-radius: 0.7rem;
+            border-radius: 1rem;
             width: 100%;
-            max-width: 400px;
-            font-size: 2.8rem;
-            margin-bottom: 1.2rem;
+            max-width: 600px;
+            font-size: 4rem;
+            margin-bottom: 2rem;
             box-sizing: border-box;
             color: #60a5fa;
         }
         label {
             display: block;
-            margin-bottom: 0.7rem;
+            margin-bottom: 1rem;
             font-weight: bold;
             text-align: left;
-            font-size: 2.8rem;
+            font-size: 4rem;
             color: #60a5fa;
         }
         /* 视频容器布局 */
         .video-container {
             display: grid;
             grid-template-columns: 1fr 3fr;
-            gap: 1.2rem;
-            margin-top: 2rem;
+            gap: 2rem;
+            margin-top: 3rem;
             background-color: #ffd1e3;
-            padding: 1.2rem;
-            border-radius: 1.2rem;
+            padding: 2rem;
+            border-radius: 2rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             color: #60a5fa;
-            font-size: 2.8rem;
+            font-size: 4rem;
         }
         /* 视频包裹器，用于保持视频宽高比 */
         .video-wrapper {
@@ -134,7 +134,7 @@
             width: 100%;
             padding-top: 75%; /* 4:3 宽高比 (高度 / 宽度 * 100) */
             background-color: #ffe4ef; /* 更粉嫩的橙米色 */
-            border-radius: 1rem;
+            border-radius: 1.5rem;
             overflow: hidden; /* 隐藏超出部分 */
         }
         /* 视频和Canvas覆盖样式 */
@@ -152,7 +152,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 10rem;
+            font-size: 24rem;
             color: #60a5fa;
             z-index: 10;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
@@ -161,16 +161,16 @@
         /* 移动端响应式调整 */
         @media (max-width: 768px) {
             body {
-                font-size: 2rem;
+                font-size: 3rem;
             }
             h1, h2, h3 {
-                font-size: 2.8rem;
+                font-size: 4rem;
             }
             .btn, input, select, label {
-                font-size: 2rem;
+                font-size: 3rem;
             }
             .countdown {
-                font-size: 5rem;
+                font-size: 12rem;
             }
         }
     </style>
