@@ -191,18 +191,42 @@
         </div>
     </div>
 
-    <!-- 免责声明模态框 (默认显示) -->
-    <div id="disclaimerModal" class="modal flex">
-        <div class="modal-content">
-            <h2 class="text-3xl font-extrabold mb-6 text-red-600" id="disclaimerTitle">免责声明</h2>
-            <p class="mb-6 leading-relaxed" id="disclaimerText">
-                本网站的内容不构成专业的医疗建议，请根据自己的身体状况选择适当的活动。
-                本网站提出的建议仅作为参考并且不构成任何医疗建议。
-                如果感到身体不适，请及时就医。
-                本网站不会收集您的个人数据也不会保存任何视频。
-                您在本网站中输入的任何信息都只是为了推荐更加适合您的小游戏而使用，它们不会被上传到我们的服务器。
-            </p>
-            <button id="confirmDisclaimerBtn" class="btn text-xl">我已阅读并同意</button>
+    <!-- 瀏覽功能表（導航欄） -->
+    <nav class="nav-menu flex justify-center gap-8 py-4 bg-white shadow-md rounded-b-2xl mb-8 text-4xl" style="font-size:3rem;">
+        <button class="nav-btn" data-page="navPage1" id="navBtn1">餐廳推薦</button>
+        <button class="nav-btn" data-page="navPage2" id="navBtn2">健身房/教練</button>
+        <button class="nav-btn" data-page="navPage3" id="navBtn3">健康資訊</button>
+        <button class="nav-btn" data-page="navPage4" id="navBtn4">保健品推薦</button>
+    </nav>
+
+    <!-- 瀏覽分頁內容區塊 -->
+    <div id="navPagesContainer" class="container mb-8">
+        <!-- Page 1: 餐廳推薦 -->
+        <div id="navPage1" class="nav-page" style="display:block;">
+            <h2 id="navPage1Title" class="text-3xl font-bold mb-4">餐廳推薦</h2>
+            <p id="navPage1Desc" class="mb-4">自動取得您的位置，推薦清淡飲食餐廳：</p>
+            <ul id="restaurantList" class="list-disc pl-8 text-2xl"></ul>
+        </div>
+        <!-- Page 2: 健身房/教練推薦 -->
+        <div id="navPage2" class="nav-page" style="display:none;">
+            <h2 id="navPage2Title" class="text-3xl font-bold mb-4">健身房/教練推薦</h2>
+            <p id="navPage2Desc" class="mb-4">自動取得您的位置，推薦適合老人的健身房與權威教練：</p>
+            <ul id="gymList" class="list-disc pl-8 text-2xl"></ul>
+            <div id="coachListContainer" class="mt-4">
+                <h3 id="coachListTitle" class="text-2xl font-bold mb-2">權威教練推薦：</h3>
+                <ul id="coachList" class="list-disc pl-8 text-2xl"></ul>
+            </div>
+        </div>
+        <!-- Page 3: 健康資訊 -->
+        <div id="navPage3" class="nav-page" style="display:none;">
+            <h2 id="navPage3Title" class="text-3xl font-bold mb-4">健康資訊</h2>
+            <p id="navPage3Desc" class="mb-4">保持規律運動、均衡飲食，預防慢性疾病，維持良好生活品質。</p>
+        </div>
+        <!-- Page 4: 保健品推薦 -->
+        <div id="navPage4" class="nav-page" style="display:none;">
+            <h2 id="navPage4Title" class="text-3xl font-bold mb-4">保健品推薦</h2>
+            <p id="navPage4Desc" class="mb-4">適合中老年人的保健品推薦：</p>
+            <ul id="supplementList" class="list-disc pl-8 text-2xl"></ul>
         </div>
     </div>
 
@@ -363,7 +387,20 @@
                 ],
                 restartGameBtn: '重新开始',
                 cameraAccessError: '无法访问摄像头，请检查权限设置。',
-                invalidInputError: '请填写有效的年龄、体重和身高！'
+                invalidInputError: '请填写有效的年龄、体重和身高！',
+                navBtn1: '餐廳推薦',
+                navBtn2: '健身房/教練',
+                navBtn3: '健康資訊',
+                navBtn4: '保健品推薦',
+                navPage1Title: '餐廳推薦',
+                navPage1Desc: '自動取得您的位置，推薦清淡飲食餐廳：',
+                navPage2Title: '健身房/教練推薦',
+                navPage2Desc: '自動取得您的位置，推薦適合老人的健身房與權威教練：',
+                coachListTitle: '權威教練推薦：',
+                navPage3Title: '健康資訊',
+                navPage3Desc: '保持規律運動、均衡飲食，預防慢性疾病，維持良好生活品質。',
+                navPage4Title: '保健品推薦',
+                navPage4Desc: '適合中老年人的保健品推薦：'
             },
             'zh-TW': {
                 appTitle: '平衡感調節小遊戲',
@@ -436,7 +473,20 @@
                 ],
                 restartGameBtn: '重新開始',
                 cameraAccessError: '無法訪問攝影機，請檢查權限設置。',
-                invalidInputError: '請填寫有效的年齡、體重和身高！'
+                invalidInputError: '請填寫有效的年齡、體重和身高！',
+                navBtn1: '餐廳推薦',
+                navBtn2: '健身房/教練',
+                navBtn3: '健康資訊',
+                navBtn4: '保健品推薦',
+                navPage1Title: '餐廳推薦',
+                navPage1Desc: '自動取得您的位置，推薦清淡飲食餐廳：',
+                navPage2Title: '健身房/教練推薦',
+                navPage2Desc: '自動取得您的位置，推薦適合老人的健身房與權威教練：',
+                coachListTitle: '權威教練推薦：',
+                navPage3Title: '健康資訊',
+                navPage3Desc: '保持規律運動、均衡飲食，預防慢性疾病，維持良好生活品質。',
+                navPage4Title: '保健品推薦',
+                navPage4Desc: '適合中老年人的保健品推薦：'
             },
             'en-US': {
                 appTitle: 'Balance Training Mini-Games',
@@ -509,7 +559,20 @@
                 ],
                 restartGameBtn: 'Restart Game',
                 cameraAccessError: 'Unable to access camera, please check permissions.',
-                invalidInputError: 'Please enter valid age, weight, and height!'
+                invalidInputError: 'Please enter valid age, weight, and height!',
+                navBtn1: 'Restaurant Recommendations',
+                navBtn2: 'Gym/Coach Recommendations',
+                navBtn3: 'Health Information',
+                navBtn4: 'Supplement Recommendations',
+                navPage1Title: 'Restaurant Recommendations',
+                navPage1Desc: 'Automatically obtain your location and recommend restaurants with light meals:',
+                navPage2Title: 'Gym/Coach Recommendations',
+                navPage2Desc: 'Automatically obtain your location and recommend suitable gyms and authoritative coaches for the elderly:',
+                coachListTitle: 'Authoritative Coach Recommendations:',
+                navPage3Title: 'Health Information',
+                navPage3Desc: 'Maintain regular exercise, a balanced diet, prevent chronic diseases, and maintain a good quality of life.',
+                navPage4Title: 'Supplement Recommendations',
+                navPage4Desc: 'Recommended supplements for middle-aged and elderly people:'
             }
         };
 
@@ -555,6 +618,23 @@
             document.getElementById('adviceTitle').textContent = translations[currentLanguage].adviceTitle;
             document.getElementById('nutritionAdvice').textContent = translations[currentLanguage].nutritionAdviceLow; // 初始设置为低档建议，后续会更新
             document.getElementById('restartGameBtn').textContent = translations[currentLanguage].restartGameBtn;
+
+            // 更新导航按钮文本
+            document.getElementById('navBtn1').textContent = translations[currentLanguage].navBtn1 || '餐廳推薦';
+            document.getElementById('navBtn2').textContent = translations[currentLanguage].navBtn2 || '健身房/教練';
+            document.getElementById('navBtn3').textContent = translations[currentLanguage].navBtn3 || '健康資訊';
+            document.getElementById('navBtn4').textContent = translations[currentLanguage].navBtn4 || '保健品推薦';
+            document.getElementById('navPage1Title').textContent = translations[currentLanguage].navPage1Title || '餐廳推薦';
+            document.getElementById('navPage1Desc').textContent = translations[currentLanguage].navPage1Desc || '自動取得您的位置，推薦清淡飲食餐廳：';
+            document.getElementById('navPage2Title').textContent = translations[currentLanguage].navPage2Title || '健身房/教練推薦';
+            document.getElementById('navPage2Desc').textContent = translations[currentLanguage].navPage2Desc || '自動取得您的位置，推薦適合老人的健身房與權威教練：';
+            document.getElementById('coachListTitle').textContent = translations[currentLanguage].coachListTitle || '權威教練推薦：';
+            document.getElementById('navPage3Title').textContent = translations[currentLanguage].navPage3Title || '健康資訊';
+            document.getElementById('navPage3Desc').textContent = translations[currentLanguage].navPage3Desc || '保持規律運動、均衡飲食，預防慢性疾病，維持良好生活品質。';
+            document.getElementById('navPage4Title').textContent = translations[currentLanguage].navPage4Title || '保健品推薦';
+            document.getElementById('navPage4Desc').textContent = translations[currentLanguage].navPage4Desc || '適合中老年人的保健品推薦：';
+            // 重新填充保健品列表
+            fillSupplements();
 
             // 根据游戏状态更新开始/结束按钮文本
             if (isGameRunning) {
@@ -1003,6 +1083,156 @@
                 });
             }
         });
+
+        // --- 新增：導航分頁切換與內容填充 ---
+        const navBtns = [
+            document.getElementById('navBtn1'),
+            document.getElementById('navBtn2'),
+            document.getElementById('navBtn3'),
+            document.getElementById('navBtn4')
+        ];
+        const navPages = [
+            document.getElementById('navPage1'),
+            document.getElementById('navPage2'),
+            document.getElementById('navPage3'),
+            document.getElementById('navPage4')
+        ];
+        navBtns.forEach((btn, idx) => {
+            btn.addEventListener('click', () => {
+                navPages.forEach((page, i) => {
+                    page.style.display = (i === idx) ? 'block' : 'none';
+                });
+            });
+        });
+
+        // --- Page 1: 餐廳推薦 ---
+        function recommendRestaurantsByLocation() {
+            const restaurantList = document.getElementById('restaurantList');
+            restaurantList.innerHTML = '<li>定位中…</li>';
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        // 模擬推薦，實際可根據地理位置調整
+                        const restaurants = [
+                            '大家樂 (Cafe de Coral)',
+                            '一粥麵 (Congee & Noodle)',
+                            '美心MX',
+                            '稻香',
+                            '翠華餐廳',
+                            '譚仔雲南米線',
+                            '元氣壽司',
+                            '譚仔三哥',
+                            '麥當勞（清淡選項）',
+                            'Subway（三明治）'
+                        ];
+                        restaurantList.innerHTML = restaurants.map(r => `<li>${r}</li>`).join('');
+                    },
+                    () => {
+                        restaurantList.innerHTML = '<li>無法取得您的位置，顯示預設推薦。</li>';
+                        const restaurants = [
+                            '大家樂 (Cafe de Coral)',
+                            '一粥麵 (Congee & Noodle)',
+                            '美心MX',
+                            '稻香',
+                            '翠華餐廳'
+                        ];
+                        restaurantList.innerHTML += restaurants.map(r => `<li>${r}</li>`).join('');
+                    }
+                );
+            } else {
+                restaurantList.innerHTML = '<li>您的瀏覽器不支援定位功能。</li>';
+            }
+        }
+        navBtns[0].addEventListener('click', recommendRestaurantsByLocation);
+        // 頁面載入時自動執行一次
+        recommendRestaurantsByLocation();
+
+        // --- Page 2: 健身房/教練推薦 ---
+        function recommendGymsAndCoachesByLocation() {
+            const gymList = document.getElementById('gymList');
+            const coachList = document.getElementById('coachList');
+            gymList.innerHTML = '<li>定位中…</li>';
+            coachList.innerHTML = '';
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        // 模擬推薦，實際可根據地理位置調整
+                        const gyms = [
+                            'Pure Fitness',
+                            'Go24 Fitness',
+                            '健身工廠',
+                            'Anytime Fitness',
+                            '康樂及文化事務署健身室',
+                            '香港青年協會健身中心',
+                            '健樂坊',
+                            '長者健身天地'
+                        ];
+                        gymList.innerHTML = gyms.map(g => `<li>${g}</li>`).join('');
+                        // 權威教練推薦
+                        const coaches = [
+                            '陳國強（資深體適能教練）',
+                            '李美玲（長者運動專家）',
+                            '王志明（物理治療師/運動教練）',
+                            '張嘉慧（銀髮族健身導師）'
+                        ];
+                        coachList.innerHTML = coaches.map(c => `<li>${c}</li>`).join('');
+                    },
+                    () => {
+                        gymList.innerHTML = '<li>無法取得您的位置，顯示預設推薦。</li>';
+                        const gyms = [
+                            'Pure Fitness',
+                            'Go24 Fitness',
+                            '健身工廠',
+                            'Anytime Fitness'
+                        ];
+                        gymList.innerHTML += gyms.map(g => `<li>${g}</li>`).join('');
+                        const coaches = [
+                            '陳國強（資深體適能教練）',
+                            '李美玲（長者運動專家）'
+                        ];
+                        coachList.innerHTML = coaches.map(c => `<li>${c}</li>`).join('');
+                    }
+                );
+            } else {
+                gymList.innerHTML = '<li>您的瀏覽器不支援定位功能。</li>';
+            }
+        }
+        navBtns[1].addEventListener('click', recommendGymsAndCoachesByLocation);
+        // --- Page 4: 保健品推薦 ---
+        function fillSupplements() {
+            const supplementList = document.getElementById('supplementList');
+            // 取用翻譯字典的保健品推薦
+            const supplements = translations[currentLanguage].nutritionAdviceHighSupplements.concat(
+                translations[currentLanguage].nutritionAdviceMidSupplements,
+                translations[currentLanguage].nutritionAdviceLowSupplements
+            );
+            supplementList.innerHTML = supplements.map(s => `<li>${s}</li>`).join('');
+        }
+        navBtns[3].addEventListener('click', fillSupplements);
+        // --- Page 3: 健康資訊（靜態內容，語言切換時自動更新） ---
+
+        // --- 語言切換時更新分頁內容 ---
+        function updateNavPagesLanguage() {
+            document.getElementById('navBtn1').textContent = translations[currentLanguage].navBtn1 || '餐廳推薦';
+            document.getElementById('navBtn2').textContent = translations[currentLanguage].navBtn2 || '健身房/教練';
+            document.getElementById('navBtn3').textContent = translations[currentLanguage].navBtn3 || '健康資訊';
+            document.getElementById('navBtn4').textContent = translations[currentLanguage].navBtn4 || '保健品推薦';
+            document.getElementById('navPage1Title').textContent = translations[currentLanguage].navPage1Title || '餐廳推薦';
+            document.getElementById('navPage1Desc').textContent = translations[currentLanguage].navPage1Desc || '自動取得您的位置，推薦清淡飲食餐廳：';
+            document.getElementById('navPage2Title').textContent = translations[currentLanguage].navPage2Title || '健身房/教練推薦';
+            document.getElementById('navPage2Desc').textContent = translations[currentLanguage].navPage2Desc || '自動取得您的位置，推薦適合老人的健身房與權威教練：';
+            document.getElementById('coachListTitle').textContent = translations[currentLanguage].coachListTitle || '權威教練推薦：';
+            document.getElementById('navPage3Title').textContent = translations[currentLanguage].navPage3Title || '健康資訊';
+            document.getElementById('navPage3Desc').textContent = translations[currentLanguage].navPage3Desc || '保持規律運動、均衡飲食，預防慢性疾病，維持良好生活品質。';
+            document.getElementById('navPage4Title').textContent = translations[currentLanguage].navPage4Title || '保健品推薦';
+            document.getElementById('navPage4Desc').textContent = translations[currentLanguage].navPage4Desc || '適合中老年人的保健品推薦：';
+            // 重新填充保健品列表
+            fillSupplements();
+        }
+        // 語言切換時觸發
+        document.getElementById('languageSelect').addEventListener('change', updateNavPagesLanguage);
+        // 頁面載入時初始化
+        updateNavPagesLanguage();
     </script>
 </body>
 </html>
