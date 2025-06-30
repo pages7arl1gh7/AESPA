@@ -12,19 +12,19 @@
         /* 基础样式，针对中老年用户增加字体大小和粗细 */
         body {
             font-family: 'Inter', sans-serif;
-            font-size: 2rem; /* 字体略微缩小 */
+            font-size: 4rem; /* 字体放大一倍 */
             font-weight: 500;
             line-height: 1.6;
-            background-color: #ffe4ef; /* 更粉嫩的暖色背景 */
-            color: #2563eb; /* 蓝色字体 */
+            background-color: #ffd6f6; /* 更粉嫩的浅粉色背景 */
+            color: #60a5fa; /* LIGHT BLUE 字体 */
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
         /* 标题字体加粗 */
         h1, h2, h3 {
             font-weight: 700;
-            font-size: 3.2rem; /* 标题字体略微缩小 */
-            color: #2563eb; /* 蓝色标题 */
+            font-size: 6.4rem; /* 标题字体放大一倍 */
+            color: #60a5fa; /* LIGHT BLUE 标题 */
         }
         /* 页面内容容器 */
         .container {
@@ -48,16 +48,17 @@
         }
         /* 模态框内容样式 */
         .modal-content {
-            background-color: #ffe4ef; /* 更粉嫩的暖色背景 */
+            background-color: #ffd6f6; /* 更粉嫩的浅粉色背景 */
             margin: auto;
-            padding: 2.5rem;
-            border-radius: 1.5rem; /* 圆角边框 */
+            padding: 5rem;
+            border-radius: 3rem; /* 圆角边框加大 */
             box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* 阴影效果 */
             max-width: 90%;
-            width: 600px;
+            width: 1200px;
             text-align: center;
             position: relative;
-            color: #2563eb;
+            color: #60a5fa;
+            font-size: 4rem;
         }
         /* 页面切换容器样式 */
         .page {
@@ -68,24 +69,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
-            background-color: #ffe4ef; /* 更粉嫩的暖色背景 */
-            border-bottom-left-radius: 1rem;
-            border-bottom-right-radius: 1rem;
+            padding: 2rem;
+            background-color: #ffd6f6; /* 更粉嫩的浅粉色背景 */
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         /* 按钮样式 */
         .btn {
             background-color: #f59e42; /* 橙色主色 */
-            color: #2563eb; /* 蓝色字体 */
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.75rem; /* 圆角 */
+            color: #60a5fa; /* LIGHT BLUE 字体 */
+            padding: 1.5rem 3rem;
+            border-radius: 1.5rem; /* 圆角加大 */
             font-weight: bold;
             transition: background-color 0.3s ease; /* 过渡动画 */
             cursor: pointer; /* 鼠标指针样式 */
             border: none; /* 移除默认边框 */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 按钮阴影 */
-            font-size: 2rem; /* 按钮字体略微缩小 */
+            font-size: 4rem; /* 按钮字体放大一倍 */
         }
         .btn:hover {
             background-color: #ea580c; /* 深橙色 */
@@ -96,43 +97,43 @@
         }
         /* 输入框和下拉框样式 */
         input, select {
-            padding: 0.75rem;
+            padding: 1.5rem;
             border: 1px solid #ccc;
-            border-radius: 0.5rem;
+            border-radius: 1rem;
             width: 100%;
-            max-width: 300px; /* 限制最大宽度 */
-            font-size: 2rem; /* 输入框、下拉框字体略微缩小 */
-            margin-bottom: 1rem;
+            max-width: 600px; /* 限制最大宽度加大 */
+            font-size: 4rem; /* 输入框、下拉框字体放大一倍 */
+            margin-bottom: 2rem;
             box-sizing: border-box; /* 边框和内边距包含在宽度内 */
-            color: #2563eb;
+            color: #60a5fa;
         }
         label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
             font-weight: bold;
             text-align: left; /* 标签左对齐 */
-            font-size: 2rem; /* 标签字体略微缩小 */
-            color: #2563eb;
+            font-size: 4rem; /* 标签字体放大一倍 */
+            color: #60a5fa;
         }
         /* 视频容器布局 */
         .video-container {
             display: grid;
             grid-template-columns: 1fr 3fr; /* 左边1/4，右边3/4 */
-            gap: 1rem; /* 网格间距 */
-            margin-top: 1.5rem;
-            background-color: #ffe4ef; /* 更粉嫩的暖色背景 */
-            padding: 1rem;
-            border-radius: 1rem;
+            gap: 2rem; /* 网格间距加大 */
+            margin-top: 3rem;
+            background-color: #ffd6f6; /* 更粉嫩的浅粉色背景 */
+            padding: 2rem;
+            border-radius: 2rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            color: #2563eb;
+            color: #60a5fa;
         }
         /* 视频包裹器，用于保持视频宽高比 */
         .video-wrapper {
             position: relative;
             width: 100%;
             padding-top: 75%; /* 4:3 宽高比 (高度 / 宽度 * 100) */
-            background-color: #ffd6e0; /* 更粉嫩的橙米色 */
-            border-radius: 0.75rem;
+            background-color: #ffe4ef; /* 更粉嫩的橙米色 */
+            border-radius: 1.5rem;
             overflow: hidden; /* 隐藏超出部分 */
         }
         /* 视频和Canvas覆盖样式 */
@@ -150,8 +151,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 12rem; /* 倒计时字体略微缩小 */
-            color: #2563eb;
+            font-size: 24rem; /* 倒计时字体放大一倍 */
+            color: #60a5fa;
             z-index: 10;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             font-weight: bold;
@@ -159,16 +160,16 @@
         /* 移动端响应式调整 */
         @media (max-width: 768px) {
             body {
-                font-size: 1.5rem;
+                font-size: 3rem;
             }
             h1, h2, h3 {
-                font-size: 2rem;
+                font-size: 4rem;
             }
             .btn, input, select, label {
-                font-size: 1.5rem;
+                font-size: 3rem;
             }
             .countdown {
-                font-size: 6rem;
+                font-size: 12rem;
             }
         }
     </style>
