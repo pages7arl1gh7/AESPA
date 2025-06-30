@@ -1180,7 +1180,7 @@
             } else if (section === 'userinfo') {
                 userInfoPage.style.display = 'block';
             } else if (section === 'score') {
-                gameOverModal.style.display = 'flex';
+                showGameOverModal(); // 动态刷新成绩和建议
             }
         }
         gameNavBtns.forEach(btn => {
