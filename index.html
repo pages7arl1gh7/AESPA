@@ -118,7 +118,7 @@
         /* 视频容器布局 */
         .video-container {
             display: grid;
-            grid-template-columns: 1fr 3fr;
+            grid-template-columns: 2fr 1fr; /* 标准动作更大，用户视频较小 */
             gap: 2rem;
             margin-top: 3rem;
             background-color: #ffe4ef; /* a little pink background for video container */
@@ -126,7 +126,19 @@
             border-radius: 2rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             color: #60a5fa;
-            
+        }
+        /* 标准动作视频放大样式 */
+        .standard-video-wrapper {
+            width: 100%;
+            height: 100%;
+            grid-row: 1;
+            grid-column: 1;
+        }
+        .user-video-wrapper {
+            width: 100%;
+            height: 100%;
+            grid-row: 1;
+            grid-column: 2;
         }
         /* 视频包裹器，用于保持视频宽高比 */
         .video-wrapper {
@@ -254,13 +266,13 @@
 
         <div class="video-container">
             <!-- 标准动作视频区域 -->
-            <div class="video-wrapper relative">
+            <div class="video-wrapper standard-video-wrapper relative">
                 <h3 class="absolute top-2 left-2 z-10 text-white text-lg font-bold bg-black bg-opacity-50 px-2 py-1 rounded" id="standardVideoLabel">标准动作</h3>
                 <video id="standardVideo" autoplay loop muted playsinline></video>
                 <canvas id="standardCanvas" class="absolute top-0 left-0"></canvas>
             </div>
             <!-- 用户实时视频及姿态分析区域 -->
-            <div class="video-wrapper relative">
+            <div class="video-wrapper user-video-wrapper relative">
                 <h3 class="absolute top-2 left-2 z-10 text-white text-lg font-bold bg-black bg-opacity-50 px-2 py-1 rounded" id="userVideoLabel">您的实时动作</h3>
                 <video id="userVideo" autoplay playsinline></video>
                 <canvas id="userCanvas" class="absolute top-0 left-0"></canvas>
