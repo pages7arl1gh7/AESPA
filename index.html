@@ -158,6 +158,42 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             font-weight: bold;
         }
+        /* 推荐内容样式 */
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .nav-menu button {
+            background-color: #60a5fa;
+            color: #ffd1e3;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0 0.5rem;
+            font-size: 2.4rem;
+        }
+        .nav-menu button:hover {
+            background-color: #4e97e0;
+        }
+        .nav-menu button.active {
+            background-color: #ffd1e3;
+            color: #60a5fa;
+        }
+        .recommend-page {
+            display: none;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 1rem;
+        }
+        .recommend-page.active {
+            display: block;
+        }
         /* 移动端响应式调整 */
         @media (max-width: 768px) {
             body {
@@ -190,6 +226,61 @@
                 <option value="en-US">English</option>
             </select>
         </div>
+    </div>
+
+    <!-- 新增：推薦內容瀏覽功能表 -->
+    <nav class="nav-menu" id="navMenu">
+        <button class="active" data-page="rec1">清淡餐廳推薦</button>
+        <button data-page="rec2">適合老人的健身房</button>
+        <button data-page="rec3">權威教練推薦</button>
+        <button data-page="rec4">保健品推薦</button>
+    </nav>
+    <div id="rec1" class="recommend-page active">
+        <h2>清淡餐廳推薦</h2>
+        <p id="rec1-location">正在獲取您的位置...</p>
+        <ul id="rec1-list">
+            <li>大家樂（Café de Coral）</li>
+            <li>一粥面（Congee & Noodle Shop）</li>
+            <li>稻香</li>
+            <li>翠華餐廳</li>
+            <li>美心MX</li>
+        </ul>
+    </div>
+    <div id="rec2" class="recommend-page">
+        <h2>適合老人的健身房</h2>
+        <p id="rec2-location">正在獲取您的位置...</p>
+        <ul id="rec2-list">
+            <li>Pure Fitness（提供長者課程）</li>
+            <li>Goji Studios（有銀髮族專屬教練）</li>
+            <li>健身工房</li>
+            <li>Anytime Fitness</li>
+        </ul>
+        <h3>權威教練推薦</h3>
+        <ul>
+            <li>王大明（國家高級體適能教練，專注老年人康復）</li>
+            <li>李小紅（註冊物理治療師，銀髮族運動指導）</li>
+            <li>張健（國際認證私人教練，擅長慢病管理）</li>
+            <li>陳美麗（長者健康管理師）</li>
+        </ul>
+    </div>
+    <div id="rec3" class="recommend-page">
+        <h2>權威教練推薦</h2>
+        <ul>
+            <li>王大明（國家高級體適能教練，專注老年人康復）</li>
+            <li>李小紅（註冊物理治療師，銀髮族運動指導）</li>
+            <li>張健（國際認證私人教練，擅長慢病管理）</li>
+            <li>陳美麗（長者健康管理師）</li>
+        </ul>
+    </div>
+    <div id="rec4" class="recommend-page">
+        <h2>保健品推薦</h2>
+        <ul>
+            <li>魚油軟膠囊（心血管健康）</li>
+            <li>蛋白粉（補充蛋白質）</li>
+            <li>鈣片（骨骼健康）</li>
+            <li>輔酶Q10（心臟健康）</li>
+            <li>維生素D3</li>
+        </ul>
     </div>
 
     <!-- 免责声明模态框 (默认显示) -->
@@ -999,6 +1090,43 @@
                 });
             }
         });
+
+        // 新增：導航菜單切換邏輯
+        const navMenu = document.getElementById('navMenu');
+        const navBtns = navMenu.querySelectorAll('button');
+        const recPages = [
+            document.getElementById('rec1'),
+            document.getElementById('rec2'),
+            document.getElementById('rec3'),
+            document.getElementById('rec4')
+        ];
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                navBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                recPages.forEach(page => page.classList.remove('active'));
+                document.getElementById(btn.dataset.page).classList.add('active');
+            });
+        });
+        // 定位並顯示用戶位置（僅展示城市/區，隱私友好）
+        function setLocationText(elementId) {
+            if (!navigator.geolocation) {
+                document.getElementById(elementId).textContent = '無法獲取您的位置';
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    const lat = pos.coords.latitude.toFixed(3);
+                    const lon = pos.coords.longitude.toFixed(3);
+                    document.getElementById(elementId).textContent = `您所在位置：(${lat}, ${lon}) 附近推薦如下：`;
+                },
+                () => {
+                    document.getElementById(elementId).textContent = '無法獲取您的位置';
+                }
+            );
+        }
+        setLocationText('rec1-location');
+        setLocationText('rec2-location');
     </script>
 </body>
 </html>
