@@ -228,26 +228,6 @@
         <button data-page="rec4">保健品推薦</button>
     </nav>
 
-    <!-- 新增：游戏功能区浏览菜单 -->
-    <nav class="nav-menu" id="gameMenu" style="margin-top:0; margin-bottom:1rem;">
-        <button class="active" data-page="game-main" id="gameTabMain">主游戏</button>
-        <button data-page="game-user" id="gameTabUser">用户信息</button>
-        <button data-page="game-result" id="gameTabResult">成绩/建议</button>
-    </nav>
-
-    <!-- 网页头部区域 -->
-    <div class="header">
-        <h1 class="text-2xl font-bold text-indigo-700" id="appTitle">平衡感调节小游戏</h1>
-        <div class="language-selector">
-            <label for="languageSelect" class="sr-only">选择语言</label>
-            <select id="languageSelect" class="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option value="zh-CN">简体中文</option>
-                <option value="zh-TW">繁體中文</option>
-                <option value="en-US">English</option>
-            </select>
-        </div>
-    </div>
-
     <!-- 推荐内容区域 -->
     <div id="rec1" class="recommend-page active">
         <h2>清淡餐廳推薦</h2>
@@ -295,6 +275,15 @@
             <li>輔酶Q10（心臟健康）</li>
             <li>維生素D3</li>
         </ul>
+    </div>
+
+    <!-- 游戏功能区菜单单独分区显示 -->
+    <div class="game-menu-wrapper" style="max-width:1000px;margin:3rem auto 0 auto;padding:0 1.2rem;">
+        <nav class="nav-menu" id="gameMenu" style="margin:0;">
+            <button class="active" data-page="game-main" id="gameTabMain">主游戏</button>
+            <button data-page="game-user" id="gameTabUser">用户信息</button>
+            <button data-page="game-result" id="gameTabResult">成绩/建议</button>
+        </nav>
     </div>
 
     <!-- 游戏功能区内容块 -->
