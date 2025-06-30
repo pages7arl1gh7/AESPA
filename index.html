@@ -117,46 +117,60 @@
         }
         /* 视频容器布局 */
         .video-container {
-            display: grid;
-            grid-template-columns: 2fr 1fr; /* 标准动作更大，用户视频较小 */
-            gap: 2rem;
-            margin-top: 3rem;
-            background-color: #ffe4ef; /* a little pink background for video container */
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 3rem auto 0 auto;
+            background-color: #ffe4ef;
             padding: 2rem;
             border-radius: 2rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             color: #60a5fa;
         }
-        /* 标准动作视频放大样式 */
-        .standard-video-wrapper {
-            width: 100%;
-            height: 100%;
-            grid-row: 1;
-            grid-column: 1;
-        }
+        /* 用户实时视频区域（主画面） */
         .user-video-wrapper {
-            width: 100%;
-            height: 100%;
-            grid-row: 1;
-            grid-column: 2;
-        }
-        /* 视频包裹器，用于保持视频宽高比 */
-        .video-wrapper {
             position: relative;
             width: 100%;
-            padding-top: 75%; /* 4:3 宽高比 (高度 / 宽度 * 100) */
-            background-color: #ffe4ef; /* a little pink background for video wrapper */
+            padding-top: 75%; /* 4:3 */
+            background-color: #ffe4ef;
             border-radius: 1.5rem;
-            overflow: hidden; /* 隐藏超出部分 */
+            overflow: hidden;
         }
-        /* 视频和Canvas覆盖样式 */
-        .video-wrapper video, .video-wrapper canvas {
+        /* 标准动作画中画区域 */
+        .standard-video-pip {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            width: 30%;
+            min-width: 180px;
+            max-width: 320px;
+            aspect-ratio: 4/3;
+            background: #ffe4ef;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 20;
+            overflow: hidden;
+            border: 2px solid #60a5fa;
+        }
+        .standard-video-pip h3 {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            z-index: 2;
+            font-size: 1rem;
+            background: rgba(0,0,0,0.4);
+            color: #fff;
+            border-radius: 0.5rem;
+            padding: 0.2rem 0.6rem;
+        }
+        .standard-video-pip video,
+        .standard-video-pip canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain; /* 确保视频内容适配容器 */
+            object-fit: contain;
         }
         /* 倒计时文本样式 */
         .countdown {
@@ -265,18 +279,18 @@
         </div>
 
         <div class="video-container">
-            <!-- 标准动作视频区域 -->
-            <div class="video-wrapper standard-video-wrapper relative">
-                <h3 class="absolute top-2 left-2 z-10 text-white text-lg font-bold bg-black bg-opacity-50 px-2 py-1 rounded" id="standardVideoLabel">标准动作</h3>
-                <video id="standardVideo" autoplay loop muted playsinline></video>
-                <canvas id="standardCanvas" class="absolute top-0 left-0"></canvas>
-            </div>
-            <!-- 用户实时视频及姿态分析区域 -->
+            <!-- 用户实时视频及姿态分析区域（主画面） -->
             <div class="video-wrapper user-video-wrapper relative">
                 <h3 class="absolute top-2 left-2 z-10 text-white text-lg font-bold bg-black bg-opacity-50 px-2 py-1 rounded" id="userVideoLabel">您的实时动作</h3>
                 <video id="userVideo" autoplay playsinline></video>
                 <canvas id="userCanvas" class="absolute top-0 left-0"></canvas>
                 <div id="countdownDisplay" class="countdown hidden">3</div>
+                <!-- 标准动作画中画区域 -->
+                <div class="standard-video-pip">
+                    <h3 id="standardVideoLabel">标准动作</h3>
+                    <video id="standardVideo" autoplay loop muted playsinline></video>
+                    <canvas id="standardCanvas"></canvas>
+                </div>
             </div>
         </div>
 
