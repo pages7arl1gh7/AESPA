@@ -704,7 +704,17 @@
 
         // 免责声明确认按钮点击事件
         document.getElementById('confirmDisclaimerBtn').addEventListener('click', () => {
-            showPage(userInfoPage); // 显示用户信息页面
+            // 切换到游戏功能区的“用户信息”tab
+            // 1. 激活tab按钮
+            document.getElementById('gameTabMain').classList.remove('active');
+            document.getElementById('gameTabUser').classList.add('active');
+            document.getElementById('gameTabResult').classList.remove('active');
+            // 2. 显示对应内容区块
+            document.getElementById('game-main').style.display = 'none';
+            document.getElementById('game-user').style.display = 'block';
+            document.getElementById('game-result').style.display = 'none';
+            // 3. 隐藏免责声明模态框
+            document.getElementById('disclaimerModal').style.display = 'none';
         });
 
         // --- 用户信息收集与BMI计算 ---
