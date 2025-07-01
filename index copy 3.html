@@ -190,21 +190,6 @@
         </div>
     </div>
 
-    <!-- 免责声明模态框 (默认显示) -->
-    <div id="disclaimerModal" class="modal flex">
-        <div class="modal-content">
-            <h2 class="text-3xl font-extrabold mb-6 text-red-600" id="disclaimerTitle">免责声明</h2>
-            <p class="mb-6 leading-relaxed" id="disclaimerText">
-                本网站的内容不构成专业的医疗建议，请根据自己的身体状况选择适当的活动。
-                本网站提出的建议仅作为参考并且不构成任何医疗建议。
-                如果感到身体不适，请及时就医。
-                本网站不会收集您的个人数据也不会保存任何视频。
-                您在本网站中输入的任何信息都只是为了推荐更加适合您的小游戏而使用，它们不会被上传到我们的服务器。
-            </p>
-            <button id="confirmDisclaimerBtn" class="btn text-xl">我已阅读并同意</button>
-        </div>
-    </div>
-
     <!-- 用户信息输入页面 (点击免责声明确认后显示) -->
     <div id="userInfoPage" class="page container py-8">
         <h2 class="text-3xl font-bold mb-8 text-center text-indigo-700" id="userInfoTitle">请输入您的信息</h2>
@@ -282,6 +267,21 @@
             <h3 class="text-xl font-bold mb-3" id="adviceTitle">营养补充建议:</h3>
             <p id="nutritionAdvice" class="mb-6 leading-relaxed">根据您的表现，建议...</p>
             <button id="restartGameBtn" class="btn text-xl">重新开始</button>
+        </div>
+    </div>
+
+    <!-- 免责声明模态框 (默认显示) -->
+    <div id="disclaimerModal" class="modal flex">
+        <div class="modal-content">
+            <h2 class="text-3xl font-extrabold mb-6 text-red-600" id="disclaimerTitle">免责声明</h2>
+            <p class="mb-6 leading-relaxed" id="disclaimerText">
+                本网站的内容不构成专业的医疗建议，请根据自己的身体状况选择适当的活动。
+                本网站提出的建议仅作为参考并且不构成任何医疗建议。
+                如果感到身体不适，请及时就医。
+                本网站不会收集您的个人数据也不会保存任何视频。
+                您在本网站中输入的任何信息都只是为了推荐更加适合您的小游戏而使用，它们不会被上传到我们的服务器。
+            </p>
+            <button id="confirmDisclaimerBtn" class="btn text-xl">我已阅读并同意</button>
         </div>
     </div>
 
@@ -504,13 +504,19 @@
 
         // 显示指定页面，隐藏其他页面
         function showPage(pageElement) {
-            const pages = [userInfoPage, gamePage, disclaimerModal, gameOverModal]; // 所有可切换的“页面”
-            pages.forEach(page => page.style.display = 'none'); // 先隐藏所有页面
-            // 判断是模态框还是普通页面
+            const pages = [userInfoPage, gamePage, disclaimerModal, gameOverModal];
+            pages.forEach(page => {
+                if (page) {
+                    page.style.removeProperty('display');
+                    page.style.display = 'none';
+                }
+            });
             if (pageElement === disclaimerModal || pageElement === gameOverModal) {
-                pageElement.style.display = 'flex'; // 模态框用flex居中
+                pageElement.style.removeProperty('display');
+                pageElement.style.display = 'flex';
             } else {
-                pageElement.style.display = 'block'; // 普通页面用block
+                pageElement.style.removeProperty('display');
+                pageElement.style.display = 'block';
             }
         }
 
@@ -527,7 +533,7 @@
 
         // 免责声明确认按钮点击事件
         document.getElementById('confirmDisclaimerBtn').addEventListener('click', () => {
-            showPage(userInfoPage); // 显示用户信息页面
+            showPage(userInfoPage);
         });
 
         // --- 用户信息收集与BMI计算 ---
@@ -754,7 +760,7 @@
 
         // 计算向量的模（长度）
         function magnitude(v) {
-            return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+            return Math.sqrt(v.x * v.x + v.y * v.y + v.z - v.z);
         }
 
         // 计算两个向量的余弦相似度
