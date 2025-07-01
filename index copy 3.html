@@ -506,9 +506,11 @@
         function showPage(pageElement) {
             const pages = [userInfoPage, gamePage, disclaimerModal, gameOverModal]; // 所有可切换的“页面”
             pages.forEach(page => page.style.display = 'none'); // 先隐藏所有页面
-            pageElement.style.display = 'flex'; // 对于模态框使用flex使其居中
-            if (pageElement === userInfoPage || pageElement === gamePage) {
-                pageElement.style.display = 'block'; // 对于常规页面使用block
+            // 判断是模态框还是普通页面
+            if (pageElement === disclaimerModal || pageElement === gameOverModal) {
+                pageElement.style.display = 'flex'; // 模态框用flex居中
+            } else {
+                pageElement.style.display = 'block'; // 普通页面用block
             }
         }
 
