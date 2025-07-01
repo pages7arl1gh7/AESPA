@@ -1,4 +1,93 @@
-<!DOCTYPE html>
+// ...existing code...
+// 在<script type="module">內合適位置（如window.onload後）加入：
+
+// 顯示瀏覽功能表
+function showBrowseMenu() {
+    showPage(document.getElementById('browseMenu'));
+    showBrowseTab(0);
+    getNearbyRestaurants();
+    getNearbyGyms();
+}
+
+// 分頁切換
+function showBrowseTab(idx) {
+    for (let i = 0; i < 3; i++) {
+        document.getElementById('browseTab' + i).style.display = (i === idx) ? 'block' : 'none';
+    }
+    if (idx === 3) showPage(gamePage);
+}
+
+// 取得附近餐廳（簡易版，僅用Google地圖搜尋連結）
+function getNearbyRestaurants() {
+    if (!navigator.geolocation) {
+        document.getElementById('restaurantList').textContent = '無法取得定位資訊';
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(pos => {
+        const { latitude, longitude } = pos.coords;
+        // 推薦清淡餐廳關鍵字
+        const keywords = encodeURIComponent('粥,粉麵,大家樂,一粥麵,清淡,素食');
+        const mapUrl = `https://www.google.com/maps/search/${keywords}/@${latitude},${longitude},15z`;
+        document.getElementById('restaurantList').innerHTML = `<a href="${mapUrl}" target="_blank" class="text-blue-600 underline">點我查看附近清淡餐廳（Google地圖）</a>`;
+    }, () => {
+        document.getElementById('restaurantList').textContent = '定位失敗，請允許瀏覽器取得位置。';
+    });
+}
+
+// 取得附近健身房（推薦適合長者的健身房）
+function getNearbyGyms() {
+    if (!navigator.geolocation) {
+        document.getElementById('gymList').textContent = '無法取得定位資訊';
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(pos => {
+        const { latitude, longitude } = pos.coords;
+        // 關鍵字可根據地區調整
+        const keywords = encodeURIComponent('長者健身,銀髮健身,健身房,康樂中心,社區中心');
+        const mapUrl = `https://www.google.com/maps/search/${keywords}/@${latitude},${longitude},15z`;
+        document.getElementById('gymList').innerHTML = `<a href="${mapUrl}" target="_blank" class="text-blue-600 underline">點我查看附近適合長者的健身房（Google地圖）</a>`;
+    }, () => {
+        document.getElementById('gymList').textContent = '定位失敗，請允許瀏覽器取得位置。';
+    });
+}
+
+// 你可以在header或遊戲主頁加一個入口按鈕
+document.addEventListener('DOMContentLoaded', () => {
+    const navBtn = document.createElement('button');
+    navBtn.textContent = '瀏覽推薦';
+    navBtn.className = 'btn ml-4';
+    navBtn.onclick = showBrowseMenu;
+    document.querySelector('.header').appendChild(navBtn);
+});
+// ...existing code...<!-- ...existing code... -->
+<!-- 在<body>內合適位置插入（建議在<header>下方） -->
+<div id="browseMenu" class="container py-8" style="display:none;">
+    <div class="flex mb-4">
+        <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+        <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+        <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+        <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+    </div>
+    <div id="browseTab0" class="browse-tab">
+        <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+        <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+    </div>
+    <div id="browseTab1" class="browse-tab" style="display:none;">
+        <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+        <div id="gymList">正在定位並查詢附近健身房...</div>
+    </div>
+    <div id="browseTab2" class="browse-tab" style="display:none;">
+        <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+        <ul class="list-disc pl-8">
+            <li>魚油（促進心血管健康）</li>
+            <li>高蛋白奶粉（補充蛋白質）</li>
+            <li>鈣片/維生素D（骨骼健康）</li>
+            <li>複合維生素B群（提升活力）</li>
+            <li>葡萄糖胺（關節保養）</li>
+        </ul>
+    </div>
+</div>
+<!-- ...existing code... --><!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -758,7 +847,34 @@
             console.log("Standard video loaded and canvas sized.");
         });
 
-        // --- 姿态检测循环 ---
+        // --- 姿态检测循环 ---        <!-- 建議加在 <body> 內 <div class="header"> 之後，其他主內容之前 -->
+        <div id="browseMenu" class="container py-8" style="display:none;">
+            <div class="flex mb-4">
+                <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+            </div>
+            <div id="browseTab0" class="browse-tab">
+                <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+            </div>
+            <div id="browseTab1" class="browse-tab" style="display:none;">
+                <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                <div id="gymList">正在定位並查詢附近健身房...</div>
+            </div>
+            <div id="browseTab2" class="browse-tab" style="display:none;">
+                <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                <ul class="list-disc pl-8">
+                    <li>魚油（促進心血管健康）</li>
+                    <li>高蛋白奶粉（補充蛋白質）</li>
+                    <li>鈣片/維生素D（骨骼健康）</li>
+                    <li>複合維生素B群（提升活力）</li>
+                    <li>葡萄糖胺（關節保養）</li>
+                </ul>
+            </div>
+        </div>
+        <!-- ...existing code... -->
         async function predictWebcam() {
             // 如果PoseLandmarker未加载或姿态检测未启用，则继续下一帧动画
             if (!poseLandmarker || !enablePoseDetection) {
