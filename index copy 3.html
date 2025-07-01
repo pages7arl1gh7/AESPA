@@ -754,7 +754,952 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('standardVideo').src = currentStandardVideo; // 加载标准视频
 
             showPage(gamePage); // 显示游戏页面
-            setupCamera(); // 设置并启动摄像头
+            setupCamera(); // 设置并启动摄像头            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->            <!-- 請刪除以下區塊（HTML） -->
+            <div id="browseMenu" class="container py-8" style="display:none;">
+                <div class="flex mb-4">
+                    <button class="btn mr-2" onclick="showBrowseTab(0)">附近清淡餐廳</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(1)">適合長者健身房</button>
+                    <button class="btn mr-2" onclick="showBrowseTab(2)">長者保健品推薦</button>
+                    <button class="btn" onclick="showBrowseTab(3)">返回遊戲</button>
+                </div>
+                <div id="browseTab0" class="browse-tab">
+                    <h2 class="text-2xl font-bold mb-4">附近清淡餐廳推薦</h2>
+                    <div id="restaurantList">正在定位並查詢附近餐廳...</div>
+                </div>
+                <div id="browseTab1" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">附近適合長者的健身房</h2>
+                    <div id="gymList">正在定位並查詢附近健身房...</div>
+                </div>
+                <div id="browseTab2" class="browse-tab" style="display:none;">
+                    <h2 class="text-2xl font-bold mb-4">長者保健品推薦</h2>
+                    <ul class="list-disc pl-8">
+                        <li>魚油（促進心血管健康）</li>
+                        <li>高蛋白奶粉（補充蛋白質）</li>
+                        <li>鈣片/維生素D（骨骼健康）</li>
+                        <li>複合維生素B群（提升活力）</li>
+                        <li>葡萄糖胺（關節保養）</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ...existing code... -->
         });
 
         // --- 游戏核心逻辑变量 ---
