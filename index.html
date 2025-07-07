@@ -8,6 +8,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入 Inter 字体，提升可读性 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@404&display=swap" rel="stylesheet">
+    <!-- 引入 Google Maps API -->
+    <!-- 
+        Instructions to get Google Maps API Key:
+        1. Go to https://console.cloud.google.com/
+        2. Create a new project or select an existing one
+        3. Enable the Maps JavaScript API
+        4. Create credentials (API Key)
+        5. Replace YOUR_API_KEY below with your actual API key
+        6. Optionally, restrict the API key to your domain for security
+    -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMaps&libraries=geometry"></script>
     <style>
         /* 基础样式，针对中老年用户增加字体大小和粗细 */
         body {
@@ -159,6 +170,31 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             font-weight: bold;
         }
+        
+        /* 地图相关样式 */
+        .map-container {
+            height: 300px;
+            width: 100%;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-top: 1rem;
+            border: 2px solid #60a5fa;
+        }
+        
+        .map-icon {
+            cursor: pointer;
+            padding: 0.5rem;
+            background-color: #60a5fa;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .map-icon:hover {
+            background-color: #3b82f6;
+        }
+        
         /* 移动端响应式调整 */
         @media (max-width: 768px) {
             body {
@@ -346,8 +382,7 @@
             <label for="languageSelect" class="sr-only">选择语言</label>
             <select id="languageSelect" class="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <option value="zh-CN">简体中文</option>
-                <option value="zh-TW">繁體中文</option>
-                <option value="en">English</option>
+                <option value="en-US">English</option>
             </select>
         </div>
     </div>
@@ -437,10 +472,13 @@
             <div class="bg-white p-8 rounded-xl shadow-lg">
                 <h3 class="text-2xl font-bold mb-6 text-center" id="restaurantTitle">健康餐厅推荐</h3>
                 <div class="location-input mb-6">
-                    <div class="text-center">
-                        <button id="getLocationBtn" class="btn">获取我的位置并推荐餐厅</button>
-                        <p id="locationStatus" class="mt-4 text-gray-600"></p>
-                    </div>
+                    <label for="locationInput" class="block mb-2 font-bold" id="locationLabel">您的位置：</label>
+                    <input type="text" id="locationInput" placeholder="请输入您所在的城市" class="w-full max-w-md">
+                    <button id="getLocationBtn" class="btn ml-4">获取推荐</button>
+                    <button id="getCurrentLocationBtn" class="btn ml-4">使用当前位置</button>
+                </div>
+                <div id="restaurantMapContainer" class="map-container hidden">
+                    <div id="restaurantMap"></div>
                 </div>
                 <div id="restaurantList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- 餐厅推荐将在这里显示 -->
@@ -453,10 +491,13 @@
             <div class="bg-white p-8 rounded-xl shadow-lg">
                 <h3 class="text-2xl font-bold mb-6 text-center" id="gymTitle">适老健身房推荐</h3>
                 <div class="location-input mb-6">
-                    <div class="text-center">
-                        <button id="getGymBtn" class="btn">获取我的位置并推荐健身房</button>
-                        <p id="gymLocationStatus" class="mt-4 text-gray-600"></p>
-                    </div>
+                    <label for="gymLocationInput" class="block mb-2 font-bold" id="gymLocationLabel">您的位置：</label>
+                    <input type="text" id="gymLocationInput" placeholder="请输入您所在的城市" class="w-full max-w-md">
+                    <button id="getGymBtn" class="btn ml-4">获取推荐</button>
+                    <button id="getCurrentLocationGymBtn" class="btn ml-4">使用当前位置</button>
+                </div>
+                <div id="gymMapContainer" class="map-container hidden">
+                    <div id="gymMap"></div>
                 </div>
                 <div id="gymList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- 健身房推荐将在这里显示 -->
@@ -516,96 +557,61 @@
 
         // 多语言翻译字典
         const translations = {
-            'zh-TW': {
-                appTitle: '老年健康助手',
-                welcomeMessage: '歡迎使用老年健康助手！',
-                recommendationTitle: '健康推薦',
-                mealPlanTitle: '飲食計劃',
-                gameTitle: '益智遊戲',
-                languageToggle: '語言切換',
-                gameInstructions: '點擊下方按鈕開始遊戲：',
-                startGame: '開始遊戲',
-                stopGame: '停止遊戲',
-                gameScore: '得分',
-                gameTime: '時間',
-                brandLabel: '品牌：',
-                ratingLabel: '評分：',
-                priceLabel: '價格：',
-                effectLabel: '功效：',
-                disclaimerTitle: '免責聲明',
-                disclaimerText: '本網站的内容不構成專業的醫療建議，請根據自己的身體狀況選擇適當的活動。本網站提出的建議僅作為參考並且不構成任何醫療建議。如果感到身體不適，請及時就醫。本網站不會收集您的個人數據也不會保存任何視頻。您在本網站中輸入的任何信息都只是為了推薦更加適合您的小遊戲而使用，它們不會被上傳到我們的服務器。',
-                confirmDisclaimerBtn: '我已閱讀並同意',
-                userInfoTitle: '請輸入您的信息',
-                labelAge: '年齡：',
-                ageInputPlaceholder: '請輸入您的年齡',
-                labelGender: '性別：',
-                genderPlaceholder: '請選擇性別',
+            'zh-CN': {
+                appTitle: '平衡感调节小游戏',
+                disclaimerTitle: '免责声明',
+                disclaimerText: '本网站的内容不构成专业的医疗建议，请根据自己的身体状况选择适当的活动。本网站提出的建议仅作为参考并且不构成任何医疗建议。如果感到身体不适，请及时就医。本网站不会收集您的个人数据也不会保存任何视频。您在本网站中输入的任何信息都只是为了推荐更加适合您的小游戏而使用，它们不会被上传到我们的服务器。',
+                confirmDisclaimerBtn: '我已阅读并同意',
+                userInfoTitle: '请输入您的信息',
+                labelAge: '年龄：',
+                ageInputPlaceholder: '请输入您的年龄',
+                labelGender: '性别：',
+                genderPlaceholder: '请选择性别',
                 genderMale: '男',
                 genderFemale: '女',
-                labelWeight: '體重 (kg):',
-                weightInputPlaceholder: '請輸入您的體重 (kg)',
+                labelWeight: '体重 (kg):',
+                weightInputPlaceholder: '请输入您的体重 (kg)',
                 labelHeight: '身高 (m):',
-                heightInputPlaceholder: '請輸入您的身高 (m)',
+                heightInputPlaceholder: '请输入您的身高 (m)',
                 submitUserInfoBtn: '提交',
-                gamePageTitle: '平衡感調節遊戲',
+                gamePageTitle: '平衡感调节游戏',
                 // Tab 标签
-                gameTab: '遊戲',
-                restaurantTab: '餐廳推薦',
-                gymTab: '健身房推薦',
-                supplementTab: '保健品推薦',
+                gameTab: '游戏',
+                restaurantTab: '餐厅推荐',
+                gymTab: '健身房推荐',
+                supplementTab: '保健品推荐',
                 // 游戏相关
-                labelDifficulty: '選擇遊戲難度：',
+                labelDifficulty: '选择游戏难度：',
                 difficultyHigh: '高',
                 difficultyMid: '中',
                 difficultyEasy: '低',
-                currentScoreLabel: '當前平均得分：',
-                standardVideoLabel: '標準動作',
-                userVideoLabel: '您的實時動作',
-                startGameBtn: '開始遊戲',
-                endGameBtn: '結束遊戲',
+                currentScoreLabel: '当前平均得分：',
+                standardVideoLabel: '标准动作',
+                userVideoLabel: '您的实时动作',
+                startGameBtn: '开始游戏',
+                endGameBtn: '结束游戏',
                 // 餐厅推荐
-                restaurantTitle: '健康餐廳推薦',
-                getLocationBtn: '獲取我的位置並推薦餐廳',
-                locationStatus: '正在獲取您的位置...',
-                locationSuccess: '位置獲取成功！為您推薦附近的餐廳：',
-                locationError: '無法獲取位置資訊',
-                locationDenied: '位置權限被拒絕',
-                locationUnavailable: '位置資訊不可用',
-                locationTimeout: '位置獲取超時',
-                noRecommendations: '顯示一般推薦',
+                restaurantTitle: '健康餐厅推荐',
+                locationLabel: '您的位置：',
+                locationPlaceholder: '请输入您所在的城市',
+                getLocationBtn: '获取推荐',
+                getCurrentLocationBtn: '使用当前位置',
                 // 健身房推荐
-                gymTitle: '適老健身房推薦',
-                getGymBtn: '獲取我的位置並推薦健身房',
-                gymLocationStatus: '正在獲取您的位置...',
-                gymLocationSuccess: '位置獲取成功！為您推薦附近的健身房：',
-                gymLocationError: '無法獲取位置資訊',
-                gymLocationDenied: '位置權限被拒絕',
-                gymLocationUnavailable: '位置資訊不可用',
-                gymLocationTimeout: '位置獲取超時',
-                noGymRecommendations: '顯示一般推薦',
+                gymTitle: '适老健身房推荐',
+                gymLocationLabel: '您的位置：',
+                gymLocationPlaceholder: '请输入您所在的城市',
+                getGymBtn: '获取推荐',
+                getCurrentLocationGymBtn: '使用当前位置',
                 // 保健品推荐
-                supplementTitle: '保健品推薦',
+                supplementTitle: '保健品推荐',
                 cardiovascularBtn: '心血管健康',
-                proteinBtn: '蛋白質補充',
-                jointBtn: '關節健康',
+                proteinBtn: '蛋白质补充',
+                jointBtn: '关节健康',
                 immunityBtn: '免疫力提升',
-                // 推荐卡片标签
-                typeLabel: '類型：',
-                ratingLabel: '評分：',
-                addressLabel: '地址：',
-                reasonLabel: '推薦理由：',
-                featureLabel: '特色：',
-                brandLabel: '品牌：',
-                priceLabel: '價格：',
-                effectLabel: '功效：',
-                // 输入提示和错误消息
-                enterLocationPrompt: '請輸入您的位置',
-                noRestaurantRecommendations: '暫無該地區的餐廳推薦，請嘗試其他城市如：香港、台北、上海',
-                noGymRecommendationsArea: '暫無該地區的健身房推薦，請嘗試其他城市如：香港、台北、上海',
                 // 游戏结束
-                gameOverTitle: '遊戲結束！',
-                finalScoreText: '您的最終得分：',
-                adviceTitle: '營養補充建議：',
+                gameOverTitle: '游戏结束！',
+                finalScoreText: '您的最终得分：',
+                adviceTitle: '营养补充建议：',
                 nutritionAdviceLow: '您的表現還有提升空間。建議多補充蛋白質和鈣質，例如牛奶、豆腐、魚肉，以增強肌肉和骨骼健康。同時，可以嘗試低強度的平衡練習。',
                 nutritionAdviceLowSupplements: [
                     '維特健靈 - 活關素特強特效膠囊（90 粒）',
@@ -648,162 +654,11 @@
                 restartGameBtn: '重新开始',
                 cameraAccessError: '无法访问摄像头，请检查权限设置。',
                 invalidInputError: '请填写有效的年龄、体重和身高！',
-                enterLocationPrompt: '请输入您的位置',
-                noRestaurantRecommendations: '暂无该地区的餐厅推荐，请尝试其他城市如：香港、台北、上海',
-                noGymRecommendationsArea: '暂无该地区的健身房推荐，请尝试其他城市如：香港、台北、上海'
+                locationAccessError: '无法获取您的位置，请手动输入城市名称。',
+                noRecommendationsError: '暂无该地区的推荐，请尝试其他城市。'
             },
-            'zh-CN': {
-                appTitle: '老年健康助手',
-                welcomeMessage: '欢迎使用老年健康助手！',
-                recommendationTitle: '健康推荐',
-                mealPlanTitle: '饮食计划',
-                gameTitle: '益智游戏',
-                languageToggle: '语言切换',
-                gameInstructions: '点击下方按钮开始游戏：',
-                startGame: '开始游戏',
-                stopGame: '停止游戏',
-                gameScore: '得分',
-                gameTime: '时间',
-                brandLabel: '品牌：',
-                ratingLabel: '评分：',
-                priceLabel: '价格：',
-                effectLabel: '功效：',
-                disclaimerTitle: '免责声明',
-                disclaimerText: '本网站的内容不构成专业的医疗建议，请根据自己的身体状况选择适当的活动。本网站提出的建议仅作为参考并且不构成任何医疗建议。如果感到身体不适，请及时就医。本网站不会收集您的个人数据也不会保存任何视频。您在本网站中输入的任何信息都只是为了推荐更加适合您的小游戏而使用，它们不会被上传到我们的服务器。',
-                confirmDisclaimerBtn: '我已阅读并同意',
-                userInfoTitle: '请输入您的信息',
-                labelAge: '年龄：',
-                ageInputPlaceholder: '请输入您的年龄',
-                labelGender: '性别：',
-                genderPlaceholder: '请选择性别',
-                genderMale: '男',
-                genderFemale: '女',
-                labelWeight: '体重 (kg):',
-                weightInputPlaceholder: '请输入您的体重 (kg)',
-                labelHeight: '身高 (m):',
-                heightInputPlaceholder: '请输入您的身高 (m)',
-                submitUserInfoBtn: '提交',
-                gamePageTitle: '平衡感调节游戏',
-                // Tab 标签
-                gameTab: '游戏',
-                restaurantTab: '餐厅推荐',
-                gymTab: '健身房推荐',
-                supplementTab: '保健品推荐',
-                // 游戏相关
-                labelDifficulty: '选择游戏难度：',
-                difficultyHigh: '高',
-                difficultyMid: '中',
-                difficultyEasy: '低',
-                currentScoreLabel: '当前平均得分：',
-                standardVideoLabel: '标准动作',
-                userVideoLabel: '您的实时动作',
-                startGameBtn: '开始游戏',
-                endGameBtn: '结束游戏',
-                // 餐厅推荐
-                restaurantTitle: '健康餐厅推荐',
-                getLocationBtn: '获取我的位置并推荐餐厅',
-                locationStatus: '正在获取您的位置...',
-                locationSuccess: '位置获取成功！为您推荐附近的餐厅：',
-                locationError: '无法获取位置信息',
-                locationDenied: '位置权限被拒绝',
-                locationUnavailable: '位置信息不可用',
-                locationTimeout: '位置获取超时',
-                noRecommendations: '显示一般推荐',
-                // 健身房推荐
-                gymTitle: '适老健身房推荐',
-                getGymBtn: '获取我的位置并推荐健身房',
-                gymLocationStatus: '正在获取您的位置...',
-                gymLocationSuccess: '位置获取成功！为您推荐附近的健身房：',
-                gymLocationError: '无法获取位置信息',
-                gymLocationDenied: '位置权限被拒绝',
-                gymLocationUnavailable: '位置信息不可用',
-                gymLocationTimeout: '位置获取超时',
-                noGymRecommendations: '显示一般推荐',
-                // 保健品推荐
-                supplementTitle: '保健品推荐',
-                cardiovascularBtn: '心血管健康',
-                proteinBtn: '蛋白质补充',
-                jointBtn: '关节健康',
-                immunityBtn: '免疫力提升',
-                // 推荐卡片标签
-                typeLabel: '类型：',
-                ratingLabel: '评分：',
-                addressLabel: '地址：',
-                reasonLabel: '推荐理由：',
-                featureLabel: '特色：',
-                brandLabel: '品牌：',
-                priceLabel: '价格：',
-                effectLabel: '功效：',
-                // 输入提示和错误消息
-                enterLocationPrompt: '请输入您的位置',
-                noRestaurantRecommendations: '暂无该地区的餐厅推荐，请尝试其他城市如：香港、台北、上海',
-                noGymRecommendationsArea: '暂无该地区的健身房推荐，请尝试其他城市如：香港、台北、上海',
-                // 游戏结束
-                gameOverTitle: '游戏结束！',
-                finalScoreText: '您的最终得分：',
-                adviceTitle: '营养补充建议：',
-                nutritionAdviceLow: '您的表现还有提升空间。建议多补充蛋白质和钙质，例如牛奶、豆腐、鱼肉，以增强肌肉和骨骼健康。同时，可以尝试低强度的平衡练习。',
-                nutritionAdviceLowSupplements: [
-                    '维特健灵 - 活关素特强特效胶囊（90 粒）',
-                    'Move Free 益节 氨糖软骨素',
-                    'Swisse 关节健康片',
-                    'Blackmores 关节灵',
-                    '健力多 氨糖软骨素钙片',
-                    'Kirkland Glucosamine HCl with MSM',
-                    'Nature Made TripleFlex',
-                    'Schiff Glucosamine Plus MSM',
-                    'Puritan\'s Pride Glucosamine Chondroitin MSM',
-                    '健安喜 (GNC) 关节健康配方'
-                ],
-                nutritionAdviceMid: '您的关节需要更多呵护，建议补充关节灵活相关保健品，并适度运动。',
-                nutritionAdviceMidSupplements: [
-                    '川御一 关节の御守',
-                    'Sato 佐藤制药 关节守护',
-                    'ORIHIRO 葡萄糖胺',
-                    '日本小林制药 关节灵',
-                    '善存 关节健康配方',
-                    '森下仁丹 关节灵',
-                    'DHC 关节灵活片',
-                    '永信 关节宝',
-                    '台塑生医 关健素',
-                    '白兰氏 关键活力胶囊'
-                ],
-                nutritionAdviceHigh: '您的表现非常出色！请继续保持良好的运动习惯和均衡的饮食。',
-                nutritionAdviceHighSupplements: [
-                    '医之选 - 液关健',
-                    '安美露 关节舒缓液',
-                    '葡萄王 关健宝',
-                    '康健生技 关健饮',
-                    '台塑生医 关健饮',
-                    '善存 关键活力饮',
-                    '白兰氏 关键饮',
-                    'Swisse 关节健康饮',
-                    'Move Free 关节饮',
-                    'GNC 关节健康饮'
-                ],
-                restartGameBtn: '重新开始',
-                cameraAccessError: '无法访问摄像头，请检查权限设置。',
-                invalidInputError: '请填写有效的年龄、体重和身高！',
-                enterLocationPrompt: '请输入您的位置',
-                noRestaurantRecommendations: '暂无该地区的餐厅推荐，请尝试其他城市如：香港、台北、上海',
-                noGymRecommendationsArea: '暂无该地区的健身房推荐，请尝试其他城市如：香港、台北、上海'
-            },
-            'en': {
-                appTitle: 'Elderly Health Assistant',
-                welcomeMessage: 'Welcome to the Elderly Health Assistant!',
-                recommendationTitle: 'Health Recommendations',
-                mealPlanTitle: 'Meal Plan',
-                gameTitle: 'Brain Games',
-                languageToggle: 'Language Toggle',
-                gameInstructions: 'Click the button below to start the game:',
-                startGame: 'Start Game',
-                stopGame: 'Stop Game',
-                gameScore: 'Score',
-                gameTime: 'Time',
-                brandLabel: 'Brand: ',
-                ratingLabel: 'Rating: ',
-                priceLabel: 'Price: ',
-                effectLabel: 'Effect: ',
+            'en-US': {
+                appTitle: 'Balance Training Mini-Games',
                 disclaimerTitle: 'Disclaimer',
                 disclaimerText: 'The content of this website does not constitute professional medical advice. Please choose appropriate activities based on your physical condition. The suggestions provided by this website are for reference only and do not constitute any medical advice. If you feel unwell, please seek medical attention promptly. This website does not collect your personal data or save any videos. Any information you enter on this website is solely for the purpose of recommending more suitable mini-games for you, and it will not be uploaded to our servers.',
                 confirmDisclaimerBtn: 'I have read and agree',
@@ -837,39 +692,22 @@
                 endGameBtn: 'End Game',
                 // Restaurant recommendations
                 restaurantTitle: 'Healthy Restaurant Recommendations',
-                getLocationBtn: 'Get My Location & Recommend Restaurants',
-                locationStatus: 'Getting your location...',
-                locationSuccess: 'Location found! Here are nearby restaurants for you:',
-                locationError: 'Unable to get location information',
-                locationDenied: 'Location permission denied',
-                locationUnavailable: 'Location information unavailable',
-                locationTimeout: 'Location request timed out',
-                noRecommendations: 'Showing general recommendations',
+                locationLabel: 'Your Location:',
+                locationPlaceholder: 'Enter your city',
+                getLocationBtn: 'Get Recommendations',
+                getCurrentLocationBtn: 'Use Current Location',
                 // Gym recommendations
                 gymTitle: 'Senior-Friendly Gym Recommendations',
-                getGymBtn: 'Get My Location & Recommend Gyms',
-                gymLocationStatus: 'Getting your location...',
-                gymLocationSuccess: 'Location found! Here are nearby gyms for you:',
-                gymLocationError: 'Unable to get location information',
-                gymLocationDenied: 'Location permission denied',
-                gymLocationUnavailable: 'Location information unavailable',
-                gymLocationTimeout: 'Location request timed out',
-                noGymRecommendations: 'Showing general recommendations',
+                gymLocationLabel: 'Your Location:',
+                gymLocationPlaceholder: 'Enter your city',
+                getGymBtn: 'Get Recommendations',
+                getCurrentLocationGymBtn: 'Use Current Location',
                 // Supplement recommendations
                 supplementTitle: 'Health Supplement Recommendations',
                 cardiovascularBtn: 'Cardiovascular Health',
                 proteinBtn: 'Protein Supplement',
                 jointBtn: 'Joint Health',
                 immunityBtn: 'Immunity Boost',
-                // 推荐卡片标签
-                typeLabel: 'Type:',
-                ratingLabel: 'Rating:',
-                addressLabel: 'Address:',
-                reasonLabel: 'Reason:',
-                featureLabel: 'Features:',
-                brandLabel: 'Brand:',
-                priceLabel: 'Price:',
-                effectLabel: 'Effect:',
                 // Game over
                 gameOverTitle: 'Game Over!',
                 finalScoreText: 'Your Final Score:',
@@ -916,13 +754,216 @@
                 restartGameBtn: 'Restart Game',
                 cameraAccessError: 'Unable to access camera, please check permissions.',
                 invalidInputError: 'Please enter valid age, weight, and height!',
-                enterLocationPrompt: 'Please enter your location',
-                noRestaurantRecommendations: 'No restaurant recommendations for this area. Try other cities like: Hong Kong, Taipei, Shanghai',
-                noGymRecommendationsArea: 'No gym recommendations for this area. Try other cities like: Hong Kong, Taipei, Shanghai'
+                locationAccessError: 'Unable to get your location, please enter city name manually.',
+                noRecommendationsError: 'No recommendations available for this area, please try other cities.'
             }
         };
 
         let currentLanguage = 'zh-CN'; // 默认语言为中文
+
+        // 地图相关变量
+        let restaurantMap;
+        let gymMap;
+        let userLocation = null;
+
+        // Google Maps 初始化函数
+        window.initMaps = function() {
+            console.log('Google Maps API loaded');
+        };
+
+        // 获取用户当前位置
+        function getCurrentLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject(new Error(translations[currentLanguage].locationAccessError));
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        resolve(userLocation);
+                    },
+                    (error) => {
+                        reject(new Error(translations[currentLanguage].locationAccessError));
+                    },
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+                );
+            });
+        }
+
+        // 计算两点之间的距离（使用 Haversine 公式）
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371; // 地球半径（公里）
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c; // 返回距离（公里）
+        }
+
+        // 根据用户位置排序推荐项目
+        function sortByDistance(items, userLat, userLng) {
+            return items.map(item => {
+                const distance = calculateDistance(userLat, userLng, item.lat, item.lng);
+                return { ...item, distance };
+            }).sort((a, b) => a.distance - b.distance);
+        }
+
+        // 初始化餐厅地图
+        function initRestaurantMap(restaurants, center) {
+            const mapContainer = document.getElementById('restaurantMapContainer');
+            mapContainer.classList.remove('hidden');
+            
+            restaurantMap = new google.maps.Map(document.getElementById('restaurantMap'), {
+                zoom: 12,
+                center: center,
+                styles: [
+                    {
+                        featureType: 'poi',
+                        elementType: 'labels',
+                        stylers: [{ visibility: 'off' }]
+                    }
+                ]
+            });
+
+            // 添加用户位置标记
+            if (userLocation) {
+                new google.maps.Marker({
+                    position: userLocation,
+                    map: restaurantMap,
+                    title: '您的位置',
+                    icon: {
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#60a5fa">
+                                <circle cx="12" cy="12" r="8"/>
+                                <circle cx="12" cy="12" r="3" fill="white"/>
+                            </svg>
+                        `),
+                        scaledSize: new google.maps.Size(32, 32)
+                    }
+                });
+            }
+
+            // 添加餐厅标记
+            restaurants.forEach((restaurant, index) => {
+                const marker = new google.maps.Marker({
+                    position: { lat: restaurant.lat, lng: restaurant.lng },
+                    map: restaurantMap,
+                    title: restaurant.name,
+                    icon: {
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#f59e42">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                        `),
+                        scaledSize: new google.maps.Size(32, 32)
+                    }
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="color: #60a5fa; font-family: 'Inter', sans-serif; max-width: 200px;">
+                            <h4 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold;">${restaurant.name}</h4>
+                            <p style="margin: 4px 0; font-size: 14px;"><strong>类型：</strong>${restaurant.type}</p>
+                            <p style="margin: 4px 0; font-size: 14px; color: #f59e42;"><strong>评分：</strong>${restaurant.rating}</p>
+                            ${restaurant.distance ? `<p style="margin: 4px 0; font-size: 12px; color: #9ca3af;">距离：${restaurant.distance.toFixed(1)}km</p>` : ''}
+                            <button onclick="openInGoogleMaps(${restaurant.lat}, ${restaurant.lng}, '${restaurant.name}')" 
+                                    style="margin-top: 8px; padding: 4px 8px; background: #60a5fa; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                在地图中打开
+                            </button>
+                        </div>
+                    `
+                });
+
+                marker.addListener('click', () => {
+                    infoWindow.open(restaurantMap, marker);
+                });
+            });
+        }
+
+        // 初始化健身房地图
+        function initGymMap(gyms, center) {
+            const mapContainer = document.getElementById('gymMapContainer');
+            mapContainer.classList.remove('hidden');
+            
+            gymMap = new google.maps.Map(document.getElementById('gymMap'), {
+                zoom: 12,
+                center: center,
+                styles: [
+                    {
+                        featureType: 'poi',
+                        elementType: 'labels',
+                        stylers: [{ visibility: 'off' }]
+                    }
+                ]
+            });
+
+            // 添加用户位置标记
+            if (userLocation) {
+                new google.maps.Marker({
+                    position: userLocation,
+                    map: gymMap,
+                    title: '您的位置',
+                    icon: {
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#60a5fa">
+                                <circle cx="12" cy="12" r="8"/>
+                                <circle cx="12" cy="12" r="3" fill="white"/>
+                            </svg>
+                        `),
+                        scaledSize: new google.maps.Size(32, 32)
+                    }
+                });
+            }
+
+            // 添加健身房标记
+            gyms.forEach((gym, index) => {
+                const marker = new google.maps.Marker({
+                    position: { lat: gym.lat, lng: gym.lng },
+                    map: gymMap,
+                    title: gym.name,
+                    icon: {
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#10b981">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                        `),
+                        scaledSize: new google.maps.Size(32, 32)
+                    }
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="color: #60a5fa; font-family: 'Inter', sans-serif; max-width: 200px;">
+                            <h4 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold;">${gym.name}</h4>
+                            <p style="margin: 4px 0; font-size: 14px;"><strong>类型：</strong>${gym.type}</p>
+                            <p style="margin: 4px 0; font-size: 14px; color: #f59e42;"><strong>评分：</strong>${gym.rating}</p>
+                            ${gym.distance ? `<p style="margin: 4px 0; font-size: 12px; color: #9ca3af;">距离：${gym.distance.toFixed(1)}km</p>` : ''}
+                            <button onclick="openInGoogleMaps(${gym.lat}, ${gym.lng}, '${gym.name}')" 
+                                    style="margin-top: 8px; padding: 4px 8px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                在地图中打开
+                            </button>
+                        </div>
+                    `
+                });
+
+                marker.addListener('click', () => {
+                    infoWindow.open(gymMap, marker);
+                });
+            });
+        }
+
+        // 在 Google Maps 中打开位置
+        window.openInGoogleMaps = function(lat, lng, name) {
+            const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}&query_place_id=${encodeURIComponent(name)}`;
+            window.open(url, '_blank');
+        };
 
         // 根据当前语言更新所有文本内容
         function updateLanguage() {
@@ -968,11 +1009,17 @@
 
             // 更新餐厅推荐文本
             document.getElementById('restaurantTitle').textContent = translations[currentLanguage].restaurantTitle;
+            document.getElementById('locationLabel').textContent = translations[currentLanguage].locationLabel;
+            document.getElementById('locationInput').placeholder = translations[currentLanguage].locationPlaceholder;
             document.getElementById('getLocationBtn').textContent = translations[currentLanguage].getLocationBtn;
+            document.getElementById('getCurrentLocationBtn').textContent = translations[currentLanguage].getCurrentLocationBtn;
             
             // 更新健身房推荐文本
             document.getElementById('gymTitle').textContent = translations[currentLanguage].gymTitle;
+            document.getElementById('gymLocationLabel').textContent = translations[currentLanguage].gymLocationLabel;
+            document.getElementById('gymLocationInput').placeholder = translations[currentLanguage].gymLocationPlaceholder;
             document.getElementById('getGymBtn').textContent = translations[currentLanguage].getGymBtn;
+            document.getElementById('getCurrentLocationGymBtn').textContent = translations[currentLanguage].getCurrentLocationGymBtn;
             
             // 更新保健品推荐文本
             document.getElementById('supplementTitle').textContent = translations[currentLanguage].supplementTitle;
@@ -1000,8 +1047,6 @@
         document.getElementById('languageSelect').addEventListener('change', (event) => {
             currentLanguage = event.target.value;
             updateLanguage();
-            // 刷新当前显示的推荐内容
-            refreshCurrentRecommendations();
         });
 
         // --- 页面导航逻辑 ---
@@ -1055,16 +1100,16 @@
 
             // 验证输入是否有效
             if (isNaN(userAge) || isNaN(userWeight) || isNaN(userHeight) || userAge <= 0 || userWeight <= 0 || userHeight <= 0) {
-                // 使用自定义弹窗或更友好的 UI 提示代替 alert
+                // 使用自定义弹窗或更友好的UI提示代替alert
                 alert(translations[currentLanguage].invalidInputError);
                 return;
             }
 
-            // 计算 BMI
+            // 计算BMI
             const bmi = userWeight / (userHeight * userHeight);
             let defaultDifficulty = 'mid'; // 默认难度为中等
 
-            // 根据年龄和 BMI 设置默认游戏难度
+            // 根据年龄和BMI设置默认游戏难度
             if (userAge > 70) {
                 defaultDifficulty = 'easy'; // 70 岁以上，默认低难度
             } else if (bmi < 18.5) { // 偏瘦
@@ -1423,7 +1468,7 @@
         document.getElementById('restartGameBtn').addEventListener('click', () => {
             showPage(gamePage); // 返回游戏主页面
             averageScoreDisplay.textContent = '0'; // 重置得分显示
-            userVideo.play(); // 确保用户摄像头继续播放
+            userVideo.play(); // 确保用户摄像头视频继续播放
         });
 
         // 确保用户视频在离开游戏页面后不会暂停，以便返回时能立即使用
@@ -1467,602 +1512,238 @@
         // --- 餐厅推荐功能 ---
         const restaurantData = {
             '香港': [
-                { name: '大家樂', type: '港式茶餐廳', rating: '4.2/5', address: '全港多個分店', description: '提供清淡粥品、蒸蛋、白切雞等適合長者的健康選擇' },
-                { name: '一粥麵', type: '粥麵專門店', rating: '4.3/5', address: '全港多個分店', description: '專營各式養生粥品，少油少鹽，營養豐富' },
-                { name: '美心餐廳', type: '港式餐廳', rating: '4.1/5', address: '全港多個分店', description: '提供蒸魚、白灼菜心等清淡菜式' },
-                { name: '翠華餐廳', type: '茶餐廳', rating: '4.0/5', address: '全港多個分店', description: '有清湯麵條、蒸蛋等適合長者的選擇' }
+                { name: '大家樂', type: '港式茶餐廳', rating: '4.2/5', address: '全港多個分店', description: '提供清淡粥品、蒸蛋、白切雞等適合長者的健康選擇', lat: 22.3193, lng: 114.1694 },
+                { name: '一粥麵', type: '粥麵專門店', rating: '4.3/5', address: '全港多個分店', description: '專營各式養生粥品，少油少鹽，營養豐富', lat: 22.2783, lng: 114.1747 },
+                { name: '美心餐廳', type: '港式餐廳', rating: '4.1/5', address: '全港多個分店', description: '提供蒸魚、白灼菜心等清淡菜式', lat: 22.3964, lng: 114.1095 },
+                { name: '翠華餐廳', type: '茶餐廳', rating: '4.0/5', address: '全港多個分店', description: '有清湯麵條、蒸蛋等適合長者的選擇', lat: 22.3964, lng: 114.1095 },
+                { name: '稻香', type: '中式餐廳', rating: '4.4/5', address: '全港多個分店', description: '提供清蒸點心、白粥等健康選擇', lat: 22.3526, lng: 114.1277 },
+                { name: '添好運', type: '港式點心', rating: '4.2/5', address: '全港多個分店', description: '米其林推薦，提供清淡點心選擇', lat: 22.3193, lng: 114.1694 }
             ],
             '台北': [
-                { name: '鬍鬚張', type: '台式小吃', rating: '4.1/5', address: '台北多個分店', description: '滷肉飯口味清淡，適合長者' },
-                { name: '永和豆漿', type: '早餐店', rating: '4.0/5', address: '台北多個分店', description: '豆漿、稀飯等清淡營養早餐' },
-                { name: '鼎泰豐', type: '小籠包', rating: '4.5/5', address: '信義區、中山區等', description: '清湯小籠包，製作精細' }
+                { name: '鬍鬚張', type: '台式小吃', rating: '4.1/5', address: '台北多個分店', description: '滷肉飯口味清淡，適合長者', lat: 25.0330, lng: 121.5654 },
+                { name: '永和豆漿', type: '早餐店', rating: '4.0/5', address: '台北多個分店', description: '豆漿、稀飯等清淡營養早餐', lat: 25.0173, lng: 121.5159 },
+                { name: '鼎泰豐', type: '小籠包', rating: '4.5/5', address: '信義區、中山區等', description: '清湯小籠包，製作精細', lat: 25.0360, lng: 121.5498 },
+                { name: '欣葉餐廳', type: '台菜', rating: '4.3/5', address: '台北多個分店', description: '提供清蒸魚、燙青菜等健康台菜', lat: 25.0478, lng: 121.5173 }
             ],
             '上海': [
-                { name: '南翔饅頭店', type: '上海小吃', rating: '4.2/5', address: '豫園、淮海路等', description: '清湯小籠包，口味清淡' },
-                { name: '老盛昌', type: '湯包店', rating: '4.1/5', address: '上海多個分店', description: '各式清湯湯包，營養豐富' },
-                { name: '新雅粤菜館', type: '粵菜', rating: '4.4/5', address: '南京東路', description: '清蒸魚、白切雞等清淡粵菜' }
+                { name: '南翔饅頭店', type: '上海小吃', rating: '4.2/5', address: '豫園、淮海路等', description: '清湯小籠包，口味清淡', lat: 31.2304, lng: 121.4737 },
+                { name: '老盛昌', type: '湯包店', rating: '4.1/5', address: '上海多個分店', description: '各式清湯湯包，營養豐富', lat: 31.2165, lng: 121.4365 },
+                { name: '新雅粤菜館', type: '粵菜', rating: '4.4/5', address: '南京東路', description: '清蒸魚、白切雞等清淡粵菜', lat: 31.2341, lng: 121.4880 },
+                { name: '功德林', type: '素食', rating: '4.0/5', address: '南京西路', description: '素食餐廳，清淡健康', lat: 31.2296, lng: 121.4255 }
             ]
         };
 
+        // 获取餐厅推荐
+        async function getRestaurantRecommendations(location, useCurrentLocation = false) {
+            const restaurantList = document.getElementById('restaurantList');
+            
+            let restaurants = [];
+            let center = null;
+            
+            if (useCurrentLocation && userLocation) {
+                // 使用当前位置，从所有城市中筛选最近的餐厅
+                const allRestaurants = Object.values(restaurantData).flat();
+                restaurants = sortByDistance(allRestaurants, userLocation.lat, userLocation.lng).slice(0, 6);
+                center = userLocation;
+            } else {
+                // 使用输入的位置
+                restaurants = restaurantData[location] || [];
+                // 设置默认中心点
+                const cityCoords = {
+                    '香港': { lat: 22.3193, lng: 114.1694 },
+                    '台北': { lat: 25.0330, lng: 121.5654 },
+                    '上海': { lat: 31.2304, lng: 121.4737 }
+                };
+                center = cityCoords[location] || { lat: 22.3193, lng: 114.1694 };
+            }
+            
+            if (restaurants.length === 0) {
+                restaurantList.innerHTML = `<p class="text-center text-gray-500 col-span-full">${translations[currentLanguage].noRecommendationsError}</p>`;
+                return;
+            }
+            
+            restaurantList.innerHTML = restaurants.map(restaurant => `
+                <div class="recommendation-card">
+                    <h4>${restaurant.name}</h4>
+                    <p><strong>類型：</strong>${restaurant.type}</p>
+                    <p class="rating"><strong>評分：</strong>${restaurant.rating}</p>
+                    <p class="address"><strong>地址：</strong>${restaurant.address}</p>
+                    <p><strong>推薦理由：</strong>${restaurant.description}</p>
+                    ${restaurant.distance ? `<p><strong>距離：</strong>${restaurant.distance.toFixed(1)}km</p>` : ''}
+                    <div class="map-icon" onclick="openInGoogleMaps(${restaurant.lat}, ${restaurant.lng}, '${restaurant.name}')">
+                        📍 在地圖中查看
+                    </div>
+                </div>
+            `).join('');
+            
+            // 初始化地图
+            if (typeof google !== 'undefined' && google.maps) {
+                initRestaurantMap(restaurants, center);
+            }
+        }
+
         document.getElementById('getLocationBtn').addEventListener('click', () => {
-            // 直接调用地理位置功能获取餐厅推荐
-            handleRestaurantLocation();
+            const location = document.getElementById('locationInput').value.trim();
+            if (!location) {
+                alert('請輸入您的位置');
+                return;
+            }
+            getRestaurantRecommendations(location, false);
+        });
+
+        document.getElementById('getCurrentLocationBtn').addEventListener('click', async () => {
+            try {
+                await getCurrentLocation();
+                getRestaurantRecommendations('', true);
+            } catch (error) {
+                alert(error.message);
+            }
         });
 
         // --- 健身房推荐功能 ---
         const gymData = {
             '香港': [
-                { name: 'Pure Fitness', type: '連鎖健身房', rating: '4.3/5', address: '中環、銅鑼灣等', description: '設有長者專屬時段，提供水中運動、太極等適合長者的課程' },
-                { name: 'Fitness First', type: '國際連鎖', rating: '4.2/5', address: '全港多個分店', description: '有專業教練指導，提供低強度運動課程' },
-                { name: '康文署體育館', type: '公共設施', rating: '4.0/5', address: '各區體育館', description: '收費便宜，設有長者健身器材和太極班' },
-                { name: 'YMCA', type: '基督教青年會', rating: '4.1/5', address: '中環、尖沙咀等', description: '專為長者設計的運動課程，包括水療和輕量訓練' }
+                { name: 'Pure Fitness', type: '連鎖健身房', rating: '4.3/5', address: '中環、銅鑼灣等', description: '設有長者專屬時段，提供水中運動、太極等適合長者的課程', lat: 22.2783, lng: 114.1747 },
+                { name: 'Fitness First', type: '國際連鎖', rating: '4.2/5', address: '全港多個分店', description: '有專業教練指導，提供低強度運動課程', lat: 22.3193, lng: 114.1694 },
+                { name: '康文署體育館', type: '公共設施', rating: '4.0/5', address: '各區體育館', description: '收費便宜，設有長者健身器材和太極班', lat: 22.3526, lng: 114.1277 },
+                { name: 'YMCA', type: '基督教青年會', rating: '4.1/5', address: '中環、尖沙咀等', description: '專為長者設計的運動課程，包括水療和輕量訓練', lat: 22.2908, lng: 114.1501 }
             ],
             '台北': [
-                { name: 'World Gym', type: '連鎖健身房', rating: '4.2/5', address: '台北多個分店', description: '設有銀髮族專區，提供適合長者的運動器材' },
-                { name: '健身工廠', type: '本土連鎖', rating: '4.1/5', address: '台北多個分店', description: '價格親民，有長者友善的運動課程' },
-                { name: '台北市運動中心', type: '公共設施', rating: '4.0/5', address: '各區運動中心', description: '公營設施，提供長者專屬運動時段' },
-                { name: 'Curves', type: '女性專用', rating: '4.3/5', address: '台北多個分店', description: '30 分鐘循環運動，適合長者女性' }
+                { name: 'World Gym', type: '連鎖健身房', rating: '4.2/5', address: '台北多個分店', description: '設有銀髮族專區，提供適合長者的運動器材', lat: 25.0330, lng: 121.5654 },
+                { name: '健身工廠', type: '本土連鎖', rating: '4.1/5', address: '台北多個分店', description: '價格親民，有長者友善的運動課程', lat: 25.0173, lng: 121.5159 },
+                { name: '台北市運動中心', type: '公共設施', rating: '4.0/5', address: '各區運動中心', description: '公營設施，提供長者專屬運動時段', lat: 25.0360, lng: 121.5498 },
+                { name: 'Curves', type: '女性專用', rating: '4.3/5', address: '台北多個分店', description: '30 分鐘循環運動，適合長者女性', lat: 25.0478, lng: 121.5173 }
             ],
             '上海': [
-                { name: '威爾士健身', type: '連鎖健身房', rating: '4.2/5', address: '上海多個分店', description: '設有長者運動課程，專業教練指導' },
-                { name: '一兆韋德', type: '本土連鎖', rating: '4.1/5', address: '上海多個分店', description: '提供太極、瑜伽等適合長者的課程' },
-                { name: '上海市民健身中心', type: '公共設施', rating: '4.0/5', address: '各區健身中心', description: '政府運營，收費低廉，設施完善' },
-                { name: '舒適堡', type: '高端健身', rating: '4.4/5', address: '浦東、徐匯等', description: '環境舒適，有專門的長者運動區域' }
+                { name: '威爾士健身', type: '連鎖健身房', rating: '4.2/5', address: '上海多個分店', description: '設有長者運動課程，專業教練指導', lat: 31.2304, lng: 121.4737 },
+                { name: '一兆韋德', type: '本土連鎖', rating: '4.1/5', address: '上海多個分店', description: '提供太極、瑜伽等適合長者的課程', lat: 31.2165, lng: 121.4365 },
+                { name: '上海市民健身中心', type: '公共設施', rating: '4.0/5', address: '各區健身中心', description: '政府運營，收費低廉，設施完善', lat: 31.2341, lng: 121.4880 },
+                { name: '舒適堡', type: '高端健身', rating: '4.4/5', address: '浦東、徐匯等', description: '環境舒適，有專門的長者運動區域', lat: 31.2296, lng: 121.4255 }
             ]
         };
 
+        // 获取健身房推荐
+        async function getGymRecommendations(location, useCurrentLocation = false) {
+            const gymList = document.getElementById('gymList');
+            
+            let gyms = [];
+            let center = null;
+            
+            if (useCurrentLocation && userLocation) {
+                // 使用当前位置，从所有城市中筛选最近的健身房
+                const allGyms = Object.values(gymData).flat();
+                gyms = sortByDistance(allGyms, userLocation.lat, userLocation.lng).slice(0, 6);
+                center = userLocation;
+            } else {
+                // 使用输入的位置
+                gyms = gymData[location] || [];
+                // 设置默认中心点
+                const cityCoords = {
+                    '香港': { lat: 22.3193, lng: 114.1694 },
+                    '台北': { lat: 25.0330, lng: 121.5654 },
+                    '上海': { lat: 31.2304, lng: 121.4737 }
+                };
+                center = cityCoords[location] || { lat: 22.3193, lng: 114.1694 };
+            }
+            
+            if (gyms.length === 0) {
+                gymList.innerHTML = `<p class="text-center text-gray-500 col-span-full">${translations[currentLanguage].noRecommendationsError}</p>`;
+                return;
+            }
+            
+            gymList.innerHTML = gyms.map(gym => `
+                <div class="recommendation-card">
+                    <h4>${gym.name}</h4>
+                    <p><strong>類型：</strong>${gym.type}</p>
+                    <p class="rating"><strong>評分：</strong>${gym.rating}</p>
+                    <p class="address"><strong>地址：</strong>${gym.address}</p>
+                    <p><strong>特色：</strong>${gym.description}</p>
+                    ${gym.distance ? `<p><strong>距離：</strong>${gym.distance.toFixed(1)}km</p>` : ''}
+                    <div class="map-icon" onclick="openInGoogleMaps(${gym.lat}, ${gym.lng}, '${gym.name}')">
+                        📍 在地圖中查看
+                    </div>
+                </div>
+            `).join('');
+            
+            // 初始化地图
+            if (typeof google !== 'undefined' && google.maps) {
+                initGymMap(gyms, center);
+            }
+        }
+
         document.getElementById('getGymBtn').addEventListener('click', () => {
-            // 直接调用地理位置功能获取健身房推荐
-            handleGymLocation();
+            const location = document.getElementById('gymLocationInput').value.trim();
+            if (!location) {
+                alert('請輸入您的位置');
+                return;
+            }
+            getGymRecommendations(location, false);
+        });
+
+        document.getElementById('getCurrentLocationGymBtn').addEventListener('click', async () => {
+            try {
+                await getCurrentLocation();
+                getGymRecommendations('', true);
+            } catch (error) {
+                alert(error.message);
+            }
         });
 
         // --- 保健品推荐功能 ---
         const supplementData = {
-            'zh-CN': {
-                cardiovascular: [
-                    { name: '深海魚油', brand: 'Nordic Naturals', rating: '4.5/5', price: 'HK$280-350', description: '富含 Omega-3，有助心血管健康，降低血脂' },
-                    { name: '輔酶 Q10', brand: 'Life Extension', rating: '4.4/5', price: 'HK$320-400', description: '保護心肌，改善心臟功能，抗氧化' },
-                    { name: '納豆激酶', brand: '日本味王', rating: '4.3/5', price: 'HK$200-280', description: '幫助血液循環，預防血栓形成' },
-                    { name: '紅麴', brand: '統一生機', rating: '4.2/5', price: 'HK$150-200', description: '天然降膽固醇，維護心血管健康' }
-                ],
-                protein: [
-                    { name: '乳清蛋白', brand: 'Optimum Nutrition', rating: '4.6/5', price: 'HK$400-500', description: '易吸收蛋白質，維持肌肉量，適合長者' },
-                    { name: '膠原蛋白', brand: 'DHC', rating: '4.3/5', price: 'HK$180-250', description: '維持皮膚彈性，保護關節軟骨' },
-                    { name: '植物蛋白', brand: 'Garden of Life', rating: '4.4/5', price: 'HK$350-450', description: '植物性蛋白質，易消化，適合素食者' },
-                    { name: '胺基酸複合物', brand: 'NOW Foods', rating: '4.2/5', price: 'HK$200-300', description: '全面胺基酸補充，促進蛋白質合成' }
-                ],
-                joint: [
-                    { name: '葡萄糖胺', brand: 'Move Free', rating: '4.4/5', price: 'HK$250-350', description: '維護關節軟骨，減緩關節退化' },
-                    { name: '軟骨素', brand: 'Schiff', rating: '4.3/5', price: 'HK$300-400', description: '保護關節，減少關節疼痛和僵硬' },
-                    { name: 'MSM 有機硫', brand: 'Puritan\'s Pride', rating: '4.2/5', price: 'HK$180-250', description: '天然抗炎，改善關節靈活性' },
-                    { name: '薑黃素', brand: 'Swanson', rating: '4.5/5', price: 'HK$150-220', description: '強效抗炎，緩解關節不適' }
-                ],
-                immunity: [
-                    { name: '維生素 C', brand: 'Emergen-C', rating: '4.4/5', price: 'HK$120-180', description: '增強免疫力，抗氧化，促進鐵質吸收' },
-                    { name: '維生素 D3', brand: 'Nature Made', rating: '4.5/5', price: 'HK$100-150', description: '強化骨骼，調節免疫系統' },
-                    { name: '益生菌', brand: 'Culturelle', rating: '4.3/5', price: 'HK$280-350', description: '改善腸道健康，增強免疫力' },
-                    { name: '蜂膠', brand: '澳洲 Comvita', rating: '4.2/5', price: 'HK$200-280', description: '天然抗菌，提升免疫防護' }
-                ]
-            },
-            'zh-TW': {
-                cardiovascular: [
-                    { name: '深海魚油', brand: 'Nordic Naturals', rating: '4.5/5', price: 'HK$280-350', description: '富含 Omega-3，有助心血管健康，降低血脂' },
-                    { name: '輔酶 Q10', brand: 'Life Extension', rating: '4.4/5', price: 'HK$320-400', description: '保護心肌，改善心臟功能，抗氧化' },
-                    { name: '納豆激酶', brand: '日本味王', rating: '4.3/5', price: 'HK$200-280', description: '幫助血液循環，預防血栓形成' },
-                    { name: '紅麴', brand: '統一生機', rating: '4.2/5', price: 'HK$150-200', description: '天然降膽固醇，維護心血管健康' }
-                ],
-                protein: [
-                    { name: '乳清蛋白', brand: 'Optimum Nutrition', rating: '4.6/5', price: 'HK$400-500', description: '易吸收蛋白質，維持肌肉量，適合長者' },
-                    { name: '膠原蛋白', brand: 'DHC', rating: '4.3/5', price: 'HK$180-250', description: '維持皮膚彈性，保護關節軟骨' },
-                    { name: '植物蛋白', brand: 'Garden of Life', rating: '4.4/5', price: 'HK$350-450', description: '植物性蛋白質，易消化，適合素食者' },
-                    { name: '胺基酸複合物', brand: 'NOW Foods', rating: '4.2/5', price: 'HK$200-300', description: '全面胺基酸補充，促進蛋白質合成' }
-                ],
-                joint: [
-                    { name: '葡萄糖胺', brand: 'Move Free', rating: '4.4/5', price: 'HK$250-350', description: '維護關節軟骨，減緩關節退化' },
-                    { name: '軟骨素', brand: 'Schiff', rating: '4.3/5', price: 'HK$300-400', description: '保護關節，減少關節疼痛和僵硬' },
-                    { name: 'MSM 有機硫', brand: 'Puritan\'s Pride', rating: '4.2/5', price: 'HK$180-250', description: '天然抗炎，改善關節靈活性' },
-                    { name: '薑黃素', brand: 'Swanson', rating: '4.5/5', price: 'HK$150-220', description: '強效抗炎，緩解關節不適' }
-                ],
-                immunity: [
-                    { name: '維生素 C', brand: 'Emergen-C', rating: '4.4/5', price: 'HK$120-180', description: '增強免疫力，抗氧化，促進鐵質吸收' },
-                    { name: '維生素 D3', brand: 'Nature Made', rating: '4.5/5', price: 'HK$100-150', description: '強化骨骼，調節免疫系統' },
-                    { name: '益生菌', brand: 'Culturelle', rating: '4.3/5', price: 'HK$280-350', description: '改善腸道健康，增強免疫力' },
-                    { name: '蜂膠', brand: '澳洲 Comvita', rating: '4.2/5', price: 'HK$200-280', description: '天然抗菌，提升免疫防護' }
-                ]
-            },
-            'en': {
-                cardiovascular: [
-                    { name: 'Deep Sea Fish Oil', brand: 'Nordic Naturals', rating: '4.5/5', price: 'HK$280-350', description: 'Rich in Omega-3, supports cardiovascular health and reduces blood lipids' },
-                    { name: 'Coenzyme Q10', brand: 'Life Extension', rating: '4.4/5', price: 'HK$320-400', description: 'Protects heart muscle, improves cardiac function, antioxidant properties' },
-                    { name: 'Nattokinase', brand: 'Japan Mikuni', rating: '4.3/5', price: 'HK$200-280', description: 'Helps blood circulation, prevents thrombosis formation' },
-                    { name: 'Red Yeast Rice', brand: 'Uni-President Bio', rating: '4.2/5', price: 'HK$150-200', description: 'Natural cholesterol reduction, maintains cardiovascular health' }
-                ],
-                protein: [
-                    { name: 'Whey Protein', brand: 'Optimum Nutrition', rating: '4.6/5', price: 'HK$400-500', description: 'Easily absorbed protein, maintains muscle mass, suitable for seniors' },
-                    { name: 'Collagen', brand: 'DHC', rating: '4.3/5', price: 'HK$180-250', description: 'Maintains skin elasticity, protects joint cartilage' },
-                    { name: 'Plant Protein', brand: 'Garden of Life', rating: '4.4/5', price: 'HK$350-450', description: 'Plant-based protein, easy to digest, suitable for vegetarians' },
-                    { name: 'Amino Acid Complex', brand: 'NOW Foods', rating: '4.2/5', price: 'HK$200-300', description: 'Comprehensive amino acid supplement, promotes protein synthesis' }
-                ],
-                joint: [
-                    { name: 'Glucosamine', brand: 'Move Free', rating: '4.4/5', price: 'HK$250-350', description: 'Maintains joint cartilage, slows joint degeneration' },
-                    { name: 'Chondroitin', brand: 'Schiff', rating: '4.3/5', price: 'HK$300-400', description: 'Protects joints, reduces joint pain and stiffness' },
-                    { name: 'MSM Organic Sulfur', brand: 'Puritan\'s Pride', rating: '4.2/5', price: 'HK$180-250', description: 'Natural anti-inflammatory, improves joint flexibility' },
-                    { name: 'Turmeric Curcumin', brand: 'Swanson', rating: '4.5/5', price: 'HK$150-220', description: 'Powerful anti-inflammatory, relieves joint discomfort' }
-                ],
-                immunity: [
-                    { name: 'Vitamin C', brand: 'Emergen-C', rating: '4.4/5', price: 'HK$120-180', description: 'Boosts immunity, antioxidant, promotes iron absorption' },
-                    { name: 'Vitamin D3', brand: 'Nature Made', rating: '4.5/5', price: 'HK$100-150', description: 'Strengthens bones, regulates immune system' },
-                    { name: 'Probiotics', brand: 'Culturelle', rating: '4.3/5', price: 'HK$280-350', description: 'Improves gut health, enhances immunity' },
-                    { name: 'Propolis', brand: 'Australia Comvita', rating: '4.2/5', price: 'HK$200-280', description: 'Natural antibacterial, boosts immune defense' }
-                ]
-            }
+            cardiovascular: [
+                { name: '深海魚油', brand: 'Nordic Naturals', rating: '4.5/5', price: 'HK$280-350', description: '富含 Omega-3，有助心血管健康，降低血脂' },
+                { name: '輔酶 Q10', brand: 'Life Extension', rating: '4.4/5', price: 'HK$320-400', description: '保護心肌，改善心臟功能，抗氧化' },
+                { name: '納豆激酶', brand: '日本味王', rating: '4.3/5', price: 'HK$200-280', description: '幫助血液循環，預防血栓形成' },
+                { name: '紅麴', brand: '統一生機', rating: '4.2/5', price: 'HK$150-200', description: '天然降膽固醇，維護心血管健康' }
+            ],
+            protein: [
+                { name: '乳清蛋白', brand: 'Optimum Nutrition', rating: '4.6/5', price: 'HK$400-500', description: '易吸收蛋白質，維持肌肉量，適合長者' },
+                { name: '膠原蛋白', brand: 'DHC', rating: '4.3/5', price: 'HK$180-250', description: '維持皮膚彈性，保護關節軟骨' },
+                { name: '植物蛋白', brand: 'Garden of Life', rating: '4.4/5', price: 'HK$350-450', description: '植物性蛋白質，易消化，適合素食者' },
+                { name: '胺基酸複合物', brand: 'NOW Foods', rating: '4.2/5', price: 'HK$200-300', description: '全面胺基酸補充，促進蛋白質合成' }
+            ],
+            joint: [
+                { name: '葡萄糖胺', brand: 'Move Free', rating: '4.4/5', price: 'HK$250-350', description: '維護關節軟骨，減緩關節退化' },
+                { name: '軟骨素', brand: 'Schiff', rating: '4.3/5', price: 'HK$300-400', description: '保護關節，減少關節疼痛和僵硬' },
+                { name: 'MSM 有機硫', brand: 'Puritan\'s Pride', rating: '4.2/5', price: 'HK$180-250', description: '天然抗炎，改善關節靈活性' },
+                { name: '薑黃素', brand: 'Swanson', rating: '4.5/5', price: 'HK$150-220', description: '強效抗炎，緩解關節不適' }
+            ],
+            immunity: [
+                { name: '維生素 C', brand: 'Emergen-C', rating: '4.4/5', price: 'HK$120-180', description: '增強免疫力，抗氧化，促進鐵質吸收' },
+                { name: '維生素 D3', brand: 'Nature Made', rating: '4.5/5', price: 'HK$100-150', description: '強化骨骼，調節免疫系統' },
+                { name: '益生菌', brand: 'Culturelle', rating: '4.3/5', price: 'HK$280-350', description: '改善腸道健康，增強免疫力' },
+                { name: '蜂膠', brand: '澳洲 Comvita', rating: '4.2/5', price: 'HK$200-280', description: '天然抗菌，提升免疫防護' }
+            ]
         };
 
-        // Wrap supplement functionality in DOMContentLoaded
-        document.addEventListener('DOMContentLoaded', function() {
-            const categoryButtons = document.querySelectorAll('.category-btn');
-            const supplementList = document.getElementById('supplementList');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const supplementList = document.getElementById('supplementList');
 
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const category = button.getAttribute('data-category');
-                    
-                    // 移除所有活跃状态
-                    categoryButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    
-                    // 显示对应分类的保健品，使用当前语言的数据
-                    const supplements = supplementData[currentLanguage] ? supplementData[currentLanguage][category] || [] : [];
-                    supplementList.innerHTML = supplements.map(supplement => `
-                        <div class="recommendation-card">
-                            <h4>${supplement.name}</h4>
-                            <p><strong>${translations[currentLanguage].brandLabel}</strong>${supplement.brand}</p>
-                            <p class="rating"><strong>${translations[currentLanguage].ratingLabel}</strong>${supplement.rating}</p>
-                            <p><strong>${translations[currentLanguage].priceLabel}</strong>${supplement.price}</p>
-                            <p><strong>${translations[currentLanguage].effectLabel}</strong>${supplement.description}</p>
-                        </div>
-                    `).join('');
-                });
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+                
+                // 移除所有活跃状态
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // 显示对应分类的保健品
+                const supplements = supplementData[category] || [];
+                supplementList.innerHTML = supplements.map(supplement => `
+                    <div class="recommendation-card">
+                        <h4>${supplement.name}</h4>
+                        <p><strong>品牌：</strong>${supplement.brand}</p>
+                        <p class="rating"><strong>評分：</strong>${supplement.rating}</p>
+                        <p><strong>價格：</strong>${supplement.price}</p>
+                        <p><strong>功效：</strong>${supplement.description}</p>
+                    </div>
+                `).join('');
             });
-
-            // 默认显示心血管保健品
-            const cardiovascularBtn = document.getElementById('cardiovascularBtn');
-            if (cardiovascularBtn) {
-                cardiovascularBtn.click();
-            }
         });
 
-        // --- 旧的健身房事件监听器（已被新的地理位置功能替代） ---
-        // 这个事件监听器在下面的地理位置功能中被重新绑定
-
-        // --- 地理位置餐厅推荐功能 ---
-        // 扩展餐厅数据，包含地理位置信息和多语言支持
-        const locationBasedRestaurantData = {
-            'zh-CN': {
-                regions: {
-                    // 香港地区 (经度：113.8-114.5, 纬度：22.1-22.6)
-                    hongkong: {
-                        bounds: { minLat: 22.1, maxLat: 22.6, minLng: 113.8, maxLng: 114.5 },
-                        restaurants: [
-                            { name: '大家乐', type: '港式茶餐厅', rating: '4.2/5', address: '全港多个分店', description: '提供清淡粥品、蒸蛋、白切鸡等适合长者的健康选择' },
-                            { name: '一粥面', type: '粥面专门店', rating: '4.3/5', address: '全港多个分店', description: '专营各式养生粥品，低油低盐，营养丰富' },
-                            { name: '美心餐厅', type: '港式餐厅', rating: '4.1/5', address: '全港多个分店', description: '提供蒸鱼、白灼菜心等清淡菜式' },
-                            { name: '翠华餐厅', type: '茶餐厅', rating: '4.0/5', address: '全港多个分店', description: '有清汤面条、蒸蛋等适合长者的选择' }
-                        ]
-                    },
-                    // 台北地区 (经度：121.4-121.7, 纬度：24.9-25.3)
-                    taipei: {
-                        bounds: { minLat: 24.9, maxLat: 25.3, minLng: 121.4, maxLng: 121.7 },
-                        restaurants: [
-                            { name: '胡须张', type: '台式小吃', rating: '4.1/5', address: '台北多个分店', description: '卤肉饭口味清淡，适合长者' },
-                            { name: '永和豆浆', type: '早餐店', rating: '4.0/5', address: '台北多个分店', description: '豆浆、稀饭等清淡营养早餐' },
-                            { name: '鼎泰丰', type: '小笼包', rating: '4.5/5', address: '信义区、中山区等', description: '清汤小笼包，制作精细' }
-                        ]
-                    },
-                    // 上海地区 (经度：121.0-121.9, 纬度：30.7-31.4)
-                    shanghai: {
-                        bounds: { minLat: 30.7, maxLat: 31.4, minLng: 121.0, maxLng: 121.9 },
-                        restaurants: [
-                            { name: '南翔馒头店', type: '上海小吃', rating: '4.2/5', address: '豫园、淮海路等', description: '清汤小笼包，口味清淡' },
-                            { name: '老盛昌', type: '汤包店', rating: '4.1/5', address: '上海多个分店', description: '各式清汤汤包，营养丰富' },
-                            { name: '新雅粤菜馆', type: '粤菜', rating: '4.4/5', address: '南京东路', description: '清蒸鱼、白切鸡等清淡粤菜' }
-                        ]
-                    }
-                },
-                // 通用推荐（当无法确定地理位置时使用）
-                general: [
-                    { name: '健康餐厅', type: '健康料理', rating: '4.3/5', address: '各地分店', description: '提供低盐、低油、高纤维的健康餐点' },
-                    { name: '养生粥品店', type: '粥品专门', rating: '4.2/5', address: '社区分店', description: '各式养生粥品，易消化，营养丰富' },
-                    { name: '清淡家常菜', type: '家常菜', rating: '4.1/5', address: '住宅区', description: '提供蒸煮类菜品，口味清淡适合长者' },
-                    { name: '素食餐厅', type: '素食', rating: '4.0/5', address: '市中心', description: '纯素食餐点，健康清淡，营养均衡' }
-                ]
-            },
-            'zh-TW': {
-                regions: {
-                    // 香港地区 (经度：113.8-114.5, 纬度：22.1-22.6)
-                    hongkong: {
-                        bounds: { minLat: 22.1, maxLat: 22.6, minLng: 113.8, maxLng: 114.5 },
-                        restaurants: [
-                            { name: '大家樂', type: '港式茶餐廳', rating: '4.2/5', address: '全港多個分店', description: '提供清淡粥品、蒸蛋、白切雞等適合長者的健康選擇' },
-                            { name: '一粥麵', type: '粥麵專門店', rating: '4.3/5', address: '全港多個分店', description: '專營各式養生粥品，少油少鹽，營養豐富' },
-                            { name: '美心餐廳', type: '港式餐廳', rating: '4.1/5', address: '全港多個分店', description: '提供蒸魚、白灼菜心等清淡菜式' },
-                            { name: '翠華餐廳', type: '茶餐廳', rating: '4.0/5', address: '全港多個分店', description: '有清湯麵條、蒸蛋等適合長者的選擇' }
-                        ]
-                    },
-                    // 台北地区 (经度：121.4-121.7, 纬度：24.9-25.3)
-                    taipei: {
-                        bounds: { minLat: 24.9, maxLat: 25.3, minLng: 121.4, maxLng: 121.7 },
-                        restaurants: [
-                            { name: '鬍鬚張', type: '台式小吃', rating: '4.1/5', address: '台北多個分店', description: '滷肉飯口味清淡，適合長者' },
-                            { name: '永和豆漿', type: '早餐店', rating: '4.0/5', address: '台北多個分店', description: '豆漿、稀飯等清淡營養早餐' },
-                            { name: '鼎泰豐', type: '小籠包', rating: '4.5/5', address: '信義區、中山區等', description: '清湯小籠包，製作精細' }
-                        ]
-                    },
-                    // 上海地区 (经度：121.0-121.9, 纬度：30.7-31.4)
-                    shanghai: {
-                        bounds: { minLat: 30.7, maxLat: 31.4, minLng: 121.0, maxLng: 121.9 },
-                        restaurants: [
-                            { name: '南翔饅頭店', type: '上海小吃', rating: '4.2/5', address: '豫園、淮海路等', description: '清湯小籠包，口味清淡' },
-                            { name: '老盛昌', type: '湯包店', rating: '4.1/5', address: '上海多個分店', description: '各式清湯湯包，營養豐富' },
-                            { name: '新雅粤菜館', type: '粵菜', rating: '4.4/5', address: '南京東路', description: '清蒸魚、白切雞等清淡粵菜' }
-                        ]
-                    }
-                },
-                // 通用推荐（当无法确定地理位置时使用）
-                general: [
-                    { name: '健康餐廳', type: '健康料理', rating: '4.3/5', address: '各地分店', description: '提供低鹽、低油、高纖維的健康餐點' },
-                    { name: '養生粥品店', type: '粥品專門', rating: '4.2/5', address: '社區分店', description: '各式養生粥品，易消化，營養豐富' },
-                    { name: '清淡家常菜', type: '家常菜', rating: '4.1/5', address: '住宅區', description: '提供蒸煮類菜品，口味清淡適合長者' },
-                    { name: '素食餐廳', type: '素食', rating: '4.0/5', address: '市中心', description: '純素食餐點，健康清淡，營養均衡' }
-                ]
-            },
-            'en': {
-                regions: {
-                    // Hong Kong region (longitude: 113.8-114.5, latitude: 22.1-22.6)
-                    hongkong: {
-                        bounds: { minLat: 22.1, maxLat: 22.6, minLng: 113.8, maxLng: 114.5 },
-                        restaurants: [
-                            { name: 'Cafe de Coral', type: 'Hong Kong Style Tea Restaurant', rating: '4.2/5', address: 'Multiple locations in Hong Kong', description: 'Offers light congee, steamed eggs, and plain chicken suitable for elderly' },
-                            { name: 'Congee & Noodle Shop', type: 'Congee & Noodle Specialist', rating: '4.3/5', address: 'Multiple locations in Hong Kong', description: 'Specializes in various health congees, low oil and salt, nutritious' },
-                            { name: 'Maxims Restaurant', type: 'Hong Kong Style Restaurant', rating: '4.1/5', address: 'Multiple locations in Hong Kong', description: 'Offers steamed fish, blanched vegetables and other light dishes' },
-                            { name: 'Tsui Wah Restaurant', type: 'Tea Restaurant', rating: '4.0/5', address: 'Multiple locations in Hong Kong', description: 'Has clear soup noodles, steamed eggs suitable for elderly' },
-                            { name: 'Dao Xiang', type: 'Chinese Restaurant', rating: '4.4/5', address: 'Multiple locations in Hong Kong', description: 'Offers steamed dim sum, plain congee and other healthy choices' },
-                            { name: 'Tim Ho Wan', type: 'Hong Kong Dim Sum', rating: '4.2/5', address: 'Multiple locations in Hong Kong', description: 'Michelin recommended, offers light dim sum choices' }
-                        ]
-                    },
-                    // Taipei region (longitude: 121.4-121.7, latitude: 24.9-25.3)
-                    taipei: {
-                        bounds: { minLat: 24.9, maxLat: 25.3, minLng: 121.4, maxLng: 121.7 },
-                        restaurants: [
-                            { name: 'Formosa Chang', type: 'Taiwanese Snacks', rating: '4.1/5', address: 'Multiple locations in Taipei', description: 'Light flavored braised pork rice, suitable for elderly' },
-                            { name: 'Yonghe Soy Milk', type: 'Breakfast Shop', rating: '4.0/5', address: 'Multiple locations in Taipei', description: 'Soy milk, rice porridge and other light nutritious breakfast' },
-                            { name: 'Din Tai Fung', type: 'Xiaolongbao', rating: '4.5/5', address: 'Xinyi District, Zhongshan District etc.', description: 'Clear soup xiaolongbao, finely made' },
-                            { name: 'Shin Yeh Restaurant', type: 'Taiwanese Cuisine', rating: '4.3/5', address: 'Multiple locations in Taipei', description: 'Offers steamed fish, blanched vegetables and other healthy Taiwanese dishes' }
-                        ]
-                    },
-                    // Shanghai region (longitude: 121.0-121.9, latitude: 30.7-31.4)
-                    shanghai: {
-                        bounds: { minLat: 30.7, maxLat: 31.4, minLng: 121.0, maxLng: 121.9 },
-                        restaurants: [
-                            { name: 'Nanxiang Steamed Bun Restaurant', type: 'Shanghai Snacks', rating: '4.2/5', address: 'Yu Garden, Huaihai Road etc.', description: 'Clear soup xiaolongbao, light flavor' },
-                            { name: 'Lao Sheng Chang', type: 'Soup Dumpling Shop', rating: '4.1/5', address: 'Multiple locations in Shanghai', description: 'Various clear soup dumplings, nutritious' },
-                            { name: 'Xin Ya Cantonese Restaurant', type: 'Cantonese Cuisine', rating: '4.4/5', address: 'Nanjing East Road', description: 'Steamed fish, plain chicken and other light Cantonese dishes' },
-                            { name: 'Gong De Lin', type: 'Vegetarian', rating: '4.0/5', address: 'Nanjing West Road', description: 'Vegetarian restaurant, light and healthy' }
-                        ]
-                    }
-                },
-                // General recommendations (used when geographical location cannot be determined)
-                general: [
-                    { name: 'Healthy Restaurant', type: 'Healthy Cuisine', rating: '4.3/5', address: 'Various locations', description: 'Provides low-salt, low-oil, high-fiber healthy meals' },
-                    { name: 'Health Congee Shop', type: 'Congee Specialist', rating: '4.2/5', address: 'Community stores', description: 'Various health congees, easy to digest, nutritious' },
-                    { name: 'Light Home Cooking', type: 'Home-style Dishes', rating: '4.1/5', address: 'Residential areas', description: 'Provides steamed dishes, light flavor suitable for elderly' },
-                    { name: 'Vegetarian Restaurant', type: 'Vegetarian', rating: '4.0/5', address: 'City center', description: 'Pure vegetarian meals, healthy and light, nutritionally balanced' }
-                ]
-            }
-        };
-
-        // 地理位置餐厅推荐事件处理函数
-        function handleRestaurantLocation() {
-            console.log('餐厅位置按钮被点击');
-            const locationStatus = document.getElementById('locationStatus');
-            const restaurantList = document.getElementById('restaurantList');
-            
-            if (!locationStatus) {
-                console.error('找不到 locationStatus 元素');
-                return;
-            }
-            
-            if (!restaurantList) {
-                console.error('找不到 restaurantList 元素');
-                return;
-            }
-            
-            if (!navigator.geolocation) {
-                locationStatus.textContent = translations[currentLanguage].locationError;
-                locationStatus.style.color = '#ef4444';
-                console.log('浏览器不支持地理位置');
-                return;
-            }
-            
-            console.log('开始获取地理位置...');
-            locationStatus.textContent = translations[currentLanguage].locationStatus;
-            locationStatus.style.color = '#6b7280';
-            
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    window.currentLat = position.coords.latitude;
-                    window.currentLng = position.coords.longitude;
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    
-                    console.log('获取到位置:', lat, lng);
-                    locationStatus.textContent = translations[currentLanguage].locationSuccess;
-                    locationStatus.style.color = '#10b981';
-                    
-                    const restaurants = getRestaurantsByLocation(lat, lng);
-                    console.log('找到餐厅:', restaurants.length);
-                    
-                    restaurantList.innerHTML = restaurants.map(restaurant => {
-                        // 生成 Google 地图搜索和导航链接，基于当前位置和餐厅名
-                        let mapEmbedUrl = '';
-                        let mapNavUrl = '';
-                        if (window.currentLat && window.currentLng) {
-                            // 用当前位置和餐厅名进行搜索
-                            const searchQuery = encodeURIComponent(restaurant.name);
-                            mapEmbedUrl = `https://www.google.com/maps?q=${searchQuery}&ll=${window.currentLat},${window.currentLng}&z=15&output=embed`;
-                            mapNavUrl = `https://www.google.com/maps/dir/?api=1&origin=${window.currentLat},${window.currentLng}&destination=${searchQuery}`;
-                        } else {
-                            // 退回到仅用餐厅名
-                            const mapQuery = encodeURIComponent(restaurant.address || restaurant.name);
-                            mapEmbedUrl = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
-                            mapNavUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`;
-                        }
-                        return `
-                            <div class="recommendation-card">
-                                <h4>${restaurant.name}</h4>
-                                <p><strong>${translations[currentLanguage].typeLabel}</strong>${restaurant.type}</p>
-                                <p class="rating"><strong>${translations[currentLanguage].ratingLabel}</strong>${restaurant.rating}</p>
-                                <p class="address"><strong>${translations[currentLanguage].addressLabel}</strong>${restaurant.address}</p>
-                                <p><strong>${translations[currentLanguage].reasonLabel}</strong>${restaurant.description}</p>
-                                <div class="mt-4">
-                                    <a href="${mapNavUrl}" target="_blank" title="在 Google 地图中导航" style="display:block; border-radius:1rem; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-                                        <iframe src="${mapEmbedUrl}" width="100%" height="220" style="border:0; pointer-events:none;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                    </a>
-                                    <div class="text-sm text-gray-400 mt-1">点击地图可导航</div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                },
-                (error) => {
-                    console.error('地理位置错误:', error);
-                    let errorMessage = translations[currentLanguage].locationError;
-                    
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage = translations[currentLanguage].locationDenied;
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage = translations[currentLanguage].locationUnavailable;
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage = translations[currentLanguage].locationTimeout;
-                            break;
-                    }
-                    
-                    locationStatus.textContent = errorMessage + ' - ' + translations[currentLanguage].noRecommendations;
-                    locationStatus.style.color = '#ef4444';
-                    
-                    restaurantList.innerHTML = (locationBasedRestaurantData[currentLanguage] || locationBasedRestaurantData['zh-CN']).general.map(restaurant => `
-                        <div class="recommendation-card">
-                            <h4>${restaurant.name}</h4>
-                            <p><strong>${translations[currentLanguage].typeLabel}</strong>${restaurant.type}</p>
-                            <p class="rating"><strong>${translations[currentLanguage].ratingLabel}</strong>${restaurant.rating}</p>
-                            <p class="address"><strong>${translations[currentLanguage].addressLabel}</strong>${restaurant.address}</p>
-                            <p><strong>${translations[currentLanguage].reasonLabel}</strong>${restaurant.description}</p>
-                        </div>
-                    `).join('');
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 300000
-                }
-            );
-        }
-
-        // 地理位置健身房推荐事件处理函数
-        function handleGymLocation() {
-            console.log('健身房位置按钮被点击');
-            const gymLocationStatus = document.getElementById('gymLocationStatus');
-            const gymList = document.getElementById('gymList');
-            
-            if (!gymLocationStatus) {
-                console.error('找不到 gymLocationStatus 元素');
-                return;
-            }
-            
-            if (!gymList) {
-                console.error('找不到 gymList 元素');
-                return;
-            }
-            
-            if (!navigator.geolocation) {
-                gymLocationStatus.textContent = translations[currentLanguage].gymLocationError;
-                gymLocationStatus.style.color = '#ef4444';
-                console.log('浏览器不支持地理位置');
-                return;
-            }
-            
-            console.log('开始获取地理位置...');
-            gymLocationStatus.textContent = translations[currentLanguage].gymLocationStatus;
-            gymLocationStatus.style.color = '#6b7280';
-            
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    
-                    console.log('获取到位置:', lat, lng);
-                    gymLocationStatus.textContent = translations[currentLanguage].gymLocationSuccess;
-                    gymLocationStatus.style.color = '#10b981';
-                    
-                    const gyms = getGymsByLocation(lat, lng);
-                    console.log('找到健身房:', gyms.length);
-                    
-                    gymList.innerHTML = gyms.map(gym => `
-                        <div class="recommendation-card">
-                            <h4>${gym.name}</h4>
-                            <p><strong>${translations[currentLanguage].typeLabel}</strong>${gym.type}</p>
-                            <p class="rating"><strong>${translations[currentLanguage].ratingLabel}</strong>${gym.rating}</p>
-                            <p class="address"><strong>${translations[currentLanguage].addressLabel}</strong>${gym.address}</p>
-                            <p><strong>${translations[currentLanguage].featureLabel}</strong>${gym.description}</p>
-                        </div>
-                    `).join('');
-                },
-                (error) => {
-                    console.error('地理位置错误:', error);
-                    let errorMessage = translations[currentLanguage].gymLocationError;
-                    
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage = translations[currentLanguage].gymLocationDenied;
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage = translations[currentLanguage].gymLocationUnavailable;
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage = translations[currentLanguage].gymLocationTimeout;
-                            break;
-                    }
-                    
-                    gymLocationStatus.textContent = errorMessage + ' - ' + translations[currentLanguage].noGymRecommendations;
-                    gymLocationStatus.style.color = '#ef4444';
-                    
-                    gymList.innerHTML = (locationBasedGymData[currentLanguage] || locationBasedGymData['zh-CN']).general.map(gym => `
-                        <div class="recommendation-card">
-                            <h4>${gym.name}</h4>
-                            <p><strong>${translations[currentLanguage].typeLabel}</strong>${gym.type}</p>
-                            <p class="rating"><strong>${translations[currentLanguage].ratingLabel}</strong>${gym.rating}</p>
-                            <p class="address"><strong>${translations[currentLanguage].addressLabel}</strong>${gym.address}</p>
-                            <p><strong>${translations[currentLanguage].featureLabel}</strong>${gym.description}</p>
-                        </div>
-                    `).join('');
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 300000
-                }
-            );
-        }
-
-        // 绑定按钮事件（只绑定一次，避免重复）
-        document.addEventListener('DOMContentLoaded', function() {
-            const locationBtn = document.getElementById('getLocationBtn');
-            const gymBtn = document.getElementById('getGymBtn');
-            
-            console.log('按钮元素检查：');
-            console.log('locationBtn:', locationBtn);
-            console.log('gymBtn:', gymBtn);
-            
-            if (locationBtn) {
-                console.log('绑定餐厅位置按钮事件');
-                // 移除可能存在的旧事件监听器（通过克隆和替换元素）
-                const newLocationBtn = locationBtn.cloneNode(true);
-                locationBtn.parentNode.replaceChild(newLocationBtn, locationBtn);
-                newLocationBtn.addEventListener('click', handleRestaurantLocation);
-            } else {
-                console.error('找不到 getLocationBtn 元素');
-            }
-            
-            if (gymBtn) {
-                console.log('绑定健身房位置按钮事件');
-                // 移除可能存在的旧事件监听器（通过克隆和替换元素）
-                const newGymBtn = gymBtn.cloneNode(true);
-                gymBtn.parentNode.replaceChild(newGymBtn, gymBtn);
-                newGymBtn.addEventListener('click', handleGymLocation);
-            } else {
-                console.error('找不到 getGymBtn 元素');
-            }
-        });
-
-        // 刷新当前显示的推荐内容
-        function refreshCurrentRecommendations() {
-            // 刷新餐厅推荐（如果有内容显示）
-            const restaurantList = document.getElementById('restaurantList');
-            if (restaurantList && restaurantList.innerHTML.trim() && !restaurantList.innerHTML.includes('text-center text-gray-500')) {
-                // 重新生成已显示的餐厅推荐内容标签
-                const restaurantCards = restaurantList.querySelectorAll('.recommendation-card');
-                restaurantCards.forEach(card => {
-                    const paragraphs = card.querySelectorAll('p');
-                    paragraphs.forEach(p => {
-                        const strongTag = p.querySelector('strong');
-                        if (strongTag) {
-                            const text = strongTag.textContent;
-                            if (text.includes('类型') || text.includes('Type') || text.includes('類型')) {
-                                strongTag.textContent = translations[currentLanguage].typeLabel;
-                            } else if (text.includes('评分') || text.includes('Rating') || text.includes('評分')) {
-                                strongTag.textContent = translations[currentLanguage].ratingLabel;
-                            } else if (text.includes('地址') || text.includes('Address') || text.includes('地址')) {
-                                strongTag.textContent = translations[currentLanguage].addressLabel;
-                            } else if (text.includes('推荐理由') || text.includes('Reason') || text.includes('推薦理由')) {
-                                strongTag.textContent = translations[currentLanguage].reasonLabel;
-                            }
-                        }
-                    });
-                });
-            }
-            
-            // 刷新健身房推荐（如果有内容显示）
-            const gymList = document.getElementById('gymList');
-            if (gymList && gymList.innerHTML.trim() && !gymList.innerHTML.includes('text-center text-gray-500')) {
-                // 重新生成已显示的健身房推荐内容标签
-                const gymCards = gymList.querySelectorAll('.recommendation-card');
-                gymCards.forEach(card => {
-                    const paragraphs = card.querySelectorAll('p');
-                    paragraphs.forEach(p => {
-                        const strongTag = p.querySelector('strong');
-                        if (strongTag) {
-                            const text = strongTag.textContent;
-                            if (text.includes('类型') || text.includes('Type') || text.includes('類型')) {
-                                strongTag.textContent = translations[currentLanguage].typeLabel;
-                            } else if (text.includes('评分') || text.includes('Rating') || text.includes('評分')) {
-                                strongTag.textContent = translations[currentLanguage].ratingLabel;
-                            } else if (text.includes('地址') || text.includes('Address') || text.includes('地址')) {
-                                strongTag.textContent = translations[currentLanguage].addressLabel;
-                            } else if (text.includes('特色') || text.includes('Feature') || text.includes('特色')) {
-                                strongTag.textContent = translations[currentLanguage].featureLabel;
-                            }
-                        }
-                    });
-                });
-            }
-            
-            // 刷新保健品推荐（如果有内容显示）
-            const supplementList = document.getElementById('supplementList');
-            if (supplementList && supplementList.innerHTML.trim()) {
-                const supplementCards = supplementList.querySelectorAll('.recommendation-card');
-                supplementCards.forEach(card => {
-                    const paragraphs = card.querySelectorAll('p');
-                    paragraphs.forEach(p => {
-                        const strongTag = p.querySelector('strong');
-                        if (strongTag) {
-                            const text = strongTag.textContent;
-                            if (text.includes('品牌') || text.includes('Brand') || text.includes('品牌')) {
-                                strongTag.textContent = translations[currentLanguage].brandLabel;
-                            } else if (text.includes('评分') || text.includes('Rating') || text.includes('評分')) {
-                                strongTag.textContent = translations[currentLanguage].ratingLabel;
-                            } else if (text.includes('价格') || text.includes('Price') || text.includes('價格')) {
-                                strongTag.textContent = translations[currentLanguage].priceLabel;
-                            } else if (text.includes('功效') || text.includes('Effect') || text.includes('功效')) {
-                                strongTag.textContent = translations[currentLanguage].effectLabel;
-                            }
-                        }
-                    });
-                });
-            }
-        }
+        // 默认显示心血管保健品
+        document.getElementById('cardiovascularBtn').click();
     </script>
 </body>
 </html>
