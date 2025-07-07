@@ -1645,7 +1645,7 @@
                         bounds: { minLat: 22.1, maxLat: 22.6, minLng: 113.8, maxLng: 114.5 },
                         restaurants: [
                             { name: '大家乐', type: '港式茶餐厅', rating: '4.2/5', address: '全港多个分店', description: '提供清淡粥品、蒸蛋、白切鸡等适合长者的健康选择' },
-                            { name: '一粥面', type: '粥面专门店', rating: '4.3/5', address: '全港多个分店', description: '专营各式养生粥品，少油少盐，营养丰富' },
+                            { name: '一粥面', type: '粥面专门店', rating: '4.3/5', address: '全港多个分店', description: '专营各式养生粥品，低油低盐，营养丰富' },
                             { name: '美心餐厅', type: '港式餐厅', rating: '4.1/5', address: '全港多个分店', description: '提供蒸鱼、白灼菜心等清淡菜式' },
                             { name: '翠华餐厅', type: '茶餐厅', rating: '4.0/5', address: '全港多个分店', description: '有清汤面条、蒸蛋等适合长者的选择' }
                         ]
@@ -1761,147 +1761,6 @@
             }
         };
 
-        // 地理位置健身房数据
-        const locationBasedGymData = {
-            'zh-CN': {
-                regions: {
-                    hongkong: {
-                        bounds: { minLat: 22.1, maxLat: 22.6, minLng: 113.8, maxLng: 114.5 },
-                        gyms: [
-                            { name: 'Pure Fitness', type: '连锁健身房', rating: '4.3/5', address: '中环、铜锣湾等', description: '设有长者专属时段，提供水中运动、太极等适合长者的课程' },
-                            { name: 'Fitness First', type: '国际连锁', rating: '4.2/5', address: '全港多个分店', description: '有专业教练指导，提供低强度运动课程' },
-                            { name: '康文署体育馆', type: '公共设施', rating: '4.0/5', address: '各区体育馆', description: '收费便宜，设有长者健身器材和太极班' },
-                            { name: 'YMCA', type: '基督教青年会', rating: '4.1/5', address: '中环、尖沙咀等', description: '专为长者设计的运动课程，包括水疗和轻量训练' }
-                        ]
-                    },
-                    taipei: {
-                        bounds: { minLat: 24.9, maxLat: 25.3, minLng: 121.4, maxLng: 121.7 },
-                        gyms: [
-                            { name: 'World Gym', type: '连锁健身房', rating: '4.2/5', address: '台北多个分店', description: '设有银发族专区，提供适合长者的运动器材' },
-                            { name: '健身工厂', type: '本土连锁', rating: '4.1/5', address: '台北多个分店', description: '价格亲民，有长者友善的运动课程' },
-                            { name: '台北市运动中心', type: '公共设施', rating: '4.0/5', address: '各区运动中心', description: '公营设施，提供长者专属运动时段' },
-                            { name: 'Curves', type: '女性专用', rating: '4.3/5', address: '台北多个分店', description: '30 分钟循环运动，适合长者女性' }
-                        ]
-                    },
-                    shanghai: {
-                        bounds: { minLat: 30.7, maxLat: 31.4, minLng: 121.0, maxLng: 121.9 },
-                        gyms: [
-                            { name: '威尔士健身', type: '连锁健身房', rating: '4.2/5', address: '上海多个分店', description: '设有长者运动课程，专业教练指导' },
-                            { name: '一兆韦德', type: '本土连锁', rating: '4.1/5', address: '上海多个分店', description: '提供太极、瑜伽等适合长者的课程' },
-                            { name: '上海市民健身中心', type: '公共设施', rating: '4.0/5', address: '各区健身中心', description: '政府运营，收费低廉，设施完善' },
-                            { name: '舒适堡', type: '高端健身', rating: '4.4/5', address: '浦东、徐匯等', description: '环境舒适，有专门的长者运动区域' }
-                        ]
-                    }
-                },
-                general: [
-                    { name: '社区健身中心', type: '公共设施', rating: '4.1/5', address: '各社区', description: '政府或社区运营，收费便宜，设施适合长者' },
-                    { name: '长者运动中心', type: '专门机构', rating: '4.2/5', address: '市中心', description: '专为长者设计的运动设施和课程' },
-                    { name: '水中健身馆', type: '水疗中心', rating: '4.0/5', address: '健康中心', description: '提供水中运动课程，对关节友好' },
-                    { name: '太极养生馆', type: '传统运动', rating: '4.3/5', address: '公园附近', description: '教授太极、气功等适合长者的运动' }
-                ]
-            },
-            'zh-TW': {
-                regions: {
-                    hongkong: {
-                        bounds: { minLat: 22.1, maxLat: 22.6, minLng: 113.8, maxLng: 114.5 },
-                        gyms: [
-                            { name: 'Pure Fitness', type: '連鎖健身房', rating: '4.3/5', address: '中環、銅鑼灣等', description: '設有長者專屬時段，提供水中運動、太極等適合長者的課程' },
-                            { name: 'Fitness First', type: '國際連鎖', rating: '4.2/5', address: '全港多個分店', description: '有專業教練指導，提供低強度運動課程' },
-                            { name: '康文署體育館', type: '公共設施', rating: '4.0/5', address: '各區體育館', description: '收費便宜，設有長者健身器材和太極班' },
-                            { name: 'YMCA', type: '基督教青年會', rating: '4.1/5', address: '中環、尖沙咀等', description: '專為長者設計的運動課程，包括水療和輕量訓練' }
-                        ]
-                    },
-                    taipei: {
-                        bounds: { minLat: 24.9, maxLat: 25.3, minLng: 121.4, maxLng: 121.7 },
-                        gyms: [
-                            { name: 'World Gym', type: '連鎖健身房', rating: '4.2/5', address: '台北多個分店', description: '設有銀髮族專區，提供適合長者的運動器材' },
-                            { name: '健身工廠', type: '本土連鎖', rating: '4.1/5', address: '台北多個分店', description: '價格親民，有長者友善的運動課程' },
-                            { name: '台北市運動中心', type: '公共設施', rating: '4.0/5', address: '各區運動中心', description: '公營設施，提供長者專屬運動時段' },
-                            { name: 'Curves', type: '女性專用', rating: '4.3/5', address: '台北多個分店', description: '30 分鐘循環運動，適合長者女性' }
-                        ]
-                    },
-                    shanghai: {
-                        bounds: { minLat: 30.7, maxLat: 31.4, minLng: 121.0, maxLng: 121.9 },
-                        gyms: [
-                            { name: '威爾士健身', type: '連鎖健身房', rating: '4.2/5', address: '上海多個分店', description: '設有長者運動課程，專業教練指導' },
-                            { name: '一兆韋德', type: '本土連鎖', rating: '4.1/5', address: '上海多個分店', description: '提供太極、瑜伽等適合長者的課程' },
-                            { name: '上海市民健身中心', type: '公共設施', rating: '4.0/5', address: '各區健身中心', description: '政府運營，收費低廉，設施完善' },
-                            { name: '舒適堡', type: '高端健身', rating: '4.4/5', address: '浦東、徐匯等', description: '環境舒適，有專門的長者運動區域' }
-                        ]
-                    }
-                },
-                general: [
-                    { name: '社區健身中心', type: '公共設施', rating: '4.1/5', address: '各社區', description: '政府或社區運營，收費便宜，設施適合長者' },
-                    { name: '長者運動中心', type: '專門機構', rating: '4.2/5', address: '市中心', description: '專為長者設計的運動設施和課程' },
-                    { name: '水中健身館', type: '水療中心', rating: '4.0/5', address: '健康中心', description: '提供水中運動課程，對關節友好' },
-                    { name: '太極養生館', type: '傳統運動', rating: '4.3/5', address: '公園附近', description: '教授太極、氣功等適合長者的運動' }
-                ]
-            },
-            'en': {
-                regions: {
-                    hongkong: {
-                        bounds: { minLat: 22.1, maxLat: 22.6, minLng: 113.8, maxLng: 114.5 },
-                        gyms: [
-                            { name: 'Pure Fitness', type: 'Chain Gym', rating: '4.3/5', address: 'Central, Causeway Bay etc.', description: 'Has dedicated senior hours, offers water exercises, Tai Chi and other programs suitable for elderly' },
-                            { name: 'Fitness First', type: 'International Chain', rating: '4.2/5', address: 'Multiple locations in Hong Kong', description: 'Has professional trainer guidance, offers low-intensity exercise programs' },
-                            { name: 'LCSD Sports Center', type: 'Public Facility', rating: '4.0/5', address: 'Sports centers in various districts', description: 'Affordable fees, has senior fitness equipment and Tai Chi classes' },
-                            { name: 'YMCA', type: 'YMCA', rating: '4.1/5', address: 'Central, Tsim Sha Tsui etc.', description: 'Exercise programs specially designed for seniors, including hydrotherapy and light training' }
-                        ]
-                    },
-                    taipei: {
-                        bounds: { minLat: 24.9, maxLat: 25.3, minLng: 121.4, maxLng: 121.7 },
-                        gyms: [
-                            { name: 'World Gym', type: 'Chain Gym', rating: '4.2/5', address: 'Multiple locations in Taipei', description: 'Has senior-specific areas, provides exercise equipment suitable for elderly' },
-                            { name: 'Fitness Factory', type: 'Local Chain', rating: '4.1/5', address: 'Multiple locations in Taipei', description: 'Affordable prices, has senior-friendly exercise programs' },
-                            { name: 'Taipei Sports Center', type: 'Public Facility', rating: '4.0/5', address: 'Sports centers in various districts', description: 'Public facility, provides dedicated exercise hours for seniors' },
-                            { name: 'Curves', type: 'Women-only', rating: '4.3/5', address: 'Multiple locations in Taipei', description: '30-minute circuit training, suitable for senior women' }
-                        ]
-                    },
-                    shanghai: {
-                        bounds: { minLat: 30.7, maxLat: 31.4, minLng: 121.0, maxLng: 121.9 },
-                        gyms: [
-                            { name: 'Will\'s Fitness', type: 'Chain Gym', rating: '4.2/5', address: 'Multiple locations in Shanghai', description: 'Has senior exercise programs with professional trainer guidance' },
-                            { name: 'Tera Wellness', type: 'Local Chain', rating: '4.1/5', address: 'Multiple locations in Shanghai', description: 'Offers Tai Chi, yoga and other programs suitable for seniors' },
-                            { name: 'Shanghai Citizens Fitness Center', type: 'Public Facility', rating: '4.0/5', address: 'Fitness centers in various districts', description: 'Government operated, low fees, complete facilities' },
-                            { name: 'Comfort Gym', type: 'Premium Fitness', rating: '4.4/5', address: 'Pudong, Xuhui etc.', description: 'Comfortable environment, has dedicated senior exercise areas' }
-                        ]
-                    }
-                },
-                general: [
-                    { name: 'Community Fitness Center', type: 'Public Facility', rating: '4.1/5', address: 'Various communities', description: 'Government or community operated, affordable fees, facilities suitable for seniors' },
-                    { name: 'Senior Exercise Center', type: 'Specialized Institution', rating: '4.2/5', address: 'City center', description: 'Exercise facilities and programs specially designed for seniors' },
-                    { name: 'Aquatic Fitness Center', type: 'Hydrotherapy Center', rating: '4.0/5', address: 'Health center', description: 'Provides water exercise programs, joint-friendly' },
-                    { name: 'Tai Chi Wellness Center', type: 'Traditional Exercise', rating: '4.3/5', address: 'Near parks', description: 'Teaches Tai Chi, Qigong and other exercises suitable for seniors' }
-                ]
-            }
-        };
-
-        // 根据地理坐标获取餐厅推荐
-        function getRestaurantsByLocation(lat, lng) {
-            const currentData = locationBasedRestaurantData[currentLanguage] || locationBasedRestaurantData['zh-CN'];
-            for (const [regionName, regionData] of Object.entries(currentData.regions)) {
-                const bounds = regionData.bounds;
-                if (lat >= bounds.minLat && lat <= bounds.maxLat && 
-                    lng >= bounds.minLng && lng <= bounds.maxLng) {
-                    return regionData.restaurants;
-                }
-            }
-            return currentData.general;
-        }
-
-        // 根据地理坐标获取健身房推荐
-        function getGymsByLocation(lat, lng) {
-            const currentData = locationBasedGymData[currentLanguage] || locationBasedGymData['zh-CN'];
-            for (const [regionName, regionData] of Object.entries(currentData.regions)) {
-                const bounds = regionData.bounds;
-                if (lat >= bounds.minLat && lat <= bounds.maxLat && 
-                    lng >= bounds.minLng && lng <= bounds.maxLng) {
-                    return regionData.gyms;
-                }
-            }
-            return currentData.general;
-        }
-
         // 地理位置餐厅推荐事件处理函数
         function handleRestaurantLocation() {
             console.log('餐厅位置按钮被点击');
@@ -1931,6 +1790,8 @@
             
             navigator.geolocation.getCurrentPosition(
                 (position) => {
+                    window.currentLat = position.coords.latitude;
+                    window.currentLng = position.coords.longitude;
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
                     
@@ -1942,10 +1803,20 @@
                     console.log('找到餐厅:', restaurants.length);
                     
                     restaurantList.innerHTML = restaurants.map(restaurant => {
-                        // 生成 Google 地图嵌入和导航链接
-                        const mapQuery = encodeURIComponent(restaurant.address || restaurant.name);
-                        const mapEmbedUrl = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
-                        const mapNavUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`;
+                        // 生成 Google 地图搜索和导航链接，基于当前位置和餐厅名
+                        let mapEmbedUrl = '';
+                        let mapNavUrl = '';
+                        if (window.currentLat && window.currentLng) {
+                            // 用当前位置和餐厅名进行搜索
+                            const searchQuery = encodeURIComponent(restaurant.name);
+                            mapEmbedUrl = `https://www.google.com/maps?q=${searchQuery}&ll=${window.currentLat},${window.currentLng}&z=15&output=embed`;
+                            mapNavUrl = `https://www.google.com/maps/dir/?api=1&origin=${window.currentLat},${window.currentLng}&destination=${searchQuery}`;
+                        } else {
+                            // 退回到仅用餐厅名
+                            const mapQuery = encodeURIComponent(restaurant.address || restaurant.name);
+                            mapEmbedUrl = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
+                            mapNavUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`;
+                        }
                         return `
                             <div class="recommendation-card">
                                 <h4>${restaurant.name}</h4>
