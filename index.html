@@ -1,4 +1,98 @@
-A
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平衡感调节小游戏</title>
+    <!-- 引入 Tailwind CSS，用于快速构建响应式界面 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Inter 字体，提升可读性 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@404&display=swap" rel="stylesheet">
+    <!-- 引入 Google Maps API -->
+    <!-- 
+        Instructions to get Google Maps API Key:
+        1. Go to https://console.cloud.google.com/
+        2. Create a new project or select an existing one
+        3. Enable the Maps JavaScript API
+        4. Create credentials (API Key)
+        5. Replace YOUR_API_KEY below with your actual API key
+        6. Optionally, restrict the API key to your domain for security
+    -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMaps&libraries=geometry"></script>
+    <style>
+        /* 基础样式，针对中老年用户增加字体大小和粗细 */
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            line-height: 1.6;
+            background-color: #ffe4ef; /* a little pink background */
+            color: #60a5fa; /* LIGHT BLUE 字体 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* 标题字体加粗 */
+        h1, h2, h3 {
+            font-weight: 500;
+            font-size: 6.4rem;
+            color: #60a5fa; /* LIGHT BLUE 标题 */
+        }
+        /* 页面内容容器 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #ffe4ef; /* a little pink background for container */
+        }
+        /* 模态框基础样式 */
+        .modal {
+            display: none; /* 默认隐藏 */
+            position: fixed; /* 固定定位 */
+            z-index: 1000; /* 叠放顺序在最上层 */
+            left: 0;
+            top: 0;
+            width: 100%; /* 全宽 */
+            height: 100%; /* 全高 */
+            overflow: auto; /* 允许滚动 */
+            background-color: rgba(0,0,0,0.6); /* 半透明黑色背景 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+        /* 模态框内容样式 */
+        .modal-content {
+            background-color: #ffe4ef; /* a little pink background for modal */
+            margin: auto;
+            padding: 1.5rem;
+            border-radius: 3rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 90%;
+            width: 1200px;
+            text-align: center;
+            position: relative;
+            color: #60a5fa;
+            font-size: 1.5rem;
+        }
+        /* 页面切换容器样式 */
+        .page {
+            display: none; /* 默认隐藏 */
+        }
+        /* 头部样式 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #ffe4ef; /* a little pink background for header */
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        /* 按钮样式 */
+        .btn {
+            background-color: #f59e42;
+            color: #60a5fa;
+            padding: 1.5rem 3rem;
+            border-radius: 1.5rem;
             font-weight: bold;
             transition: background-color 0.3s ease;
             cursor: pointer;
